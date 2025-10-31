@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -18,6 +19,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Icon from "@/components/ui/icon";
@@ -38,6 +47,18 @@ interface Contract {
 }
 
 const Index = () => {
+  const navigate = useNavigate();
+  const userName = localStorage.getItem("userName") || "Пользователь";
+  const userEmail = localStorage.getItem("userEmail") || "";
+
+  const handleLogout = () => {
+    localStorage.removeItem("isAuthenticated");
+    localStorage.removeItem("userName");
+    localStorage.removeItem("userEmail");
+    toast.success("Вы вышли из системы");
+    navigate("/login");
+  };
+
   const [contracts, setContracts] = useState<Contract[]>([
     {
       id: 1,
@@ -174,13 +195,45 @@ const Index = () => {
                 <h2 className="text-3xl font-bold text-primary">Управление договорами</h2>
                 <p className="text-muted-foreground mt-1">Отслеживание сроков и контроль исполнения</p>
               </div>
-              <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                <DialogTrigger asChild>
-                  <Button className="flex items-center gap-2">
-                    <Icon name="Plus" size={18} />
-                    Добавить договор
-                  </Button>
-                </DialogTrigger>
+              <div className="flex items-center gap-3">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" className="flex items-center gap-2">
+                      <Icon name="User" size={18} />
+                      <span>{userName}</span>
+                      <Icon name="ChevronDown" size={16} />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-56">
+                    <DropdownMenuLabel>
+                      <div className="flex flex-col">
+                        <span className="font-medium">{userName}</span>
+                        <span className="text-xs text-muted-foreground">{userEmail}</span>
+                      </div>
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={() => toast.info("Раздел в разработке")}>
+                      <Icon name="User" size={16} className="mr-2" />
+                      Мой профиль
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => toast.info("Раздел в разработке")}>
+                      <Icon name="Settings" size={16} className="mr-2" />
+                      Настройки
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={handleLogout} className="text-destructive">
+                      <Icon name="LogOut" size={16} className="mr-2" />
+                      Выйти
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                  <DialogTrigger asChild>
+                    <Button className="flex items-center gap-2">
+                      <Icon name="Plus" size={18} />
+                      Добавить договор
+                    </Button>
+                  </DialogTrigger>
                 <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
                   <DialogHeader>
                     <DialogTitle>Новый договор</DialogTitle>
@@ -277,7 +330,8 @@ const Index = () => {
                     <Button onClick={handleAddContract}>Добавить</Button>
                   </div>
                 </DialogContent>
-              </Dialog>
+                </Dialog>
+              </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
