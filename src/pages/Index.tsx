@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -46,6 +46,8 @@ interface Contract {
   contactPhone: string;
 }
 
+const API_URL = "https://functions.poehali.dev/b8cf114d-cee0-421e-8222-3f5a782739fb";
+
 const Index = () => {
   const navigate = useNavigate();
   const userName = localStorage.getItem("userName") || "Пользователь";
@@ -61,47 +63,26 @@ const Index = () => {
     navigate("/login");
   };
 
-  const [contracts, setContracts] = useState<Contract[]>([
-    {
-      id: 1,
-      organizationName: 'ООО "Техносервис"',
-      contractNumber: "ДГ-2024-001",
-      contractDate: "15.01.2024",
-      expirationDate: "15.01.2025",
-      amount: "1 250 000",
-      sbis: "Отправлен",
-      eis: "Зарегистрирован",
-      workAct: "Подписан",
-      contactPerson: "Иванов И.И.",
-      contactPhone: "+7 (495) 123-45-67",
-    },
-    {
-      id: 2,
-      organizationName: 'АО "СтройКомплекс"',
-      contractNumber: "ДГ-2023-045",
-      contractDate: "10.03.2023",
-      expirationDate: "10.03.2024",
-      amount: "3 500 000",
-      sbis: "Отправлен",
-      eis: "Зарегистрирован",
-      workAct: "Ожидает",
-      contactPerson: "Петров П.П.",
-      contactPhone: "+7 (495) 234-56-78",
-    },
-    {
-      id: 3,
-      organizationName: 'ИП "Логистик Про"',
-      contractNumber: "ДГ-2024-012",
-      contractDate: "20.02.2024",
-      expirationDate: "20.08.2025",
-      amount: "850 000",
-      sbis: "Подготовлен",
-      eis: "В процессе",
-      workAct: "Не требуется",
-      contactPerson: "Сидорова А.В.",
-      contactPhone: "+7 (495) 345-67-89",
-    },
-  ]);
+  const [contracts, setContracts] = useState<Contract[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    loadContracts();
+  }, []);
+
+  const loadContracts = async () => {
+    try {
+      setIsLoading(true);
+      const response = await fetch(API_URL);
+      const data = await response.json();
+      setContracts(data.contracts || []);
+    } catch (error) {
+      toast.error("Ошибка загрузки договоров");
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [newContract, setNewContract] = useState<Partial<Contract>>({});
@@ -121,30 +102,31 @@ const Index = () => {
     return daysUntilExpiration > 0 && daysUntilExpiration <= 30;
   };
 
-  const handleAddContract = () => {
+  const handleAddContract = async () => {
     if (!newContract.organizationName || !newContract.expirationDate) {
       toast.error("Заполните обязательные поля");
       return;
     }
 
-    const contract: Contract = {
-      id: contracts.length + 1,
-      organizationName: newContract.organizationName || "",
-      contractNumber: newContract.contractNumber || "",
-      contractDate: newContract.contractDate || "",
-      expirationDate: newContract.expirationDate || "",
-      amount: newContract.amount || "",
-      sbis: newContract.sbis || "",
-      eis: newContract.eis || "",
-      workAct: newContract.workAct || "",
-      contactPerson: newContract.contactPerson || "",
-      contactPhone: newContract.contactPhone || "",
-    };
+    try {
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newContract),
+      });
 
-    setContracts([...contracts, contract]);
-    setNewContract({});
-    setIsDialogOpen(false);
-    toast.success("Договор успешно добавлен");
+      if (response.ok) {
+        await loadContracts();
+        setNewContract({});
+        setIsDialogOpen(false);
+        toast.success("Договор успешно добавлен");
+      } else {
+        toast.error("Ошибка при добавлении договора");
+      }
+    } catch (error) {
+      toast.error("Ошибка связи с сервером");
+      console.error(error);
+    }
   };
 
   const stats = {
@@ -428,7 +410,23 @@ const Index = () => {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {contracts.map((contract, index) => (
+                      {isLoading ? (
+                        <TableRow>
+                          <TableCell colSpan={9} className="text-center py-8">
+                            <Icon name="Loader2" size={24} className="animate-spin mx-auto" />
+                            <p className="mt-2 text-muted-foreground">Загрузка договоров...</p>
+                          </TableCell>
+                        </TableRow>
+                      ) : contracts.length === 0 ? (
+                        <TableRow>
+                          <TableCell colSpan={9} className="text-center py-8">
+                            <Icon name="FileText" size={48} className="mx-auto text-muted-foreground/50" />
+                            <p className="mt-2 text-muted-foreground">Договоры не найдены</p>
+                            <p className="text-sm text-muted-foreground">Добавьте первый договор</p>
+                          </TableCell>
+                        </TableRow>
+                      ) : (
+                        contracts.map((contract, index) => (
                         <TableRow
                           key={contract.id}
                           className="hover:bg-muted/30 transition-colors"
@@ -478,7 +476,8 @@ const Index = () => {
                             </div>
                           </TableCell>
                         </TableRow>
-                      ))}
+                        ))
+                      )}
                     </TableBody>
                   </Table>
                 </div>

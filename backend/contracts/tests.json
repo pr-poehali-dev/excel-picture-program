@@ -1,0 +1,37 @@
+{
+  "tests": [
+    {
+      "name": "Get all contracts",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200,
+      "expectedBody": {
+        "contracts": "array"
+      },
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Create new contract",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "organizationName": "Test Company",
+        "contractNumber": "TEST-001",
+        "contractDate": "01.01.2024",
+        "expirationDate": "01.01.2025",
+        "amount": "1000000",
+        "sbis": "Отправлен",
+        "eis": "Зарегистрирован",
+        "workAct": "Подписан",
+        "contactPerson": "Test Person",
+        "contactPhone": "+7 (999) 999-99-99"
+      },
+      "expectedStatus": 201,
+      "expectedBody": {
+        "id": "number",
+        "message": "string"
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}
