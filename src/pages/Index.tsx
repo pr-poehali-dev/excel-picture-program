@@ -49,12 +49,14 @@ interface Contract {
 const Index = () => {
   const navigate = useNavigate();
   const userName = localStorage.getItem("userName") || "Пользователь";
-  const userEmail = localStorage.getItem("userEmail") || "";
+  const userRole = localStorage.getItem("userRole") || "";
+  const userLogin = localStorage.getItem("userLogin") || "";
 
   const handleLogout = () => {
     localStorage.removeItem("isAuthenticated");
     localStorage.removeItem("userName");
-    localStorage.removeItem("userEmail");
+    localStorage.removeItem("userLogin");
+    localStorage.removeItem("userRole");
     toast.success("Вы вышли из системы");
     navigate("/login");
   };
@@ -167,21 +169,35 @@ const Index = () => {
           <nav className="space-y-2">
             <button className="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-sidebar-accent text-sidebar-accent-foreground hover:bg-sidebar-accent/80 transition-colors">
               <Icon name="LayoutDashboard" size={20} />
-              <span>Dashboard</span>
+              <span>Договоры</span>
             </button>
-            <button className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-sidebar-accent/50 text-sidebar-foreground transition-colors">
+            <button 
+              onClick={() => toast.info("Раздел в разработке")}
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-sidebar-accent/50 text-sidebar-foreground transition-colors"
+            >
               <Icon name="Building2" size={20} />
               <span>Организации</span>
             </button>
-            <button className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-sidebar-accent/50 text-sidebar-foreground transition-colors">
-              <Icon name="Users" size={20} />
-              <span>Пользователи</span>
-            </button>
-            <button className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-sidebar-accent/50 text-sidebar-foreground transition-colors">
+            {userRole === "admin" && (
+              <button 
+                onClick={() => navigate("/users")}
+                className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-sidebar-accent/50 text-sidebar-foreground transition-colors"
+              >
+                <Icon name="Users" size={20} />
+                <span>Пользователи</span>
+              </button>
+            )}
+            <button 
+              onClick={() => toast.info("Раздел в разработке")}
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-sidebar-accent/50 text-sidebar-foreground transition-colors"
+            >
               <Icon name="Bell" size={20} />
               <span>Уведомления</span>
             </button>
-            <button className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-sidebar-accent/50 text-sidebar-foreground transition-colors">
+            <button 
+              onClick={() => toast.info("Раздел в разработке")}
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-sidebar-accent/50 text-sidebar-foreground transition-colors"
+            >
               <Icon name="Settings" size={20} />
               <span>Настройки</span>
             </button>
@@ -208,7 +224,7 @@ const Index = () => {
                     <DropdownMenuLabel>
                       <div className="flex flex-col">
                         <span className="font-medium">{userName}</span>
-                        <span className="text-xs text-muted-foreground">{userEmail}</span>
+                        <span className="text-xs text-muted-foreground">@{userLogin}</span>
                       </div>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />

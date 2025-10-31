@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -6,17 +6,22 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Icon from "@/components/ui/icon";
 import { toast } from "sonner";
+import { authenticateUser, initializeUsers } from "@/utils/users";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
+  const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    initializeUsers();
+  }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!email || !password) {
+    if (!login || !password) {
       toast.error("Заполните все поля");
       return;
     }
@@ -24,12 +29,21 @@ const Login = () => {
     setIsLoading(true);
 
     setTimeout(() => {
-      localStorage.setItem("isAuthenticated", "true");
-      localStorage.setItem("userEmail", email);
-      toast.success("Вход выполнен успешно");
-      navigate("/");
+      const user = authenticateUser(login, password);
+      
+      if (user) {
+        localStorage.setItem("isAuthenticated", "true");
+        localStorage.setItem("userLogin", user.login);
+        localStorage.setItem("userName", user.name);
+        localStorage.setItem("userRole", user.role);
+        toast.success(`Добро пожаловать, ${user.name}!`);
+        navigate("/");
+      } else {
+        toast.error("Неверный логин или пароль");
+      }
+      
       setIsLoading(false);
-    }, 1000);
+    }, 500);
   };
 
   return (
@@ -47,14 +61,15 @@ const Login = () => {
         <CardContent>
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="login">Логин</Label>
               <Input
-                id="email"
-                type="email"
-                placeholder="example@company.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                id="login"
+                type="text"
+                placeholder="Введите логин"
+                value={login}
+                onChange={(e) => setLogin(e.target.value)}
                 disabled={isLoading}
+                autoComplete="username"
               />
             </div>
             <div className="space-y-2">
@@ -82,17 +97,6 @@ const Login = () => {
               )}
             </Button>
           </form>
-          <div className="mt-6 text-center">
-            <p className="text-sm text-muted-foreground">
-              Нет аккаунта?{" "}
-              <button
-                onClick={() => navigate("/register")}
-                className="text-primary hover:underline font-medium"
-              >
-                Зарегистрироваться
-              </button>
-            </p>
-          </div>
         </CardContent>
       </Card>
     </div>
