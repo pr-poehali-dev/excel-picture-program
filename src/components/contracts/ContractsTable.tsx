@@ -89,7 +89,7 @@ const ContractsTable = ({
                     <TableCell className="font-medium">{contract.organizationName}</TableCell>
                     <TableCell>
                       <div className="space-y-1">
-                        <div className="font-medium">{contract.contractNumber}</div>
+                        <div className="font-medium">№ {contract.contractNumber}</div>
                         <div className="text-sm text-muted-foreground">{contract.contractDate}</div>
                       </div>
                     </TableCell>
