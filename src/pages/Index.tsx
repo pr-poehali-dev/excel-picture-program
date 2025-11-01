@@ -205,7 +205,7 @@ const Index = () => {
         let added = 0;
         let updated = 0;
 
-        for (const row: any of jsonData) {
+        for (const row of jsonData) {
           const importedContract = {
             organizationName: row['Название организации'] || '',
             contractNumber: row['Номер договора'] || '',
