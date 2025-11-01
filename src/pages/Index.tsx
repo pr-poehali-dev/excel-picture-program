@@ -1,22 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import {
   Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import {
@@ -27,24 +13,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import Icon from "@/components/ui/icon";
 import { toast } from "sonner";
-
-interface Contract {
-  id: number;
-  organizationName: string;
-  contractNumber: string;
-  contractDate: string;
-  expirationDate: string;
-  amount: string;
-  sbis: string;
-  eis: string;
-  workAct: string;
-  contactPerson: string;
-  contactPhone: string;
-}
+import Sidebar from "@/components/contracts/Sidebar";
+import StatsCards from "@/components/contracts/StatsCards";
+import ContractsTable, { Contract } from "@/components/contracts/ContractsTable";
+import AddContractDialog from "@/components/contracts/AddContractDialog";
+import EditContractDialog from "@/components/contracts/EditContractDialog";
 
 const API_URL = "https://functions.poehali.dev/b8cf114d-cee0-421e-8222-3f5a782739fb";
 
@@ -185,40 +160,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       <div className="flex">
-        <aside className="w-64 min-h-screen bg-sidebar text-sidebar-foreground p-6">
-          <div className="mb-8">
-            <h1 className="text-2xl font-bold flex items-center gap-2">
-              <Icon name="FileText" size={28} />
-              Договоры
-            </h1>
-            <p className="text-sm text-sidebar-foreground/70 mt-1">Система управления</p>
-          </div>
-
-          <nav className="space-y-2">
-            <button className="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-sidebar-accent text-sidebar-accent-foreground hover:bg-sidebar-accent/80 transition-colors">
-              <Icon name="LayoutDashboard" size={20} />
-              <span>Договоры</span>
-            </button>
-
-            {userRole === "admin" && (
-              <button 
-                onClick={() => navigate("/users")}
-                className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-sidebar-accent/50 text-sidebar-foreground transition-colors"
-              >
-                <Icon name="Users" size={20} />
-                <span>Пользователи</span>
-              </button>
-            )}
-
-            <button 
-              onClick={() => toast.info("Раздел в разработке")}
-              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-sidebar-accent/50 text-sidebar-foreground transition-colors"
-            >
-              <Icon name="Settings" size={20} />
-              <span>Настройки</span>
-            </button>
-          </nav>
-        </aside>
+        <Sidebar userRole={userRole} onNavigateUsers={() => navigate("/users")} />
 
         <main className="flex-1 p-8">
           <div className="max-w-7xl mx-auto space-y-6">
@@ -245,20 +187,16 @@ const Index = () => {
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={() => toast.info("Раздел в разработке")}>
-                      <Icon name="User" size={16} className="mr-2" />
-                      Мой профиль
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => toast.info("Раздел в разработке")}>
                       <Icon name="Settings" size={16} className="mr-2" />
                       Настройки
                     </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={handleLogout} className="text-destructive">
+                    <DropdownMenuItem onClick={handleLogout}>
                       <Icon name="LogOut" size={16} className="mr-2" />
-                      Выйти
+                      Выход
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
+
                 <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                   <DialogTrigger asChild>
                     <Button className="flex items-center gap-2">
@@ -266,381 +204,43 @@ const Index = () => {
                       Добавить договор
                     </Button>
                   </DialogTrigger>
-                <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-                  <DialogHeader>
-                    <DialogTitle>Новый договор</DialogTitle>
-                    <DialogDescription>Заполните информацию о договоре</DialogDescription>
-                  </DialogHeader>
-                  <div className="grid grid-cols-2 gap-4 py-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="orgName">Название организации *</Label>
-                      <Input
-                        id="orgName"
-                        value={newContract.organizationName || ""}
-                        onChange={(e) => setNewContract({ ...newContract, organizationName: e.target.value })}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="contractNum">Договор №</Label>
-                      <Input
-                        id="contractNum"
-                        value={newContract.contractNumber || ""}
-                        onChange={(e) => setNewContract({ ...newContract, contractNumber: e.target.value })}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="contractDate">Дата договора</Label>
-                      <Input
-                        id="contractDate"
-                        type="date"
-                        value={newContract.contractDate || ""}
-                        onChange={(e) => setNewContract({ ...newContract, contractDate: e.target.value })}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="expirationDate">Срок действия *</Label>
-                      <Input
-                        id="expirationDate"
-                        type="date"
-                        value={newContract.expirationDate || ""}
-                        onChange={(e) => setNewContract({ ...newContract, expirationDate: e.target.value })}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="amount">Сумма (₽)</Label>
-                      <Input
-                        id="amount"
-                        value={newContract.amount || ""}
-                        onChange={(e) => setNewContract({ ...newContract, amount: e.target.value })}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="sbis">СБИС</Label>
-                      <Input
-                        id="sbis"
-                        value={newContract.sbis || ""}
-                        onChange={(e) => setNewContract({ ...newContract, sbis: e.target.value })}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="eis">ЕИС</Label>
-                      <Input
-                        id="eis"
-                        value={newContract.eis || ""}
-                        onChange={(e) => setNewContract({ ...newContract, eis: e.target.value })}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="workAct">Акт выполненных работ</Label>
-                      <Input
-                        id="workAct"
-                        value={newContract.workAct || ""}
-                        onChange={(e) => setNewContract({ ...newContract, workAct: e.target.value })}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="contactPerson">Контактное лицо</Label>
-                      <Input
-                        id="contactPerson"
-                        value={newContract.contactPerson || ""}
-                        onChange={(e) => setNewContract({ ...newContract, contactPerson: e.target.value })}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="contactPhone">Телефон</Label>
-                      <Input
-                        id="contactPhone"
-                        value={newContract.contactPhone || ""}
-                        onChange={(e) => setNewContract({ ...newContract, contactPhone: e.target.value })}
-                      />
-                    </div>
-                  </div>
-                  <div className="flex justify-end gap-2">
-                    <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
-                      Отмена
-                    </Button>
-                    <Button onClick={handleAddContract}>Добавить</Button>
-                  </div>
-                </DialogContent>
-                </Dialog>
-
-                <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-                <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-                  <DialogHeader>
-                    <DialogTitle>Редактировать договор</DialogTitle>
-                    <DialogDescription>Измените данные договора</DialogDescription>
-                  </DialogHeader>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="edit-organizationName">Название организации *</Label>
-                      <Input
-                        id="edit-organizationName"
-                        value={editingContract?.organizationName || ""}
-                        onChange={(e) => setEditingContract(editingContract ? { ...editingContract, organizationName: e.target.value } : null)}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="edit-contractNumber">Номер договора</Label>
-                      <Input
-                        id="edit-contractNumber"
-                        value={editingContract?.contractNumber || ""}
-                        onChange={(e) => setEditingContract(editingContract ? { ...editingContract, contractNumber: e.target.value } : null)}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="edit-contractDate">Дата договора</Label>
-                      <Input
-                        id="edit-contractDate"
-                        value={editingContract?.contractDate || ""}
-                        onChange={(e) => setEditingContract(editingContract ? { ...editingContract, contractDate: e.target.value } : null)}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="edit-expirationDate">Срок действия *</Label>
-                      <Input
-                        id="edit-expirationDate"
-                        value={editingContract?.expirationDate || ""}
-                        onChange={(e) => setEditingContract(editingContract ? { ...editingContract, expirationDate: e.target.value } : null)}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="edit-amount">Сумма</Label>
-                      <Input
-                        id="edit-amount"
-                        value={editingContract?.amount || ""}
-                        onChange={(e) => setEditingContract(editingContract ? { ...editingContract, amount: e.target.value } : null)}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="edit-sbis">СБИС</Label>
-                      <Input
-                        id="edit-sbis"
-                        value={editingContract?.sbis || ""}
-                        onChange={(e) => setEditingContract(editingContract ? { ...editingContract, sbis: e.target.value } : null)}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="edit-eis">ЕИС</Label>
-                      <Input
-                        id="edit-eis"
-                        value={editingContract?.eis || ""}
-                        onChange={(e) => setEditingContract(editingContract ? { ...editingContract, eis: e.target.value } : null)}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="edit-workAct">Акт выполненных работ</Label>
-                      <Input
-                        id="edit-workAct"
-                        value={editingContract?.workAct || ""}
-                        onChange={(e) => setEditingContract(editingContract ? { ...editingContract, workAct: e.target.value } : null)}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="edit-contactPerson">Контактное лицо</Label>
-                      <Input
-                        id="edit-contactPerson"
-                        value={editingContract?.contactPerson || ""}
-                        onChange={(e) => setEditingContract(editingContract ? { ...editingContract, contactPerson: e.target.value } : null)}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="edit-contactPhone">Телефон</Label>
-                      <Input
-                        id="edit-contactPhone"
-                        value={editingContract?.contactPhone || ""}
-                        onChange={(e) => setEditingContract(editingContract ? { ...editingContract, contactPhone: e.target.value } : null)}
-                      />
-                    </div>
-                  </div>
-                  <div className="flex justify-end gap-2">
-                    <Button variant="outline" onClick={() => setIsEditDialogOpen(false)}>
-                      Отмена
-                    </Button>
-                    <Button onClick={handleEditContract}>Сохранить</Button>
-                  </div>
-                </DialogContent>
                 </Dialog>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <Card className="animate-fade-in">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm text-muted-foreground">Всего договоров</p>
-                      <p className="text-3xl font-bold mt-2">{stats.total}</p>
-                    </div>
-                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                      <Icon name="FileText" size={24} className="text-primary" />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+            <StatsCards stats={stats} />
 
-              <Card className="animate-fade-in" style={{ animationDelay: "0.1s" }}>
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm text-muted-foreground">Активных</p>
-                      <p className="text-3xl font-bold mt-2 text-accent">{stats.active}</p>
-                    </div>
-                    <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center">
-                      <Icon name="CheckCircle2" size={24} className="text-accent" />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="animate-fade-in" style={{ animationDelay: "0.2s" }}>
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm text-muted-foreground">Просроченных</p>
-                      <p className="text-3xl font-bold mt-2 text-destructive">{stats.expired}</p>
-                    </div>
-                    <div className="w-12 h-12 bg-destructive/10 rounded-lg flex items-center justify-center">
-                      <Icon name="AlertCircle" size={24} className="text-destructive" />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="animate-fade-in" style={{ animationDelay: "0.3s" }}>
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm text-muted-foreground">Общая сумма</p>
-                      <p className="text-2xl font-bold mt-2">
-                        {stats.totalAmount.toLocaleString("ru-RU")} ₽
-                      </p>
-                    </div>
-                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                      <Icon name="Ruble" size={24} className="text-primary" />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            <Card className="animate-fade-in" style={{ animationDelay: "0.4s" }}>
-              <CardContent className="p-0">
-                <div className="overflow-x-auto">
-                  <Table>
-                    <TableHeader>
-                      <TableRow className="bg-muted/50">
-                        <TableHead className="font-semibold">№</TableHead>
-                        <TableHead className="font-semibold">Название организации</TableHead>
-                        <TableHead className="font-semibold">Договор №, дата</TableHead>
-                        <TableHead className="font-semibold">Срок действия</TableHead>
-                        <TableHead className="font-semibold">Сумма (₽)</TableHead>
-                        <TableHead className="font-semibold">СБИС</TableHead>
-                        <TableHead className="font-semibold">ЕИС</TableHead>
-                        <TableHead className="font-semibold">Акт работ</TableHead>
-                        <TableHead className="font-semibold">Контактное лицо</TableHead>
-                        {userRole !== "accountant" && <TableHead className="font-semibold">Действия</TableHead>}
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {isLoading ? (
-                        <TableRow>
-                          <TableCell colSpan={9} className="text-center py-8">
-                            <Icon name="Loader2" size={24} className="animate-spin mx-auto" />
-                            <p className="mt-2 text-muted-foreground">Загрузка договоров...</p>
-                          </TableCell>
-                        </TableRow>
-                      ) : contracts.length === 0 ? (
-                        <TableRow>
-                          <TableCell colSpan={9} className="text-center py-8">
-                            <Icon name="FileText" size={48} className="mx-auto text-muted-foreground/50" />
-                            <p className="mt-2 text-muted-foreground">Договоры не найдены</p>
-                            <p className="text-sm text-muted-foreground">Добавьте первый договор</p>
-                          </TableCell>
-                        </TableRow>
-                      ) : (
-                        contracts.map((contract, index) => (
-                        <TableRow
-                          key={contract.id}
-                          className="hover:bg-muted/30 transition-colors"
-                        >
-                          <TableCell className="font-medium">{index + 1}</TableCell>
-                          <TableCell className="font-medium">{contract.organizationName}</TableCell>
-                          <TableCell>
-                            <div className="space-y-1">
-                              <div className="font-medium">{contract.contractNumber}</div>
-                              <div className="text-sm text-muted-foreground">{contract.contractDate}</div>
-                            </div>
-                          </TableCell>
-                          <TableCell>
-                            <Badge
-                              variant={
-                                isExpired(contract.expirationDate)
-                                  ? "destructive"
-                                  : isExpiringSoon(contract.expirationDate)
-                                  ? "outline"
-                                  : "default"
-                              }
-                              className={
-                                isExpired(contract.expirationDate)
-                                  ? "bg-destructive text-destructive-foreground"
-                                  : isExpiringSoon(contract.expirationDate)
-                                  ? "border-orange-500 text-orange-700"
-                                  : "bg-accent text-accent-foreground"
-                              }
-                            >
-                              {contract.expirationDate}
-                            </Badge>
-                          </TableCell>
-                          <TableCell className="font-semibold">{contract.amount}</TableCell>
-                          <TableCell>
-                            <Badge variant="outline">{contract.sbis}</Badge>
-                          </TableCell>
-                          <TableCell>
-                            <Badge variant="outline">{contract.eis}</Badge>
-                          </TableCell>
-                          <TableCell>
-                            <Badge variant="outline">{contract.workAct}</Badge>
-                          </TableCell>
-                          <TableCell>
-                            <div className="space-y-1">
-                              <div className="text-sm">{contract.contactPerson}</div>
-                              <div className="text-xs text-muted-foreground">{contract.contactPhone}</div>
-                            </div>
-                          </TableCell>
-                          {userRole !== "accountant" && (
-                            <TableCell>
-                              <div className="flex gap-2">
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  onClick={() => {
-                                    setEditingContract(contract);
-                                    setIsEditDialogOpen(true);
-                                  }}
-                                >
-                                  <Icon name="Pencil" size={16} />
-                                </Button>
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  onClick={() => handleDeleteContract(contract.id)}
-                                >
-                                  <Icon name="Trash2" size={16} />
-                                </Button>
-                              </div>
-                            </TableCell>
-                          )}
-                        </TableRow>
-                        ))
-                      )}
-                    </TableBody>
-                  </Table>
-                </div>
-              </CardContent>
-            </Card>
+            <ContractsTable
+              contracts={contracts}
+              isLoading={isLoading}
+              userRole={userRole}
+              onEdit={(contract) => {
+                setEditingContract(contract);
+                setIsEditDialogOpen(true);
+              }}
+              onDelete={handleDeleteContract}
+              isExpired={isExpired}
+              isExpiringSoon={isExpiringSoon}
+            />
           </div>
         </main>
       </div>
+
+      <AddContractDialog
+        isOpen={isDialogOpen}
+        onOpenChange={setIsDialogOpen}
+        newContract={newContract}
+        onContractChange={setNewContract}
+        onSubmit={handleAddContract}
+      />
+
+      <EditContractDialog
+        isOpen={isEditDialogOpen}
+        onOpenChange={setIsEditDialogOpen}
+        contract={editingContract}
+        onContractChange={setEditingContract}
+        onSubmit={handleEditContract}
+      />
     </div>
   );
 };

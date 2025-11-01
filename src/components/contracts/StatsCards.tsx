@@ -1,0 +1,77 @@
+import { Card, CardContent } from "@/components/ui/card";
+import Icon from "@/components/ui/icon";
+
+interface StatsCardsProps {
+  stats: {
+    total: number;
+    active: number;
+    expired: number;
+    totalAmount: number;
+  };
+}
+
+const StatsCards = ({ stats }: StatsCardsProps) => {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <Card className="animate-fade-in">
+        <CardContent className="p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-muted-foreground">Всего договоров</p>
+              <p className="text-3xl font-bold mt-2">{stats.total}</p>
+            </div>
+            <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+              <Icon name="FileText" size={24} className="text-primary" />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card className="animate-fade-in" style={{ animationDelay: "0.1s" }}>
+        <CardContent className="p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-muted-foreground">Активных</p>
+              <p className="text-3xl font-bold mt-2 text-accent">{stats.active}</p>
+            </div>
+            <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center">
+              <Icon name="CheckCircle2" size={24} className="text-accent" />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card className="animate-fade-in" style={{ animationDelay: "0.2s" }}>
+        <CardContent className="p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-muted-foreground">Просроченных</p>
+              <p className="text-3xl font-bold mt-2 text-destructive">{stats.expired}</p>
+            </div>
+            <div className="w-12 h-12 bg-destructive/10 rounded-lg flex items-center justify-center">
+              <Icon name="AlertCircle" size={24} className="text-destructive" />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card className="animate-fade-in" style={{ animationDelay: "0.3s" }}>
+        <CardContent className="p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-muted-foreground">Общая сумма</p>
+              <p className="text-2xl font-bold mt-2">
+                {stats.totalAmount.toLocaleString("ru-RU")} ₽
+              </p>
+            </div>
+            <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+              <Icon name="Ruble" size={24} className="text-primary" />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
+export default StatsCards;
