@@ -113,7 +113,13 @@ const ContractsTable = ({
                         {contract.expirationDate}
                       </Badge>
                     </TableCell>
-                    <TableCell className="font-semibold">{contract.amount}</TableCell>
+                    <TableCell className="font-semibold">
+                      {new Intl.NumberFormat('ru-RU', {
+                        style: 'decimal',
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                      }).format(Number(contract.amount) || 0)} ₽
+                    </TableCell>
                     <TableCell>
                       <Badge 
                         variant="outline"
