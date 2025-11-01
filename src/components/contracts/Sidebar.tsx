@@ -10,11 +10,15 @@ const Sidebar = ({ userRole, onNavigateUsers }: SidebarProps) => {
   return (
     <aside className="w-64 min-h-screen bg-sidebar text-sidebar-foreground p-6">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold flex items-center gap-2">
-          <Icon name="FileText" size={28} />
-          Договоры
-        </h1>
-        <p className="text-sm text-sidebar-foreground/70 mt-1">Система управления</p>
+        <div className="flex justify-center mb-4">
+          <img 
+            src="https://cdn.poehali.dev/files/fbc1e769-5979-4ed3-9a22-471aabeb5904.png" 
+            alt="Интермед" 
+            className="w-32 h-32 object-contain"
+          />
+        </div>
+        <h1 className="text-xl font-bold text-center">Договоры</h1>
+        <p className="text-sm text-sidebar-foreground/70 mt-1 text-center">Система управления</p>
       </div>
 
       <nav className="space-y-2">
