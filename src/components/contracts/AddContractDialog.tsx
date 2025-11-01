@@ -60,7 +60,7 @@ const AddContractDialog = ({
             <Label htmlFor="contractDate">Дата договора</Label>
             <Input
               id="contractDate"
-              placeholder="дд.мм.гггг"
+              type="date"
               value={newContract.contractDate || ""}
               onChange={(e) => onContractChange({ ...newContract, contractDate: e.target.value })}
             />
@@ -69,7 +69,7 @@ const AddContractDialog = ({
             <Label htmlFor="expirationDate">Срок действия *</Label>
             <Input
               id="expirationDate"
-              placeholder="дд.мм.гггг"
+              type="date"
               value={newContract.expirationDate || ""}
               onChange={(e) => onContractChange({ ...newContract, expirationDate: e.target.value })}
             />
@@ -78,6 +78,10 @@ const AddContractDialog = ({
             <Label htmlFor="amount">Сумма (₽)</Label>
             <Input
               id="amount"
+              type="number"
+              step="0.01"
+              min="0"
+              placeholder="0.00"
               value={newContract.amount || ""}
               onChange={(e) => onContractChange({ ...newContract, amount: e.target.value })}
             />

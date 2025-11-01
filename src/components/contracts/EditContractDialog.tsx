@@ -60,6 +60,7 @@ const EditContractDialog = ({
             <Label htmlFor="edit-contractDate">Дата договора</Label>
             <Input
               id="edit-contractDate"
+              type="date"
               value={contract?.contractDate || ""}
               onChange={(e) => onContractChange(contract ? { ...contract, contractDate: e.target.value } : null)}
             />
@@ -68,14 +69,19 @@ const EditContractDialog = ({
             <Label htmlFor="edit-expirationDate">Срок действия *</Label>
             <Input
               id="edit-expirationDate"
+              type="date"
               value={contract?.expirationDate || ""}
               onChange={(e) => onContractChange(contract ? { ...contract, expirationDate: e.target.value } : null)}
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="edit-amount">Сумма</Label>
+            <Label htmlFor="edit-amount">Сумма (₽)</Label>
             <Input
               id="edit-amount"
+              type="number"
+              step="0.01"
+              min="0"
+              placeholder="0.00"
               value={contract?.amount || ""}
               onChange={(e) => onContractChange(contract ? { ...contract, amount: e.target.value } : null)}
             />
