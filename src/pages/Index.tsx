@@ -190,6 +190,50 @@ const Index = () => {
     toast.success('Файл Excel успешно выгружен');
   };
 
+  const handleImportFromExcel = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+      try {
+        const data = new Uint8Array(e.target?.result as ArrayBuffer);
+        const workbook = XLSX.read(data, { type: 'array' });
+        const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+        const jsonData = XLSX.utils.sheet_to_json(worksheet);
+
+        const importedContracts = jsonData.map((row: any) => ({
+          organizationName: row['Название организации'] || '',
+          contractNumber: row['Номер договора'] || '',
+          contractDate: row['Дата договора'] || '',
+          expirationDate: row['Срок действия'] || '',
+          amount: row['Сумма (₽)'] || '0',
+          sbis: row['СБИС'] || 'Нет',
+          eis: row['ЕИС'] || 'Нет',
+          workAct: row['Акт работ'] || 'Нет',
+          contactPerson: row['Контактное лицо'] || '',
+          contactPhone: row['Телефон'] || '',
+        }));
+
+        for (const contract of importedContracts) {
+          await fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(contract),
+          });
+        }
+
+        await loadContracts();
+        toast.success(`Импортировано ${importedContracts.length} договоров`);
+      } catch (error) {
+        toast.error('Ошибка при импорте файла');
+        console.error(error);
+      }
+    };
+    reader.readAsArrayBuffer(file);
+    event.target.value = '';
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       <div className="flex">
@@ -212,6 +256,22 @@ const Index = () => {
                   <Icon name="Download" size={18} />
                   Экспорт в Excel
                 </Button>
+
+                <Button 
+                  variant="outline" 
+                  className="flex items-center gap-2"
+                  onClick={() => document.getElementById('excel-import')?.click()}
+                >
+                  <Icon name="Upload" size={18} />
+                  Импорт из Excel
+                </Button>
+                <input
+                  id="excel-import"
+                  type="file"
+                  accept=".xlsx,.xls"
+                  onChange={handleImportFromExcel}
+                  className="hidden"
+                />
 
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
