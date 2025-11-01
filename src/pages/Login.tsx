@@ -52,9 +52,9 @@ const Login = () => {
         <CardHeader className="space-y-1 text-center">
           <div className="flex justify-center mb-4">
             <img 
-              src="https://cdn.poehali.dev/files/fbc1e769-5979-4ed3-9a22-471aabeb5904.png" 
-              alt="Интермед" 
-              className="w-40 h-40 object-contain"
+              src="https://cdn.poehali.dev/files/76ad81b7-481c-4102-a15e-3972ef028dbe.png" 
+              alt="Интермед Учет" 
+              className="w-64 h-auto object-contain"
             />
           </div>
           <CardTitle className="text-2xl font-bold">Вход в систему</CardTitle>
