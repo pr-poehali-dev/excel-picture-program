@@ -32,14 +32,6 @@ const Sidebar = ({ userRole, onNavigateUsers }: SidebarProps) => {
             <span>Пользователи</span>
           </button>
         )}
-
-        <button 
-          onClick={() => toast.info("Раздел в разработке")}
-          className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-sidebar-accent/50 text-sidebar-foreground transition-colors"
-        >
-          <Icon name="Settings" size={20} />
-          <span>Настройки</span>
-        </button>
       </nav>
     </aside>
   );
