@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Dialog,
   DialogTrigger,
@@ -66,6 +67,7 @@ const Index = () => {
   const [editingContract, setEditingContract] = useState<Contract | null>(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'expired'>('all');
+  const [searchQuery, setSearchQuery] = useState('');
 
   const isExpired = (expirationDate: string): boolean => {
     if (!expirationDate || expirationDate.trim() === '') return false;
@@ -178,9 +180,17 @@ const Index = () => {
   };
 
   const filteredContracts = contracts.filter(contract => {
-    if (statusFilter === 'active') return !isExpired(contract.expirationDate);
-    if (statusFilter === 'expired') return isExpired(contract.expirationDate);
-    return true;
+    const matchesStatus = 
+      statusFilter === 'all' ? true :
+      statusFilter === 'active' ? !isExpired(contract.expirationDate) :
+      isExpired(contract.expirationDate);
+    
+    const matchesSearch = 
+      searchQuery.trim() === '' ||
+      contract.organizationName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      contract.contractNumber.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    return matchesStatus && matchesSearch;
   });
 
   const stats = {
@@ -355,6 +365,18 @@ const Index = () => {
             </div>
 
             <StatsCards stats={stats} />
+
+            <div className="mb-4 flex items-center gap-3">
+              <div className="relative flex-1 max-w-md">
+                <Icon name="Search" size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  placeholder="Поиск по организации или номеру договора..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10"
+                />
+              </div>
+            </div>
 
             <div className="flex items-center gap-3 mb-4">
               <Button
