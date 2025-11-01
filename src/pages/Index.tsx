@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Icon from "@/components/ui/icon";
 import { toast } from "sonner";
+import * as XLSX from 'xlsx';
 import Sidebar from "@/components/contracts/Sidebar";
 import StatsCards from "@/components/contracts/StatsCards";
 import ContractsTable, { Contract } from "@/components/contracts/ContractsTable";
@@ -157,6 +158,31 @@ const Index = () => {
     totalAmount: contracts.reduce((sum, c) => sum + parseFloat(c.amount.replace(/\s/g, "")), 0),
   };
 
+  const handleExportToExcel = () => {
+    const exportData = contracts.map((contract, index) => ({
+      '№': index + 1,
+      'Название организации': contract.organizationName,
+      'Номер договора': contract.contractNumber,
+      'Дата договора': contract.contractDate,
+      'Срок действия': contract.expirationDate,
+      'Сумма (₽)': contract.amount,
+      'СБИС': contract.sbis,
+      'ЕИС': contract.eis,
+      'Акт работ': contract.workAct,
+      'Контактное лицо': contract.contactPerson,
+      'Телефон': contract.contactPhone,
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(exportData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Договоры');
+    
+    const date = new Date().toLocaleDateString('ru-RU').replace(/\./g, '-');
+    XLSX.writeFile(workbook, `Договоры_${date}.xlsx`);
+    
+    toast.success('Файл Excel успешно выгружен');
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       <div className="flex">
@@ -170,6 +196,16 @@ const Index = () => {
                 <p className="text-muted-foreground mt-1">Отслеживание сроков и контроль исполнения</p>
               </div>
               <div className="flex items-center gap-3">
+                <Button 
+                  variant="outline" 
+                  onClick={handleExportToExcel}
+                  className="flex items-center gap-2"
+                  disabled={contracts.length === 0}
+                >
+                  <Icon name="Download" size={18} />
+                  Экспорт в Excel
+                </Button>
+
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="outline" className="flex items-center gap-2">

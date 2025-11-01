@@ -65,7 +65,7 @@ const StatsCards = ({ stats }: StatsCardsProps) => {
               </p>
             </div>
             <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-              <Icon name="Ruble" size={24} className="text-primary" />
+              <span className="text-2xl font-bold text-primary">₽</span>
             </div>
           </div>
         </CardContent>
