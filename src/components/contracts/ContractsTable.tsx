@@ -105,15 +105,15 @@ const ContractsTable = ({
                       isExpired(contract.expirationDate) ? 'bg-red-50' : ''
                     }`}
                   >
-                    <TableCell className="font-medium whitespace-nowrap">{index + 1}</TableCell>
-                    <TableCell className="font-medium min-w-[200px] whitespace-nowrap">{contract.organizationName}</TableCell>
-                    <TableCell className="min-w-[150px]">
+                    <TableCell className="font-medium whitespace-nowrap w-12">{index + 1}</TableCell>
+                    <TableCell className="font-medium whitespace-nowrap max-w-[180px] truncate">{contract.organizationName}</TableCell>
+                    <TableCell className="w-32">
                       <div className="space-y-1">
                         <div className="font-medium whitespace-nowrap">№ {contract.contractNumber}</div>
                         <div className="text-sm text-muted-foreground whitespace-nowrap">{contract.contractDate}</div>
                       </div>
                     </TableCell>
-                    <TableCell className="min-w-[180px]">
+                    <TableCell className="w-40">
                       <Badge
                         variant={
                           isExpired(contract.expirationDate)
@@ -133,14 +133,14 @@ const ContractsTable = ({
                         {formatDate(contract.expirationDate)}
                       </Badge>
                     </TableCell>
-                    <TableCell className="font-semibold min-w-[150px] whitespace-nowrap">
+                    <TableCell className="font-semibold whitespace-nowrap w-32 text-right">
                       {new Intl.NumberFormat('ru-RU', {
                         style: 'decimal',
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2
                       }).format(Number(contract.amount) || 0)} ₽
                     </TableCell>
-                    <TableCell className="min-w-[100px]">
+                    <TableCell className="w-20">
                       <Badge 
                         variant="outline"
                         className={
@@ -152,7 +152,7 @@ const ContractsTable = ({
                         {contract.sbis}
                       </Badge>
                     </TableCell>
-                    <TableCell className="min-w-[100px]">
+                    <TableCell className="w-20">
                       <Badge 
                         variant="outline"
                         className={
@@ -164,7 +164,7 @@ const ContractsTable = ({
                         {contract.eis}
                       </Badge>
                     </TableCell>
-                    <TableCell className="min-w-[100px]">
+                    <TableCell className="w-20">
                       <Badge 
                         variant="outline"
                         className={
@@ -176,7 +176,7 @@ const ContractsTable = ({
                         {contract.workAct}
                       </Badge>
                     </TableCell>
-                    <TableCell className="min-w-[200px]">
+                    <TableCell className="w-36">
                       <div className="space-y-1">
                         <div className="text-sm whitespace-nowrap">{contract.contactPerson}</div>
                         <div className="text-xs text-muted-foreground whitespace-nowrap">{contract.contactPhone}</div>
