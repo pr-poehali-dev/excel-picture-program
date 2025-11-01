@@ -51,9 +51,11 @@ const Login = () => {
       <Card className="w-full max-w-md animate-fade-in">
         <CardHeader className="space-y-1 text-center">
           <div className="flex justify-center mb-4">
-            <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center">
-              <Icon name="FileText" size={32} className="text-primary-foreground" />
-            </div>
+            <img 
+              src="https://cdn.poehali.dev/files/8279c44d-b4b9-4f01-9e93-e3b11e8a3ba9.jpg" 
+              alt="Интермед" 
+              className="w-32 h-32 object-contain"
+            />
           </div>
           <CardTitle className="text-2xl font-bold">Вход в систему</CardTitle>
           <CardDescription>Управление договорами</CardDescription>
