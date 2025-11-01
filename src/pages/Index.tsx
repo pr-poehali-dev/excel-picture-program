@@ -253,7 +253,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-pink-50">
+    <div className="min-h-screen bg-background">
       <div className="flex">
         <Sidebar userRole={userRole} onNavigateUsers={() => navigate("/users")} />
 
@@ -261,7 +261,7 @@ const Index = () => {
           <div className="max-w-7xl mx-auto space-y-8">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Управление договорами</h2>
+                <h2 className="text-4xl font-bold tracking-tight">Управление договорами</h2>
                 <p className="text-muted-foreground mt-2 text-base">Отслеживание сроков и контроль исполнения</p>
               </div>
               <div className="flex items-center gap-3">
