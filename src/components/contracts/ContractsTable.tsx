@@ -66,8 +66,7 @@ const ContractsTable = ({
   return (
     <Card className="animate-fade-in" style={{ animationDelay: "0.4s" }}>
       <CardContent className="p-0">
-        <div className="overflow-x-auto">
-          <Table>
+        <Table>
             <TableHeader>
               <TableRow className="bg-muted/50">
                 <TableHead className="font-semibold">№</TableHead>
@@ -208,7 +207,6 @@ const ContractsTable = ({
               )}
             </TableBody>
           </Table>
-        </div>
       </CardContent>
     </Card>
   );
