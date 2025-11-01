@@ -64,6 +64,7 @@ const Index = () => {
   const [newContract, setNewContract] = useState<Partial<Contract>>({});
   const [editingContract, setEditingContract] = useState<Contract | null>(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'expired'>('all');
 
   const isExpired = (expirationDate: string): boolean => {
     const [day, month, year] = expirationDate.split(".");
@@ -150,6 +151,12 @@ const Index = () => {
       console.error(error);
     }
   };
+
+  const filteredContracts = contracts.filter(contract => {
+    if (statusFilter === 'active') return !isExpired(contract.expirationDate);
+    if (statusFilter === 'expired') return isExpired(contract.expirationDate);
+    return true;
+  });
 
   const stats = {
     total: contracts.length,
@@ -246,8 +253,35 @@ const Index = () => {
 
             <StatsCards stats={stats} />
 
+            <div className="flex items-center gap-3 mb-4">
+              <Button
+                variant={statusFilter === 'all' ? 'default' : 'outline'}
+                onClick={() => setStatusFilter('all')}
+                className="flex items-center gap-2"
+              >
+                <Icon name="List" size={16} />
+                Все ({stats.total})
+              </Button>
+              <Button
+                variant={statusFilter === 'active' ? 'default' : 'outline'}
+                onClick={() => setStatusFilter('active')}
+                className="flex items-center gap-2"
+              >
+                <Icon name="CheckCircle2" size={16} />
+                Активные ({stats.active})
+              </Button>
+              <Button
+                variant={statusFilter === 'expired' ? 'default' : 'outline'}
+                onClick={() => setStatusFilter('expired')}
+                className="flex items-center gap-2"
+              >
+                <Icon name="AlertCircle" size={16} />
+                Просроченные ({stats.expired})
+              </Button>
+            </div>
+
             <ContractsTable
-              contracts={contracts}
+              contracts={filteredContracts}
               isLoading={isLoading}
               userRole={userRole}
               onEdit={(contract) => {

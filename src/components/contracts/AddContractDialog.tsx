@@ -8,6 +8,13 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Contract } from "./ContractsTable";
 
 interface AddContractDialogProps {
@@ -77,27 +84,48 @@ const AddContractDialog = ({
           </div>
           <div className="space-y-2">
             <Label htmlFor="sbis">СБИС</Label>
-            <Input
-              id="sbis"
-              value={newContract.sbis || ""}
-              onChange={(e) => onContractChange({ ...newContract, sbis: e.target.value })}
-            />
+            <Select
+              value={newContract.sbis || "Нет"}
+              onValueChange={(value) => onContractChange({ ...newContract, sbis: value })}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Выберите" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Да">Да</SelectItem>
+                <SelectItem value="Нет">Нет</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
           <div className="space-y-2">
             <Label htmlFor="eis">ЕИС</Label>
-            <Input
-              id="eis"
-              value={newContract.eis || ""}
-              onChange={(e) => onContractChange({ ...newContract, eis: e.target.value })}
-            />
+            <Select
+              value={newContract.eis || "Нет"}
+              onValueChange={(value) => onContractChange({ ...newContract, eis: value })}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Выберите" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Да">Да</SelectItem>
+                <SelectItem value="Нет">Нет</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
           <div className="space-y-2">
             <Label htmlFor="workAct">Акт выполненных работ</Label>
-            <Input
-              id="workAct"
-              value={newContract.workAct || ""}
-              onChange={(e) => onContractChange({ ...newContract, workAct: e.target.value })}
-            />
+            <Select
+              value={newContract.workAct || "Нет"}
+              onValueChange={(value) => onContractChange({ ...newContract, workAct: value })}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Выберите" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Да">Да</SelectItem>
+                <SelectItem value="Нет">Нет</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
           <div className="space-y-2">
             <Label htmlFor="contactPerson">Контактное лицо</Label>

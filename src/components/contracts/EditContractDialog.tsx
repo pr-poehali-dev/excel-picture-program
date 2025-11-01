@@ -8,6 +8,13 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Contract } from "./ContractsTable";
 
 interface EditContractDialogProps {
@@ -75,27 +82,48 @@ const EditContractDialog = ({
           </div>
           <div className="space-y-2">
             <Label htmlFor="edit-sbis">СБИС</Label>
-            <Input
-              id="edit-sbis"
-              value={contract?.sbis || ""}
-              onChange={(e) => onContractChange(contract ? { ...contract, sbis: e.target.value } : null)}
-            />
+            <Select
+              value={contract?.sbis || "Нет"}
+              onValueChange={(value) => onContractChange(contract ? { ...contract, sbis: value } : null)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Выберите" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Да">Да</SelectItem>
+                <SelectItem value="Нет">Нет</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
           <div className="space-y-2">
             <Label htmlFor="edit-eis">ЕИС</Label>
-            <Input
-              id="edit-eis"
-              value={contract?.eis || ""}
-              onChange={(e) => onContractChange(contract ? { ...contract, eis: e.target.value } : null)}
-            />
+            <Select
+              value={contract?.eis || "Нет"}
+              onValueChange={(value) => onContractChange(contract ? { ...contract, eis: value } : null)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Выберите" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Да">Да</SelectItem>
+                <SelectItem value="Нет">Нет</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
           <div className="space-y-2">
             <Label htmlFor="edit-workAct">Акт выполненных работ</Label>
-            <Input
-              id="edit-workAct"
-              value={contract?.workAct || ""}
-              onChange={(e) => onContractChange(contract ? { ...contract, workAct: e.target.value } : null)}
-            />
+            <Select
+              value={contract?.workAct || "Нет"}
+              onValueChange={(value) => onContractChange(contract ? { ...contract, workAct: value } : null)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Выберите" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Да">Да</SelectItem>
+                <SelectItem value="Нет">Нет</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
           <div className="space-y-2">
             <Label htmlFor="edit-contactPerson">Контактное лицо</Label>
