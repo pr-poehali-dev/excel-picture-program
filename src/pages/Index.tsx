@@ -86,6 +86,8 @@ const Index = () => {
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [newContract, setNewContract] = useState<Partial<Contract>>({});
+  const [editingContract, setEditingContract] = useState<Contract | null>(null);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
   const isExpired = (expirationDate: string): boolean => {
     const [day, month, year] = expirationDate.split(".");
@@ -129,6 +131,50 @@ const Index = () => {
     }
   };
 
+  const handleEditContract = async () => {
+    if (!editingContract) return;
+
+    try {
+      const response = await fetch(`${API_URL}?id=${editingContract.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(editingContract),
+      });
+
+      if (response.ok) {
+        await loadContracts();
+        setEditingContract(null);
+        setIsEditDialogOpen(false);
+        toast.success("Договор успешно обновлен");
+      } else {
+        toast.error("Ошибка при обновлении договора");
+      }
+    } catch (error) {
+      toast.error("Ошибка связи с сервером");
+      console.error(error);
+    }
+  };
+
+  const handleDeleteContract = async (id: number) => {
+    if (!confirm("Вы уверены, что хотите удалить этот договор?")) return;
+
+    try {
+      const response = await fetch(`${API_URL}?id=${id}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        await loadContracts();
+        toast.success("Договор успешно удален");
+      } else {
+        toast.error("Ошибка при удалении договора");
+      }
+    } catch (error) {
+      toast.error("Ошибка связи с сервером");
+      console.error(error);
+    }
+  };
+
   const stats = {
     total: contracts.length,
     active: contracts.filter(c => !isExpired(c.expirationDate)).length,
@@ -153,13 +199,7 @@ const Index = () => {
               <Icon name="LayoutDashboard" size={20} />
               <span>Договоры</span>
             </button>
-            <button 
-              onClick={() => toast.info("Раздел в разработке")}
-              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-sidebar-accent/50 text-sidebar-foreground transition-colors"
-            >
-              <Icon name="Building2" size={20} />
-              <span>Организации</span>
-            </button>
+
             {userRole === "admin" && (
               <button 
                 onClick={() => navigate("/users")}
@@ -169,13 +209,7 @@ const Index = () => {
                 <span>Пользователи</span>
               </button>
             )}
-            <button 
-              onClick={() => toast.info("Раздел в разработке")}
-              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-sidebar-accent/50 text-sidebar-foreground transition-colors"
-            >
-              <Icon name="Bell" size={20} />
-              <span>Уведомления</span>
-            </button>
+
             <button 
               onClick={() => toast.info("Раздел в разработке")}
               className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-sidebar-accent/50 text-sidebar-foreground transition-colors"
@@ -329,6 +363,103 @@ const Index = () => {
                   </div>
                 </DialogContent>
                 </Dialog>
+
+                <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+                <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                  <DialogHeader>
+                    <DialogTitle>Редактировать договор</DialogTitle>
+                    <DialogDescription>Измените данные договора</DialogDescription>
+                  </DialogHeader>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="edit-organizationName">Название организации *</Label>
+                      <Input
+                        id="edit-organizationName"
+                        value={editingContract?.organizationName || ""}
+                        onChange={(e) => setEditingContract(editingContract ? { ...editingContract, organizationName: e.target.value } : null)}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="edit-contractNumber">Номер договора</Label>
+                      <Input
+                        id="edit-contractNumber"
+                        value={editingContract?.contractNumber || ""}
+                        onChange={(e) => setEditingContract(editingContract ? { ...editingContract, contractNumber: e.target.value } : null)}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="edit-contractDate">Дата договора</Label>
+                      <Input
+                        id="edit-contractDate"
+                        value={editingContract?.contractDate || ""}
+                        onChange={(e) => setEditingContract(editingContract ? { ...editingContract, contractDate: e.target.value } : null)}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="edit-expirationDate">Срок действия *</Label>
+                      <Input
+                        id="edit-expirationDate"
+                        value={editingContract?.expirationDate || ""}
+                        onChange={(e) => setEditingContract(editingContract ? { ...editingContract, expirationDate: e.target.value } : null)}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="edit-amount">Сумма</Label>
+                      <Input
+                        id="edit-amount"
+                        value={editingContract?.amount || ""}
+                        onChange={(e) => setEditingContract(editingContract ? { ...editingContract, amount: e.target.value } : null)}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="edit-sbis">СБИС</Label>
+                      <Input
+                        id="edit-sbis"
+                        value={editingContract?.sbis || ""}
+                        onChange={(e) => setEditingContract(editingContract ? { ...editingContract, sbis: e.target.value } : null)}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="edit-eis">ЕИС</Label>
+                      <Input
+                        id="edit-eis"
+                        value={editingContract?.eis || ""}
+                        onChange={(e) => setEditingContract(editingContract ? { ...editingContract, eis: e.target.value } : null)}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="edit-workAct">Акт выполненных работ</Label>
+                      <Input
+                        id="edit-workAct"
+                        value={editingContract?.workAct || ""}
+                        onChange={(e) => setEditingContract(editingContract ? { ...editingContract, workAct: e.target.value } : null)}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="edit-contactPerson">Контактное лицо</Label>
+                      <Input
+                        id="edit-contactPerson"
+                        value={editingContract?.contactPerson || ""}
+                        onChange={(e) => setEditingContract(editingContract ? { ...editingContract, contactPerson: e.target.value } : null)}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="edit-contactPhone">Телефон</Label>
+                      <Input
+                        id="edit-contactPhone"
+                        value={editingContract?.contactPhone || ""}
+                        onChange={(e) => setEditingContract(editingContract ? { ...editingContract, contactPhone: e.target.value } : null)}
+                      />
+                    </div>
+                  </div>
+                  <div className="flex justify-end gap-2">
+                    <Button variant="outline" onClick={() => setIsEditDialogOpen(false)}>
+                      Отмена
+                    </Button>
+                    <Button onClick={handleEditContract}>Сохранить</Button>
+                  </div>
+                </DialogContent>
+                </Dialog>
               </div>
             </div>
 
@@ -385,7 +516,7 @@ const Index = () => {
                       </p>
                     </div>
                     <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                      <Icon name="DollarSign" size={24} className="text-primary" />
+                      <Icon name="Ruble" size={24} className="text-primary" />
                     </div>
                   </div>
                 </CardContent>
@@ -407,6 +538,7 @@ const Index = () => {
                         <TableHead className="font-semibold">ЕИС</TableHead>
                         <TableHead className="font-semibold">Акт работ</TableHead>
                         <TableHead className="font-semibold">Контактное лицо</TableHead>
+                        {userRole !== "accountant" && <TableHead className="font-semibold">Действия</TableHead>}
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -475,6 +607,29 @@ const Index = () => {
                               <div className="text-xs text-muted-foreground">{contract.contactPhone}</div>
                             </div>
                           </TableCell>
+                          {userRole !== "accountant" && (
+                            <TableCell>
+                              <div className="flex gap-2">
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => {
+                                    setEditingContract(contract);
+                                    setIsEditDialogOpen(true);
+                                  }}
+                                >
+                                  <Icon name="Pencil" size={16} />
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => handleDeleteContract(contract.id)}
+                                >
+                                  <Icon name="Trash2" size={16} />
+                                </Button>
+                              </div>
+                            </TableCell>
+                          )}
                         </TableRow>
                         ))
                       )}
