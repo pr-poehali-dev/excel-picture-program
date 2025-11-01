@@ -202,29 +202,47 @@ const Index = () => {
         const worksheet = workbook.Sheets[workbook.SheetNames[0]];
         const jsonData = XLSX.utils.sheet_to_json(worksheet);
 
-        const importedContracts = jsonData.map((row: any) => ({
-          organizationName: row['Название организации'] || '',
-          contractNumber: row['Номер договора'] || '',
-          contractDate: row['Дата договора'] || '',
-          expirationDate: row['Срок действия'] || '',
-          amount: row['Сумма (₽)'] || '0',
-          sbis: row['СБИС'] || 'Нет',
-          eis: row['ЕИС'] || 'Нет',
-          workAct: row['Акт работ'] || 'Нет',
-          contactPerson: row['Контактное лицо'] || '',
-          contactPhone: row['Телефон'] || '',
-        }));
+        let added = 0;
+        let updated = 0;
 
-        for (const contract of importedContracts) {
-          await fetch(API_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(contract),
-          });
+        for (const row: any of jsonData) {
+          const importedContract = {
+            organizationName: row['Название организации'] || '',
+            contractNumber: row['Номер договора'] || '',
+            contractDate: row['Дата договора'] || '',
+            expirationDate: row['Срок действия'] || '',
+            amount: String(row['Сумма (₽)'] || '0').replace(/[^\d.]/g, ''),
+            sbis: row['СБИС'] || 'Нет',
+            eis: row['ЕИС'] || 'Нет',
+            workAct: row['Акт работ'] || 'Нет',
+            contactPerson: row['Контактное лицо'] || '',
+            contactPhone: row['Телефон'] || '',
+          };
+
+          const existingContract = contracts.find(
+            c => c.organizationName === importedContract.organizationName && 
+                 c.contractNumber === importedContract.contractNumber
+          );
+
+          if (existingContract) {
+            await fetch(`${API_URL}?id=${existingContract.id}`, {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ ...importedContract, id: existingContract.id }),
+            });
+            updated++;
+          } else {
+            await fetch(API_URL, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(importedContract),
+            });
+            added++;
+          }
         }
 
         await loadContracts();
-        toast.success(`Импортировано ${importedContracts.length} договоров`);
+        toast.success(`Импорт завершен: добавлено ${added}, обновлено ${updated}`);
       } catch (error) {
         toast.error('Ошибка при импорте файла');
         console.error(error);
