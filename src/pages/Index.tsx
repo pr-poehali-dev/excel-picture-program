@@ -342,10 +342,6 @@ const Index = () => {
                       </div>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={() => toast.info("Раздел в разработке")}>
-                      <Icon name="Settings" size={16} className="mr-2" />
-                      Настройки
-                    </DropdownMenuItem>
                     <DropdownMenuItem onClick={handleLogout}>
                       <Icon name="LogOut" size={16} className="mr-2" />
                       Выход
