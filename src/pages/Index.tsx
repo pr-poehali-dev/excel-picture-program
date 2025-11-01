@@ -69,6 +69,7 @@ const Index = () => {
   const isExpired = (expirationDate: string): boolean => {
     const [day, month, year] = expirationDate.split(".");
     const expDate = new Date(+year, +month - 1, +day);
+    expDate.setHours(23, 59, 59, 999);
     const today = new Date();
     return expDate < today;
   };
