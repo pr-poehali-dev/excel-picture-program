@@ -44,6 +44,25 @@ const ContractsTable = ({
   isExpired,
   isExpiringSoon,
 }: ContractsTableProps) => {
+  const formatDate = (dateString: string): string => {
+    if (!dateString) return '';
+    
+    let date: Date;
+    if (dateString.includes('.')) {
+      const [day, month, year] = dateString.split(".");
+      date = new Date(+year, +month - 1, +day);
+    } else if (dateString.includes('-')) {
+      date = new Date(dateString);
+    } else {
+      return dateString;
+    }
+    
+    const months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 
+                    'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+    
+    return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
+  };
+
   return (
     <Card className="animate-fade-in" style={{ animationDelay: "0.4s" }}>
       <CardContent className="p-0">
@@ -112,7 +131,7 @@ const ContractsTable = ({
                             : "bg-accent text-accent-foreground"
                         }
                       >
-                        {contract.expirationDate}
+                        {formatDate(contract.expirationDate)}
                       </Badge>
                     </TableCell>
                     <TableCell className="font-semibold">
