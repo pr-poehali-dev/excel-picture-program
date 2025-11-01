@@ -8,7 +8,7 @@ interface SidebarProps {
 
 const Sidebar = ({ userRole, onNavigateUsers }: SidebarProps) => {
   return (
-    <aside className="w-64 min-h-screen bg-gradient-to-b from-slate-700 via-slate-600 to-slate-700 text-sidebar-foreground p-6 border-r border-sidebar-border">
+    <aside className="w-64 min-h-screen bg-gradient-to-b from-slate-800 via-slate-700 to-slate-800 text-sidebar-foreground p-6 border-r border-sidebar-border">
       <div className="mb-10">
         <div className="flex items-center gap-3 mb-2">
           <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
