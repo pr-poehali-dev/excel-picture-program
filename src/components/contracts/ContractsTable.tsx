@@ -105,15 +105,15 @@ const ContractsTable = ({
                       isExpired(contract.expirationDate) ? 'bg-red-50' : ''
                     }`}
                   >
-                    <TableCell className="font-medium whitespace-nowrap w-12">{index + 1}</TableCell>
-                    <TableCell className="font-medium whitespace-nowrap max-w-[180px] truncate">{contract.organizationName}</TableCell>
-                    <TableCell className="w-32">
+                    <TableCell className="font-medium">{index + 1}</TableCell>
+                    <TableCell className="font-medium">{contract.organizationName}</TableCell>
+                    <TableCell>
                       <div className="space-y-1">
-                        <div className="font-medium whitespace-nowrap">№ {contract.contractNumber}</div>
-                        <div className="text-sm text-muted-foreground whitespace-nowrap">{contract.contractDate}</div>
+                        <div className="font-medium">№ {contract.contractNumber}</div>
+                        <div className="text-sm text-muted-foreground">{contract.contractDate}</div>
                       </div>
                     </TableCell>
-                    <TableCell className="w-40">
+                    <TableCell>
                       <Badge
                         variant={
                           isExpired(contract.expirationDate)
@@ -122,7 +122,7 @@ const ContractsTable = ({
                             ? "outline"
                             : "default"
                         }
-                        className={`whitespace-nowrap ${
+                        className={`${
                           isExpired(contract.expirationDate)
                             ? "bg-destructive text-destructive-foreground"
                             : isExpiringSoon(contract.expirationDate)
@@ -133,53 +133,53 @@ const ContractsTable = ({
                         {formatDate(contract.expirationDate)}
                       </Badge>
                     </TableCell>
-                    <TableCell className="font-semibold whitespace-nowrap w-32 text-right">
+                    <TableCell className="font-semibold">
                       {new Intl.NumberFormat('ru-RU', {
                         style: 'decimal',
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2
                       }).format(Number(contract.amount) || 0)} ₽
                     </TableCell>
-                    <TableCell className="w-20">
+                    <TableCell>
                       <Badge 
                         variant="outline"
                         className={
                           contract.sbis === 'Да' 
-                            ? 'bg-green-100 text-green-800 border-green-300 whitespace-nowrap' 
-                            : 'bg-red-100 text-red-800 border-red-300 whitespace-nowrap'
+                            ? 'bg-green-100 text-green-800 border-green-300' 
+                            : 'bg-red-100 text-red-800 border-red-300'
                         }
                       >
                         {contract.sbis}
                       </Badge>
                     </TableCell>
-                    <TableCell className="w-20">
+                    <TableCell>
                       <Badge 
                         variant="outline"
                         className={
                           contract.eis === 'Да' 
-                            ? 'bg-green-100 text-green-800 border-green-300 whitespace-nowrap' 
-                            : 'bg-red-100 text-red-800 border-red-300 whitespace-nowrap'
+                            ? 'bg-green-100 text-green-800 border-green-300' 
+                            : 'bg-red-100 text-red-800 border-red-300'
                         }
                       >
                         {contract.eis}
                       </Badge>
                     </TableCell>
-                    <TableCell className="w-20">
+                    <TableCell>
                       <Badge 
                         variant="outline"
                         className={
                           contract.workAct === 'Да' 
-                            ? 'bg-green-100 text-green-800 border-green-300 whitespace-nowrap' 
-                            : 'bg-red-100 text-red-800 border-red-300 whitespace-nowrap'
+                            ? 'bg-green-100 text-green-800 border-green-300' 
+                            : 'bg-red-100 text-red-800 border-red-300'
                         }
                       >
                         {contract.workAct}
                       </Badge>
                     </TableCell>
-                    <TableCell className="w-36">
+                    <TableCell>
                       <div className="space-y-1">
-                        <div className="text-sm whitespace-nowrap">{contract.contactPerson}</div>
-                        <div className="text-xs text-muted-foreground whitespace-nowrap">{contract.contactPhone}</div>
+                        <div className="text-sm">{contract.contactPerson}</div>
+                        <div className="text-xs text-muted-foreground">{contract.contactPhone}</div>
                       </div>
                     </TableCell>
                     {userRole !== "accountant" && (
