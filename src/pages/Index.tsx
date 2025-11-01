@@ -262,7 +262,7 @@ const Index = () => {
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Управление договорами</h2>
-                <p className="text-muted-foreground mt-2 text-base">Отслеживание сроков и контроль исполнения ✨</p>
+                <p className="text-muted-foreground mt-2 text-base">Отслеживание сроков и контроль исполнения</p>
               </div>
               <div className="flex items-center gap-3">
                 <Button 

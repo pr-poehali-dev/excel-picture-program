@@ -12,7 +12,7 @@ const Sidebar = ({ userRole, onNavigateUsers }: SidebarProps) => {
       <div className="mb-12">
         <div className="flex items-center gap-3 mb-2">
           <div className="w-12 h-12 bg-gradient-to-br from-purple-500 via-purple-600 to-pink-500 rounded-2xl flex items-center justify-center shadow-lg shadow-purple-500/30">
-            <Icon name="Sparkles" size={24} className="text-white" />
+            <Icon name="FileText" size={24} className="text-white" />
           </div>
           <div>
             <h1 className="text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Интермед</h1>
