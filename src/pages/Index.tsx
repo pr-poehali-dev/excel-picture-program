@@ -51,6 +51,7 @@ const Index = () => {
       setIsLoading(true);
       const response = await fetch(API_URL);
       const data = await response.json();
+      console.log('Загруженные договоры:', data.contracts);
       setContracts(data.contracts || []);
     } catch (error) {
       toast.error("Ошибка загрузки договоров");
