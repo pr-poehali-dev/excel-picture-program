@@ -10,7 +10,7 @@ const Sidebar = ({ userRole, onNavigateUsers }: SidebarProps) => {
   return (
     <aside className="w-64 min-h-screen bg-sidebar text-sidebar-foreground p-6">
       <div className="mb-8">
-        <h1 className="text-xl font-bold">ИнтерМед-учет</h1>
+        <h1 className="text-xl font-bold">Интермед Учет</h1>
         <p className="text-sm text-sidebar-foreground/70 mt-1">Система управления</p>
       </div>
 
