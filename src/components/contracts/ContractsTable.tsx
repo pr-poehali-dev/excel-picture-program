@@ -114,7 +114,7 @@ const ContractsTable = ({
                         <div className="text-sm text-muted-foreground">{contract.contractDate}</div>
                       </div>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="min-w-[180px]">
                       <Badge
                         variant={
                           isExpired(contract.expirationDate)
@@ -123,13 +123,13 @@ const ContractsTable = ({
                             ? "outline"
                             : "default"
                         }
-                        className={
+                        className={`whitespace-nowrap ${
                           isExpired(contract.expirationDate)
                             ? "bg-destructive text-destructive-foreground"
                             : isExpiringSoon(contract.expirationDate)
                             ? "border-orange-500 text-orange-700"
                             : "bg-accent text-accent-foreground"
-                        }
+                        }`}
                       >
                         {formatDate(contract.expirationDate)}
                       </Badge>
