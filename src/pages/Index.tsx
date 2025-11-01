@@ -67,10 +67,14 @@ const Index = () => {
   const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'expired'>('all');
 
   const isExpired = (expirationDate: string): boolean => {
+    if (!expirationDate || expirationDate.trim() === '') return false;
     const [day, month, year] = expirationDate.split(".");
+    if (!day || !month || !year) return false;
     const expDate = new Date(+year, +month - 1, +day);
     expDate.setHours(23, 59, 59, 999);
     const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    console.log('Проверка договора:', { expirationDate, expDate, today, isExpired: expDate < today });
     return expDate < today;
   };
 
