@@ -113,7 +113,7 @@ const ContractsTable = ({
                         <div className="text-sm text-muted-foreground">{contract.contractDate}</div>
                       </div>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="min-w-[160px]">
                       <Badge
                         variant={
                           isExpired(contract.expirationDate)
@@ -133,7 +133,7 @@ const ContractsTable = ({
                         {formatDate(contract.expirationDate)}
                       </Badge>
                     </TableCell>
-                    <TableCell className="font-semibold">
+                    <TableCell className="font-semibold min-w-[140px]">
                       {new Intl.NumberFormat('ru-RU', {
                         style: 'decimal',
                         minimumFractionDigits: 2,
