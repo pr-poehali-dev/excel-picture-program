@@ -83,7 +83,9 @@ const ContractsTable = ({
                 contracts.map((contract, index) => (
                   <TableRow
                     key={contract.id}
-                    className="hover:bg-muted/30 transition-colors"
+                    className={`hover:bg-muted/30 transition-colors ${
+                      isExpired(contract.expirationDate) ? 'bg-red-50' : ''
+                    }`}
                   >
                     <TableCell className="font-medium">{index + 1}</TableCell>
                     <TableCell className="font-medium">{contract.organizationName}</TableCell>
