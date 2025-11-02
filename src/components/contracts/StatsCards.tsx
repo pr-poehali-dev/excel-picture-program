@@ -12,7 +12,7 @@ interface StatsCardsProps {
 
 const StatsCards = ({ stats }: StatsCardsProps) => {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 print:hidden">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 print:hidden">
       <Card className="animate-fade-in border-none shadow-sm hover:shadow-md transition-shadow">
         <CardContent className="p-4 lg:p-6">
           <div className="flex items-center justify-between">
@@ -50,22 +50,6 @@ const StatsCards = ({ stats }: StatsCardsProps) => {
             </div>
             <div className="w-14 h-14 bg-destructive/10 rounded-lg flex items-center justify-center">
               <Icon name="AlertCircle" size={26} className="text-destructive" />
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card className="animate-fade-in border-none shadow-sm hover:shadow-md transition-shadow" style={{ animationDelay: "0.3s" }}>
-        <CardContent className="p-4 lg:p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-muted-foreground uppercase tracking-wide">Общая сумма</p>
-              <p className="text-2xl font-bold mt-2">
-                {stats.totalAmount.toLocaleString("ru-RU")} ₽
-              </p>
-            </div>
-            <div className="w-14 h-14 bg-primary/10 rounded-lg flex items-center justify-center">
-              <span className="text-2xl font-bold text-primary">₽</span>
             </div>
           </div>
         </CardContent>
