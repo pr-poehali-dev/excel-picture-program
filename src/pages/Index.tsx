@@ -529,6 +529,15 @@ const Index = () => {
                 <span className="hidden sm:inline">Просроченные ({stats.expired})</span>
                 <span className="sm:hidden">Просрочено</span>
               </Button>
+              {userRole !== "accountant" && (
+                <Button
+                  onClick={() => setIsDialogOpen(true)}
+                  className="flex items-center gap-2 ml-auto print:hidden"
+                >
+                  <Icon name="Plus" size={18} />
+                  <span>Добавить договор</span>
+                </Button>
+              )}
             </div>
 
             <ContractsTable

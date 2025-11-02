@@ -80,18 +80,7 @@ const ContractsTable = ({
                 <TableHead className="font-semibold">ЕИС</TableHead>
                 <TableHead className="font-semibold">Акт выполненных работ</TableHead>
                 <TableHead className="font-semibold">Контактное лицо</TableHead>
-                {userRole !== "accountant" && (
-                  <TableHead className="font-semibold">
-                    <Button 
-                      onClick={onAddClick}
-                      size="sm"
-                      className="flex items-center gap-1 print:hidden"
-                    >
-                      <Icon name="Plus" size={16} />
-                      <span>Добавить</span>
-                    </Button>
-                  </TableHead>
-                )}
+                {userRole !== "accountant" && <TableHead className="font-semibold">Действия</TableHead>}
               </TableRow>
             </TableHeader>
             <TableBody>
