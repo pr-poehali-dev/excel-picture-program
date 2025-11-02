@@ -206,14 +206,6 @@
     background-color: #fee !important;
   }
 
-  .screen\:hidden {
-    display: inline !important;
-  }
-
-  .print\:inline {
-    display: inline !important;
-  }
-
   .animate-fade-in,
   .card,
   .rounded-lg {

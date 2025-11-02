@@ -117,7 +117,7 @@ const ContractsTable = ({
                       </div>
                     </TableCell>
                     <TableCell className="min-w-[160px]">
-                      <span className="screen:hidden print:inline">{contract.expirationDate}</span>
+                      <span className="hidden print:inline">{contract.expirationDate}</span>
                       {isExpired(contract.expirationDate) ? (
                         <Badge
                           variant="destructive"
@@ -137,10 +137,10 @@ const ContractsTable = ({
                           maximumFractionDigits: 2
                         }).format(Number(contract.amount) || 0)} ₽
                       </span>
-                      <span className="screen:hidden print:inline">{contract.amount}</span>
+                      <span className="hidden print:inline">{contract.amount}</span>
                     </TableCell>
                     <TableCell>
-                      <span className="screen:hidden print:inline">{contract.sbis || 'Нет'}</span>
+                      <span className="hidden print:inline">{contract.sbis || 'Нет'}</span>
                       <Badge 
                         variant="outline"
                         className={`print:hidden ${
@@ -153,7 +153,7 @@ const ContractsTable = ({
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      <span className="screen:hidden print:inline">{contract.eis || 'Нет'}</span>
+                      <span className="hidden print:inline">{contract.eis || 'Нет'}</span>
                       <Badge 
                         variant="outline"
                         className={`print:hidden ${
@@ -166,7 +166,7 @@ const ContractsTable = ({
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      <span className="screen:hidden print:inline">{contract.workAct || 'Нет'}</span>
+                      <span className="hidden print:inline">{contract.workAct || 'Нет'}</span>
                       <Badge 
                         variant="outline"
                         className={`print:hidden ${
