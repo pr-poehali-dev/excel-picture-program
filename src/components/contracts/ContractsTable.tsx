@@ -117,15 +117,16 @@ const ContractsTable = ({
                       </div>
                     </TableCell>
                     <TableCell className="min-w-[160px]">
+                      <span className="screen:hidden print:inline">{contract.expirationDate}</span>
                       {isExpired(contract.expirationDate) ? (
                         <Badge
                           variant="destructive"
-                          className="bg-destructive text-destructive-foreground print:bg-transparent print:text-foreground print:border-none print:p-0"
+                          className="bg-destructive text-destructive-foreground print:hidden"
                         >
                           {contract.expirationDate}
                         </Badge>
                       ) : (
-                        <span>{contract.expirationDate}</span>
+                        <span className="print:hidden">{contract.expirationDate}</span>
                       )}
                     </TableCell>
                     <TableCell className="font-semibold min-w-[140px]">
@@ -136,12 +137,13 @@ const ContractsTable = ({
                           maximumFractionDigits: 2
                         }).format(Number(contract.amount) || 0)} ₽
                       </span>
-                      <span className="hidden print:inline">{contract.amount}</span>
+                      <span className="screen:hidden print:inline">{contract.amount}</span>
                     </TableCell>
                     <TableCell>
+                      <span className="screen:hidden print:inline">{contract.sbis || 'Нет'}</span>
                       <Badge 
                         variant="outline"
-                        className={`print:bg-transparent print:text-foreground print:border-none print:p-0 ${
+                        className={`print:hidden ${
                           contract.sbis === 'Да' 
                             ? 'bg-green-100 text-green-800 border-green-300' 
                             : 'bg-red-500 text-white border-red-500'
@@ -151,9 +153,10 @@ const ContractsTable = ({
                       </Badge>
                     </TableCell>
                     <TableCell>
+                      <span className="screen:hidden print:inline">{contract.eis || 'Нет'}</span>
                       <Badge 
                         variant="outline"
-                        className={`print:bg-transparent print:text-foreground print:border-none print:p-0 ${
+                        className={`print:hidden ${
                           contract.eis === 'Да' 
                             ? 'bg-green-100 text-green-800 border-green-300' 
                             : 'bg-red-500 text-white border-red-500'
@@ -163,9 +166,10 @@ const ContractsTable = ({
                       </Badge>
                     </TableCell>
                     <TableCell>
+                      <span className="screen:hidden print:inline">{contract.workAct || 'Нет'}</span>
                       <Badge 
                         variant="outline"
-                        className={`print:bg-transparent print:text-foreground print:border-none print:p-0 ${
+                        className={`print:hidden ${
                           contract.workAct === 'Да' 
                             ? 'bg-green-100 text-green-800 border-green-300' 
                             : 'bg-red-500 text-white border-red-500'
