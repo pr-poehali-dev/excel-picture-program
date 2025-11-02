@@ -47,6 +47,10 @@ const Index = () => {
     navigate("/login");
   };
 
+  const handleNavigateUsers = () => {
+    navigate("/users");
+  };
+
   const [contracts, setContracts] = useState<Contract[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -302,7 +306,7 @@ const Index = () => {
                 <SheetHeader className="p-6 border-b">
                   <SheetTitle>Меню</SheetTitle>
                 </SheetHeader>
-                <Sidebar userRole={userRole} />
+                <Sidebar userRole={userRole} onNavigateUsers={handleNavigateUsers} />
               </SheetContent>
             </Sheet>
 
@@ -338,7 +342,7 @@ const Index = () => {
 
       <div className="flex flex-1">
         <aside className="hidden lg:block w-64 border-r bg-card">
-          <Sidebar userRole={userRole} />
+          <Sidebar userRole={userRole} onNavigateUsers={handleNavigateUsers} />
         </aside>
 
         <main className="flex-1 overflow-x-hidden">
@@ -384,6 +388,14 @@ const Index = () => {
                 </div>
 
                 <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => window.print()}
+                  >
+                    <Icon name="Printer" size={18} className="mr-2" />
+                    Печать
+                  </Button>
                   <Button
                     variant="outline"
                     size="sm"
