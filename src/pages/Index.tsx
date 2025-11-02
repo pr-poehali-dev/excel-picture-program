@@ -495,9 +495,6 @@ const Index = () => {
             </div>
 
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-              <DialogTrigger asChild>
-                <div />
-              </DialogTrigger>
               <AddContractDialog
                 newContract={newContract}
                 setNewContract={setNewContract}
@@ -510,9 +507,6 @@ const Index = () => {
             </Dialog>
 
             <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-              <DialogTrigger asChild>
-                <div />
-              </DialogTrigger>
               <EditContractDialog
                 editingContract={editingContract}
                 setEditingContract={setEditingContract}
