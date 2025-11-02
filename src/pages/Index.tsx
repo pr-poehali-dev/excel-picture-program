@@ -196,8 +196,8 @@ const Index = () => {
     
     const matchesSearch = 
       searchQuery.trim() === '' ||
-      contract.organizationName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      contract.contractNumber.toLowerCase().includes(searchQuery.toLowerCase());
+      (contract.organizationName || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (contract.contractNumber || '').toLowerCase().includes(searchQuery.toLowerCase());
     
     return matchesStatus && matchesSearch;
   });
@@ -206,7 +206,7 @@ const Index = () => {
     total: contracts.length,
     active: contracts.filter(c => !isExpired(c.expirationDate)).length,
     expired: contracts.filter(c => isExpired(c.expirationDate)).length,
-    totalAmount: contracts.reduce((sum, c) => sum + parseFloat(c.amount.replace(/\s/g, "")), 0),
+    totalAmount: contracts.reduce((sum, c) => sum + parseFloat((c.amount || '0').replace(/\s/g, "")), 0),
   };
 
   const handleExportToExcel = () => {
