@@ -174,25 +174,23 @@
 
   th,
   td {
-    padding: 0px 1px !important;
-    font-size: 5pt;
-    border: 0.3px solid #ccc !important;
-    line-height: 0.85;
+    padding: 2px 4px !important;
+    font-size: 8pt;
+    border: 0.5px solid #333 !important;
+    line-height: 1.2;
     vertical-align: middle;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    height: 2.5cm;
-    max-height: 2.5cm;
+    overflow: visible;
+    text-overflow: clip;
+    white-space: normal;
+    height: auto;
   }
 
   th {
-    background-color: #f0f0f0 !important;
-    font-weight: 600;
-    padding: 0.5px 1px !important;
-    line-height: 0.9;
+    background-color: #e0e0e0 !important;
+    font-weight: 700;
+    padding: 3px 4px !important;
+    line-height: 1.2;
     height: auto;
-    max-height: none;
   }
 
   tr {
@@ -206,6 +204,22 @@
 
   .bg-red-50 {
     background-color: #fee !important;
+  }
+
+  .print\:bg-transparent,
+  .print\:border-none {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    font-weight: normal !important;
+  }
+
+  .print\:text-foreground {
+    color: #000 !important;
+  }
+
+  .print\:p-0 {
+    padding: 0 !important;
   }
 
   .animate-fade-in,
