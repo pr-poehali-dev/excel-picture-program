@@ -10,6 +10,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Icon from "@/components/ui/icon";
+import { isExpired, isExpiringSoon } from "./ContractUtils";
 
 export interface Contract {
   id: number;
