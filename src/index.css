@@ -206,22 +206,27 @@
     background-color: #fee !important;
   }
 
-  span[class*="bg-"],
-  span[class*="border-"],
-  .inline-flex {
+  /* Убираем все стили Badge компонентов */
+  [class*="inline-flex"][class*="items-center"],
+  span[class*="bg-green"],
+  span[class*="bg-red"],
+  span[class*="bg-destructive"] {
     background: transparent !important;
     border: none !important;
     padding: 0 !important;
     font-weight: normal !important;
     color: #000 !important;
     border-radius: 0 !important;
+    display: inline !important;
   }
 
-  .print\:hidden {
+  /* Скрываем форматированные суммы */
+  .min-w-\[140px\] span:first-child {
     display: none !important;
   }
 
-  .print\:inline {
+  /* Показываем чистые суммы */
+  .min-w-\[140px\] span:last-child {
     display: inline !important;
   }
 
