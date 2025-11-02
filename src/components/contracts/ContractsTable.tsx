@@ -10,7 +10,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Icon from "@/components/ui/icon";
-import { isExpired, isExpiringSoon } from "./ContractUtils";
 
 export interface Contract {
   id: number;
@@ -32,6 +31,8 @@ interface ContractsTableProps {
   userRole: string;
   onEdit: (contract: Contract) => void;
   onDelete: (id: number) => void;
+  isExpired: (date: string) => boolean;
+  isExpiringSoon: (date: string) => boolean;
   onAddClick?: () => void;
 }
 
@@ -41,6 +42,8 @@ const ContractsTable = ({
   userRole,
   onEdit,
   onDelete,
+  isExpired,
+  isExpiringSoon,
   onAddClick,
 }: ContractsTableProps) => {
   const formatDate = (dateString: string): string => {
