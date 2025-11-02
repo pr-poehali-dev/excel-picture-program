@@ -114,24 +114,16 @@ const ContractsTable = ({
                       </div>
                     </TableCell>
                     <TableCell className="min-w-[160px]">
-                      <Badge
-                        variant={
-                          isExpired(contract.expirationDate)
-                            ? "destructive"
-                            : isExpiringSoon(contract.expirationDate)
-                            ? "outline"
-                            : "default"
-                        }
-                        className={`${
-                          isExpired(contract.expirationDate)
-                            ? "bg-destructive text-destructive-foreground"
-                            : isExpiringSoon(contract.expirationDate)
-                            ? "border-orange-500 text-orange-700"
-                            : "bg-accent text-accent-foreground"
-                        }`}
-                      >
-                        {formatDate(contract.expirationDate)}
-                      </Badge>
+                      {isExpired(contract.expirationDate) ? (
+                        <Badge
+                          variant="destructive"
+                          className="bg-destructive text-destructive-foreground"
+                        >
+                          {formatDate(contract.expirationDate)}
+                        </Badge>
+                      ) : (
+                        <span>{formatDate(contract.expirationDate)}</span>
+                      )}
                     </TableCell>
                     <TableCell className="font-semibold min-w-[140px]">
                       {new Intl.NumberFormat('ru-RU', {
