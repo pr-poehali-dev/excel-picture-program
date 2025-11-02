@@ -3,10 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
-  Dialog,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -494,29 +490,21 @@ const Index = () => {
               </div>
             </div>
 
-            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-              <AddContractDialog
-                newContract={newContract}
-                setNewContract={setNewContract}
-                onSubmit={handleAddContract}
-                onCancel={() => {
-                  setIsDialogOpen(false);
-                  setNewContract({});
-                }}
-              />
-            </Dialog>
+            <AddContractDialog
+              isOpen={isDialogOpen}
+              onOpenChange={setIsDialogOpen}
+              newContract={newContract}
+              onContractChange={setNewContract}
+              onSubmit={handleAddContract}
+            />
 
-            <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-              <EditContractDialog
-                editingContract={editingContract}
-                setEditingContract={setEditingContract}
-                onSubmit={handleEditContract}
-                onCancel={() => {
-                  setIsEditDialogOpen(false);
-                  setEditingContract(null);
-                }}
-              />
-            </Dialog>
+            <EditContractDialog
+              isOpen={isEditDialogOpen}
+              onOpenChange={setIsEditDialogOpen}
+              contract={editingContract}
+              onContractChange={setEditingContract}
+              onSubmit={handleEditContract}
+            />
 
             <ContractsTable
               contracts={filteredContracts}
