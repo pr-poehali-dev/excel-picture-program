@@ -120,29 +120,32 @@ const ContractsTable = ({
                       {isExpired(contract.expirationDate) ? (
                         <Badge
                           variant="destructive"
-                          className="bg-destructive text-destructive-foreground"
+                          className="bg-destructive text-destructive-foreground print:bg-transparent print:text-foreground print:border-none print:p-0"
                         >
-                          {formatDate(contract.expirationDate)}
+                          {contract.expirationDate}
                         </Badge>
                       ) : (
-                        <span>{formatDate(contract.expirationDate)}</span>
+                        <span>{contract.expirationDate}</span>
                       )}
                     </TableCell>
                     <TableCell className="font-semibold min-w-[140px]">
-                      {new Intl.NumberFormat('ru-RU', {
-                        style: 'decimal',
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
-                      }).format(Number(contract.amount) || 0)} ₽
+                      <span className="print:hidden">
+                        {new Intl.NumberFormat('ru-RU', {
+                          style: 'decimal',
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2
+                        }).format(Number(contract.amount) || 0)} ₽
+                      </span>
+                      <span className="hidden print:inline">{contract.amount}</span>
                     </TableCell>
                     <TableCell>
                       <Badge 
                         variant="outline"
-                        className={
+                        className={`print:bg-transparent print:text-foreground print:border-none print:p-0 ${
                           contract.sbis === 'Да' 
                             ? 'bg-green-100 text-green-800 border-green-300' 
                             : 'bg-red-500 text-white border-red-500'
-                        }
+                        }`}
                       >
                         {contract.sbis || 'Нет'}
                       </Badge>
@@ -150,11 +153,11 @@ const ContractsTable = ({
                     <TableCell>
                       <Badge 
                         variant="outline"
-                        className={
+                        className={`print:bg-transparent print:text-foreground print:border-none print:p-0 ${
                           contract.eis === 'Да' 
                             ? 'bg-green-100 text-green-800 border-green-300' 
                             : 'bg-red-500 text-white border-red-500'
-                        }
+                        }`}
                       >
                         {contract.eis || 'Нет'}
                       </Badge>
@@ -162,11 +165,11 @@ const ContractsTable = ({
                     <TableCell>
                       <Badge 
                         variant="outline"
-                        className={
+                        className={`print:bg-transparent print:text-foreground print:border-none print:p-0 ${
                           contract.workAct === 'Да' 
                             ? 'bg-green-100 text-green-800 border-green-300' 
                             : 'bg-red-500 text-white border-red-500'
-                        }
+                        }`}
                       >
                         {contract.workAct || 'Нет'}
                       </Badge>
