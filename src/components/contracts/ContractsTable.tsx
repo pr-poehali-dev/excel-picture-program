@@ -33,6 +33,7 @@ interface ContractsTableProps {
   onDelete: (id: number) => void;
   isExpired: (date: string) => boolean;
   isExpiringSoon: (date: string) => boolean;
+  onAddClick?: () => void;
 }
 
 const ContractsTable = ({
@@ -42,6 +43,7 @@ const ContractsTable = ({
   onEdit,
   onDelete,
   isExpired,
+  onAddClick,
 }: ContractsTableProps) => {
   const formatDate = (dateString: string): string => {
     if (!dateString) return '';
@@ -78,7 +80,18 @@ const ContractsTable = ({
                 <TableHead className="font-semibold">ЕИС</TableHead>
                 <TableHead className="font-semibold">Акт выполненных работ</TableHead>
                 <TableHead className="font-semibold">Контактное лицо</TableHead>
-                {userRole !== "accountant" && <TableHead className="font-semibold">Действия</TableHead>}
+                {userRole !== "accountant" && (
+                  <TableHead className="font-semibold">
+                    <Button 
+                      onClick={onAddClick}
+                      size="sm"
+                      className="flex items-center gap-1 print:hidden"
+                    >
+                      <Icon name="Plus" size={16} />
+                      <span>Добавить</span>
+                    </Button>
+                  </TableHead>
+                )}
               </TableRow>
             </TableHeader>
             <TableBody>

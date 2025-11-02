@@ -482,15 +482,6 @@ const Index = () => {
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
-
-                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                  <DialogTrigger asChild>
-                    <Button className="flex items-center gap-2 w-full sm:w-auto">
-                      <Icon name="Plus" size={18} />
-                      <span>Добавить договор</span>
-                    </Button>
-                  </DialogTrigger>
-                </Dialog>
               </div>
             </div>
 
@@ -551,18 +542,21 @@ const Index = () => {
               onDelete={handleDeleteContract}
               isExpired={isExpired}
               isExpiringSoon={isExpiringSoon}
+              onAddClick={() => setIsDialogOpen(true)}
             />
           </div>
         </main>
       </div>
 
-      <AddContractDialog
-        isOpen={isDialogOpen}
-        onOpenChange={setIsDialogOpen}
-        newContract={newContract}
-        onContractChange={setNewContract}
-        onSubmit={handleAddContract}
-      />
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <AddContractDialog
+          isOpen={isDialogOpen}
+          onOpenChange={setIsDialogOpen}
+          newContract={newContract}
+          onContractChange={setNewContract}
+          onSubmit={handleAddContract}
+        />
+      </Dialog>
 
       <EditContractDialog
         isOpen={isEditDialogOpen}
