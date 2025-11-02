@@ -365,58 +365,8 @@ const Index = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
-      <header className="print:hidden">
-        <div className="container mx-auto px-4 py-2 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-              <SheetTrigger asChild className="lg:hidden">
-                <Button variant="ghost" size="icon">
-                  <Icon name="Menu" size={24} />
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="left" className="w-64 p-0">
-                <SheetHeader className="p-4 border-b">
-                  <SheetTitle>Меню</SheetTitle>
-                </SheetHeader>
-                <Sidebar 
-                  userRole={userRole} 
-                  onNavigateUsers={handleNavigateUsers}
-                  onOpenAuditLog={() => setIsAuditLogOpen(true)}
-                />
-              </SheetContent>
-            </Sheet>
-          </div>
-
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="flex items-center gap-2">
-                <Icon name="User" size={20} />
-                <span className="hidden md:inline-block">{userName}</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuLabel>
-                <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium leading-none">{userName}</p>
-                  <p className="text-xs leading-none text-muted-foreground">
-                    {userRole === "admin" ? "Администратор" : 
-                     userRole === "accountant" ? "Бухгалтер" : "Пользователь"}
-                  </p>
-                  <p className="text-xs leading-none text-muted-foreground">{userLogin}</p>
-                </div>
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
-                <Icon name="LogOut" size={16} className="mr-2" />
-                Выйти
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      </header>
-
       <div className="flex flex-1">
-        <aside className="hidden lg:block w-64 border-r bg-card">
+        <aside className="hidden lg:block w-64 border-r bg-card print:hidden">
           <Sidebar 
             userRole={userRole} 
             onNavigateUsers={handleNavigateUsers}
@@ -424,8 +374,53 @@ const Index = () => {
           />
         </aside>
 
+        <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+          <SheetTrigger asChild className="lg:hidden print:hidden fixed top-4 left-4 z-50">
+            <Button variant="ghost" size="icon">
+              <Icon name="Menu" size={24} />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="left" className="w-64 p-0">
+            <SheetHeader className="p-4 border-b">
+              <SheetTitle>Меню</SheetTitle>
+            </SheetHeader>
+            <Sidebar 
+              userRole={userRole} 
+              onNavigateUsers={handleNavigateUsers}
+              onOpenAuditLog={() => setIsAuditLogOpen(true)}
+            />
+          </SheetContent>
+        </Sheet>
+
         <main className="flex-1 overflow-x-hidden">
           <div className="container mx-auto p-4 lg:p-6 space-y-6">
+            <div className="flex justify-end print:hidden">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="flex items-center gap-2">
+                    <Icon name="User" size={20} />
+                    <span className="hidden md:inline-block">{userName}</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuLabel>
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm font-medium leading-none">{userName}</p>
+                      <p className="text-xs leading-none text-muted-foreground">
+                        {userRole === "admin" ? "Администратор" : 
+                         userRole === "accountant" ? "Бухгалтер" : "Пользователь"}
+                      </p>
+                      <p className="text-xs leading-none text-muted-foreground">{userLogin}</p>
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
+                    <Icon name="LogOut" size={16} className="mr-2" />
+                    Выйти
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
             <StatsCards stats={stats} />
 
             <div className="bg-card rounded-lg border p-4 mb-6">
