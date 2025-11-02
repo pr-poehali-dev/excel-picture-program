@@ -14,6 +14,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import Icon from "@/components/ui/icon";
 import { toast } from "sonner";
 import * as XLSX from 'xlsx';
@@ -68,6 +75,7 @@ const Index = () => {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'expired'>('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const isExpired = (expirationDate: string): boolean => {
     if (!expirationDate || expirationDate.trim() === '') return false;
@@ -295,9 +303,51 @@ const Index = () => {
         <main className="flex-1 p-4 sm:p-6 lg:p-8">
           <div className="max-w-7xl mx-auto space-y-4 lg:space-y-8">
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-              <div>
-                <h2 className="text-2xl lg:text-4xl font-bold tracking-tight">Управление договорами</h2>
-                <p className="text-muted-foreground mt-1 lg:mt-2 text-sm lg:text-base">Отслеживание сроков и контроль исполнения</p>
+              <div className="flex items-center gap-3">
+                <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+                  <SheetTrigger asChild>
+                    <Button variant="outline" size="icon" className="lg:hidden">
+                      <Icon name="Menu" size={20} />
+                    </Button>
+                  </SheetTrigger>
+                  <SheetContent side="left" className="w-64 bg-gradient-to-b from-slate-800 via-slate-700 to-slate-800 text-white border-slate-600">
+                    <SheetHeader>
+                      <SheetTitle className="text-left">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+                            <Icon name="FileText" size={22} className="text-primary-foreground" />
+                          </div>
+                          <div>
+                            <h1 className="text-lg font-bold text-white">Интермед</h1>
+                            <p className="text-xs text-white/60">Учет договоров</p>
+                          </div>
+                        </div>
+                      </SheetTitle>
+                    </SheetHeader>
+                    <nav className="space-y-1 mt-8">
+                      <button className="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-all font-medium">
+                        <Icon name="LayoutDashboard" size={20} />
+                        <span>Договоры</span>
+                      </button>
+                      {userRole === "admin" && (
+                        <button 
+                          onClick={() => {
+                            navigate("/users");
+                            setIsMobileMenuOpen(false);
+                          }}
+                          className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-700 text-white/80 hover:text-white transition-all font-medium"
+                        >
+                          <Icon name="Users" size={20} />
+                          <span>Пользователи</span>
+                        </button>
+                      )}
+                    </nav>
+                  </SheetContent>
+                </Sheet>
+                <div>
+                  <h2 className="text-2xl lg:text-4xl font-bold tracking-tight">Управление договорами</h2>
+                  <p className="text-muted-foreground mt-1 lg:mt-2 text-sm lg:text-base">Отслеживание сроков и контроль исполнения</p>
+                </div>
               </div>
               <div className="flex items-center gap-2 lg:gap-3 flex-wrap">
                 <Button 
