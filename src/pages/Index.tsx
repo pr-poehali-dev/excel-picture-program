@@ -227,16 +227,16 @@ const Index = () => {
   const handleExportToExcel = () => {
     const exportData = contracts.map((contract, index) => ({
       '№': index + 1,
-      'Название организации': contract.organizationName,
-      'Номер договора': contract.contractNumber,
-      'Дата договора': contract.contractDate,
-      'Срок действия': contract.expirationDate,
-      'Сумма (₽)': parseFloat(contract.amount.replace(/\s/g, '')),
-      'СБИС': contract.sbis,
-      'ЕИС': contract.eis,
-      'Акт работ': contract.workAct,
-      'Контактное лицо': contract.contactPerson,
-      'Телефон': contract.contactPhone,
+      'Название организации': contract.organizationName || '',
+      'Номер договора': contract.contractNumber || '',
+      'Дата договора': contract.contractDate || '',
+      'Срок действия': contract.expirationDate || '',
+      'Сумма (₽)': contract.amount ? parseFloat(contract.amount.replace(/\s/g, '')) : 0,
+      'СБИС': contract.sbis || '',
+      'ЕИС': contract.eis || '',
+      'Акт работ': contract.workAct || '',
+      'Контактное лицо': contract.contactPerson || '',
+      'Телефон': contract.contactPhone || '',
     }));
 
     const worksheet = XLSX.utils.json_to_sheet(exportData);
