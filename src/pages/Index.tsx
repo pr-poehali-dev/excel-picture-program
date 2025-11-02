@@ -365,7 +365,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
-      <header className="border-b bg-card print:hidden">
+      <header className="border-b print:hidden">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
@@ -385,8 +385,6 @@ const Index = () => {
                 />
               </SheetContent>
             </Sheet>
-
-            <h1 className="text-2xl font-bold">Договоры</h1>
           </div>
 
           <DropdownMenu>
@@ -469,14 +467,6 @@ const Index = () => {
                 </div>
 
                 <div className="flex gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => window.print()}
-                  >
-                    <Icon name="Printer" size={18} className="mr-2" />
-                    Печать
-                  </Button>
                   {userRole !== "accountant" && (
                     <>
                       <input
