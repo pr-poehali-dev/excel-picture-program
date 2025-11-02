@@ -4,9 +4,10 @@ import { toast } from "sonner";
 interface SidebarProps {
   userRole: string;
   onNavigateUsers: () => void;
+  onOpenAuditLog: () => void;
 }
 
-const Sidebar = ({ userRole, onNavigateUsers }: SidebarProps) => {
+const Sidebar = ({ userRole, onNavigateUsers, onOpenAuditLog }: SidebarProps) => {
   return (
     <aside className="hidden lg:block w-64 min-h-screen bg-gradient-to-b from-slate-800 via-slate-700 to-slate-800 text-sidebar-foreground p-6 border-r border-sidebar-border">
       <div className="mb-10">
@@ -28,13 +29,22 @@ const Sidebar = ({ userRole, onNavigateUsers }: SidebarProps) => {
         </button>
 
         {userRole === "admin" && (
-          <button 
-            onClick={onNavigateUsers}
-            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-sidebar-accent text-sidebar-foreground/80 hover:text-sidebar-foreground transition-all font-medium"
-          >
-            <Icon name="Users" size={20} />
-            <span>Пользователи</span>
-          </button>
+          <>
+            <button 
+              onClick={onNavigateUsers}
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-sidebar-accent text-sidebar-foreground/80 hover:text-sidebar-foreground transition-all font-medium"
+            >
+              <Icon name="Users" size={20} />
+              <span>Пользователи</span>
+            </button>
+            <button 
+              onClick={onOpenAuditLog}
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-sidebar-accent text-sidebar-foreground/80 hover:text-sidebar-foreground transition-all font-medium"
+            >
+              <Icon name="History" size={20} />
+              <span>Журнал действий</span>
+            </button>
+          </>
         )}
       </nav>
     </aside>

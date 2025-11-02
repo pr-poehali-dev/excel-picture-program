@@ -378,7 +378,11 @@ const Index = () => {
                 <SheetHeader className="p-6 border-b">
                   <SheetTitle>Меню</SheetTitle>
                 </SheetHeader>
-                <Sidebar userRole={userRole} onNavigateUsers={handleNavigateUsers} />
+                <Sidebar 
+                  userRole={userRole} 
+                  onNavigateUsers={handleNavigateUsers}
+                  onOpenAuditLog={() => setIsAuditLogOpen(true)}
+                />
               </SheetContent>
             </Sheet>
 
@@ -414,7 +418,11 @@ const Index = () => {
 
       <div className="flex flex-1">
         <aside className="hidden lg:block w-64 border-r bg-card">
-          <Sidebar userRole={userRole} onNavigateUsers={handleNavigateUsers} />
+          <Sidebar 
+            userRole={userRole} 
+            onNavigateUsers={handleNavigateUsers}
+            onOpenAuditLog={() => setIsAuditLogOpen(true)}
+          />
         </aside>
 
         <main className="flex-1 overflow-x-hidden">
@@ -495,16 +503,6 @@ const Index = () => {
                     <Icon name="Download" size={18} className="mr-2" />
                     Экспорт
                   </Button>
-                  {userRole === "admin" && (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setIsAuditLogOpen(true)}
-                    >
-                      <Icon name="History" size={18} className="mr-2" />
-                      Журнал
-                    </Button>
-                  )}
                   {userRole !== "accountant" && (
                     <Button onClick={() => setIsDialogOpen(true)} size="sm">
                       <Icon name="Plus" size={18} className="mr-2" />
