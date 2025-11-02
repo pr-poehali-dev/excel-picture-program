@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -80,6 +80,7 @@ const Index = () => {
   const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'expired'>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const isExpired = (expirationDate: string): boolean => {
     if (!expirationDate || expirationDate.trim() === '') return false;
@@ -291,6 +292,66 @@ const Index = () => {
     toast.success("Файл успешно экспортирован");
   };
 
+  const handleImportFromExcel = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+      try {
+        const data = new Uint8Array(e.target?.result as ArrayBuffer);
+        const workbook = XLSX.read(data, { type: 'array' });
+        const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+        const jsonData = XLSX.utils.sheet_to_json(worksheet) as any[];
+
+        let successCount = 0;
+        let errorCount = 0;
+
+        for (const row of jsonData) {
+          const contract: Partial<Contract> = {
+            organizationName: row['Название организации'] || '',
+            contractNumber: row['Номер договора'] || '',
+            contractDate: row['Дата договора'] || '',
+            expirationDate: row['Срок действия'] || '',
+            amount: String(row['Сумма (₽)'] || '0'),
+            sbis: row['СБИС'] || 'Нет',
+            eis: row['ЕИС'] || 'Нет',
+            workAct: row['Акт работ'] || 'Нет',
+            contactPerson: row['Контактное лицо'] || '',
+            contactPhone: row['Телефон'] || '',
+          };
+
+          try {
+            const response = await fetch(API_URL, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(contract),
+            });
+
+            if (response.ok) {
+              successCount++;
+            } else {
+              errorCount++;
+            }
+          } catch (error) {
+            errorCount++;
+          }
+        }
+
+        await loadContracts();
+        toast.success(`Импортировано: ${successCount}, ошибок: ${errorCount}`);
+      } catch (error) {
+        toast.error("Ошибка при импорте файла");
+        console.error(error);
+      }
+    };
+
+    reader.readAsArrayBuffer(file);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <header className="sticky top-0 z-40 bg-card border-b shadow-sm">
@@ -396,6 +457,25 @@ const Index = () => {
                     <Icon name="Printer" size={18} className="mr-2" />
                     Печать
                   </Button>
+                  {userRole !== "accountant" && (
+                    <>
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept=".xlsx,.xls"
+                        onChange={handleImportFromExcel}
+                        className="hidden"
+                      />
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => fileInputRef.current?.click()}
+                      >
+                        <Icon name="Upload" size={18} className="mr-2" />
+                        Импорт
+                      </Button>
+                    </>
+                  )}
                   <Button
                     variant="outline"
                     size="sm"
