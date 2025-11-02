@@ -206,14 +206,23 @@
     background-color: #fee !important;
   }
 
-  badge,
-  [class*="badge"],
-  .inline-flex.items-center {
+  span[class*="bg-"],
+  span[class*="border-"],
+  .inline-flex {
     background: transparent !important;
     border: none !important;
     padding: 0 !important;
     font-weight: normal !important;
     color: #000 !important;
+    border-radius: 0 !important;
+  }
+
+  .print\:hidden {
+    display: none !important;
+  }
+
+  .print\:inline {
+    display: inline !important;
   }
 
   .animate-fade-in,
