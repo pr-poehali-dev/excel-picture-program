@@ -18,7 +18,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     '''
     method: str = event.get('httpMethod', 'GET')
     headers = event.get('headers', {})
-    user_role = headers.get('x-user-role', 'unknown')
+    user_role = headers.get('X-User-Role') or headers.get('x-user-role', 'unknown')
     
     if method == 'OPTIONS':
         return {

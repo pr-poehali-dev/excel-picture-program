@@ -49,12 +49,16 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             
             logs = []
             for row in rows:
+                contract_data = row[4]
+                if isinstance(contract_data, str):
+                    contract_data = json.loads(contract_data)
+                
                 logs.append({
                     'id': row[0],
                     'action': row[1],
                     'userRole': row[2],
                     'contractId': row[3],
-                    'contractData': json.loads(row[4]) if row[4] else None,
+                    'contractData': contract_data,
                     'createdAt': row[5].isoformat() if row[5] else None
                 })
             
@@ -91,7 +95,9 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                     'isBase64Encoded': False
                 }
             
-            contract_data = json.loads(result[0])
+            contract_data = result[0]
+            if isinstance(contract_data, str):
+                contract_data = json.loads(contract_data)
             
             cur.execute('''
                 INSERT INTO contracts (
@@ -116,7 +122,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             new_id = cur.fetchone()[0]
             
             headers = event.get('headers', {})
-            user_role = headers.get('x-user-role', 'unknown')
+            user_role = headers.get('X-User-Role') or headers.get('x-user-role', 'unknown')
             
             cur.execute('''
                 INSERT INTO audit_log (action, user_role, contract_id, contract_data)
