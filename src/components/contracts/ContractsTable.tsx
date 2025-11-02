@@ -140,7 +140,7 @@ const ContractsTable = ({
                         className={
                           contract.sbis === 'Да' 
                             ? 'bg-green-100 text-green-800 border-green-300' 
-                            : 'bg-red-100 text-red-800 border-red-300'
+                            : 'bg-red-500 text-white border-red-500'
                         }
                       >
                         {contract.sbis}
@@ -152,7 +152,7 @@ const ContractsTable = ({
                         className={
                           contract.eis === 'Да' 
                             ? 'bg-green-100 text-green-800 border-green-300' 
-                            : 'bg-red-100 text-red-800 border-red-300'
+                            : 'bg-red-500 text-white border-red-500'
                         }
                       >
                         {contract.eis}
@@ -164,7 +164,7 @@ const ContractsTable = ({
                         className={
                           contract.workAct === 'Да' 
                             ? 'bg-green-100 text-green-800 border-green-300' 
-                            : 'bg-red-100 text-red-800 border-red-300'
+                            : 'bg-red-500 text-white border-red-500'
                         }
                       >
                         {contract.workAct}
@@ -287,7 +287,7 @@ const ContractsTable = ({
                           className={`text-xs ${
                             contract.sbis === 'Да' 
                               ? 'bg-green-100 text-green-800 border-green-300' 
-                              : 'bg-red-100 text-red-800 border-red-300'
+                              : 'bg-red-500 text-white border-red-500'
                           }`}
                         >
                           {contract.sbis}
@@ -300,7 +300,7 @@ const ContractsTable = ({
                           className={`text-xs ${
                             contract.eis === 'Да' 
                               ? 'bg-green-100 text-green-800 border-green-300' 
-                              : 'bg-red-100 text-red-800 border-red-300'
+                              : 'bg-red-500 text-white border-red-500'
                           }`}
                         >
                           {contract.eis}
@@ -313,7 +313,7 @@ const ContractsTable = ({
                           className={`text-xs ${
                             contract.workAct === 'Да' 
                               ? 'bg-green-100 text-green-800 border-green-300' 
-                              : 'bg-red-100 text-red-800 border-red-300'
+                              : 'bg-red-500 text-white border-red-500'
                           }`}
                         >
                           {contract.workAct}
