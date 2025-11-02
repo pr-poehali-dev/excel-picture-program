@@ -66,7 +66,7 @@ const AddContractDialog = ({
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="expirationDate">Срок действия *</Label>
+            <Label htmlFor="expirationDate">Срок действия</Label>
             <Input
               id="expirationDate"
               type="date"
@@ -75,7 +75,7 @@ const AddContractDialog = ({
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="amount">Сумма (₽)</Label>
+            <Label htmlFor="amount">Цена (₽)</Label>
             <Input
               id="amount"
               type="number"

@@ -124,7 +124,7 @@ const Index = () => {
   };
 
   const handleAddContract = async () => {
-    if (!newContract.organizationName || !newContract.expirationDate) {
+    if (!newContract.organizationName) {
       toast.error("Заполните обязательные поля");
       return;
     }
