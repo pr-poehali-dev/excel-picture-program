@@ -292,31 +292,33 @@ const Index = () => {
       <div className="flex">
         <Sidebar userRole={userRole} onNavigateUsers={() => navigate("/users")} />
 
-        <main className="flex-1 p-8">
-          <div className="max-w-7xl mx-auto space-y-8">
-            <div className="flex items-center justify-between">
+        <main className="flex-1 p-4 sm:p-6 lg:p-8">
+          <div className="max-w-7xl mx-auto space-y-4 lg:space-y-8">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
               <div>
-                <h2 className="text-4xl font-bold tracking-tight">Управление договорами</h2>
-                <p className="text-muted-foreground mt-2 text-base">Отслеживание сроков и контроль исполнения</p>
+                <h2 className="text-2xl lg:text-4xl font-bold tracking-tight">Управление договорами</h2>
+                <p className="text-muted-foreground mt-1 lg:mt-2 text-sm lg:text-base">Отслеживание сроков и контроль исполнения</p>
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 lg:gap-3 flex-wrap">
                 <Button 
                   variant="outline" 
                   onClick={handleExportToExcel}
-                  className="flex items-center gap-2"
+                  className="flex items-center gap-2 flex-1 sm:flex-none"
                   disabled={contracts.length === 0}
                 >
                   <Icon name="Download" size={18} />
-                  Экспорт в Excel
+                  <span className="hidden sm:inline">Экспорт в Excel</span>
+                  <span className="sm:hidden">Экспорт</span>
                 </Button>
 
                 <Button 
                   variant="outline" 
-                  className="flex items-center gap-2"
+                  className="flex items-center gap-2 flex-1 sm:flex-none"
                   onClick={() => document.getElementById('excel-import')?.click()}
                 >
                   <Icon name="Upload" size={18} />
-                  Импорт из Excel
+                  <span className="hidden sm:inline">Импорт из Excel</span>
+                  <span className="sm:hidden">Импорт</span>
                 </Button>
                 <input
                   id="excel-import"
@@ -330,7 +332,7 @@ const Index = () => {
                   <DropdownMenuTrigger asChild>
                     <Button variant="outline" className="flex items-center gap-2">
                       <Icon name="User" size={18} />
-                      <span>{userName}</span>
+                      <span className="hidden sm:inline">{userName}</span>
                       <Icon name="ChevronDown" size={16} />
                     </Button>
                   </DropdownMenuTrigger>
@@ -351,9 +353,9 @@ const Index = () => {
 
                 <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                   <DialogTrigger asChild>
-                    <Button className="flex items-center gap-2">
+                    <Button className="flex items-center gap-2 w-full sm:w-auto">
                       <Icon name="Plus" size={18} />
-                      Добавить договор
+                      <span>Добавить договор</span>
                     </Button>
                   </DialogTrigger>
                 </Dialog>
@@ -362,8 +364,8 @@ const Index = () => {
 
             <StatsCards stats={stats} />
 
-            <div className="mb-4 flex items-center gap-3">
-              <div className="relative flex-1 max-w-md">
+            <div className="mb-4">
+              <div className="relative w-full">
                 <Icon name="Search" size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                 <Input
                   placeholder="Поиск по организации или номеру договора..."
@@ -374,30 +376,33 @@ const Index = () => {
               </div>
             </div>
 
-            <div className="flex items-center gap-3 mb-4">
+            <div className="flex items-center gap-2 lg:gap-3 mb-4 overflow-x-auto pb-2">
               <Button
                 variant={statusFilter === 'all' ? 'default' : 'outline'}
                 onClick={() => setStatusFilter('all')}
-                className="flex items-center gap-2"
+                className="flex items-center gap-2 whitespace-nowrap"
               >
                 <Icon name="List" size={16} />
-                Все ({stats.total})
+                <span className="hidden sm:inline">Все ({stats.total})</span>
+                <span className="sm:hidden">Все</span>
               </Button>
               <Button
                 variant={statusFilter === 'active' ? 'default' : 'outline'}
                 onClick={() => setStatusFilter('active')}
-                className="flex items-center gap-2"
+                className="flex items-center gap-2 whitespace-nowrap"
               >
                 <Icon name="CheckCircle2" size={16} />
-                Активные ({stats.active})
+                <span className="hidden sm:inline">Активные ({stats.active})</span>
+                <span className="sm:hidden">Активные</span>
               </Button>
               <Button
                 variant={statusFilter === 'expired' ? 'default' : 'outline'}
                 onClick={() => setStatusFilter('expired')}
-                className="flex items-center gap-2"
+                className="flex items-center gap-2 whitespace-nowrap"
               >
                 <Icon name="AlertCircle" size={16} />
-                Просроченные ({stats.expired})
+                <span className="hidden sm:inline">Просроченные ({stats.expired})</span>
+                <span className="sm:hidden">Просрочено</span>
               </Button>
             </div>
 

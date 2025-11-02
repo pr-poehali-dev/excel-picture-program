@@ -42,7 +42,6 @@ const ContractsTable = ({
   onEdit,
   onDelete,
   isExpired,
-  isExpiringSoon,
 }: ContractsTableProps) => {
   const formatDate = (dateString: string): string => {
     if (!dateString) return '';
@@ -66,7 +65,8 @@ const ContractsTable = ({
   return (
     <Card className="animate-fade-in" style={{ animationDelay: "0.4s" }}>
       <CardContent className="p-0">
-        <Table>
+        <div className="hidden lg:block overflow-x-auto">
+          <Table>
             <TableHeader>
               <TableRow className="bg-muted/50">
                 <TableHead className="font-semibold">№</TableHead>
@@ -199,6 +199,143 @@ const ContractsTable = ({
               )}
             </TableBody>
           </Table>
+        </div>
+
+        <div className="lg:hidden">
+          {isLoading ? (
+            <div className="text-center py-12">
+              <Icon name="Loader2" size={32} className="animate-spin mx-auto" />
+              <p className="mt-3 text-muted-foreground">Загрузка договоров...</p>
+            </div>
+          ) : contracts.length === 0 ? (
+            <div className="text-center py-12">
+              <Icon name="FileText" size={48} className="mx-auto text-muted-foreground/50" />
+              <p className="mt-3 text-muted-foreground">Договоры не найдены</p>
+              <p className="text-sm text-muted-foreground">Добавьте первый договор</p>
+            </div>
+          ) : (
+            <div className="divide-y">
+              {contracts.map((contract, index) => (
+                <div
+                  key={contract.id}
+                  className={`p-4 ${isExpired(contract.expirationDate) ? 'bg-red-50' : ''}`}
+                >
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-sm font-medium text-muted-foreground">№{index + 1}</span>
+                        <h3 className="font-semibold text-base">{contract.organizationName}</h3>
+                      </div>
+                      <p className="text-sm text-muted-foreground">
+                        Договор № {contract.contractNumber}
+                      </p>
+                      <p className="text-xs text-muted-foreground">{contract.contractDate}</p>
+                    </div>
+                    {userRole !== "accountant" && (
+                      <div className="flex gap-1 ml-2">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => onEdit(contract)}
+                        >
+                          <Icon name="Pencil" size={16} />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => onDelete(contract.id)}
+                        >
+                          <Icon name="Trash2" size={16} />
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-muted-foreground">Срок действия:</span>
+                      {isExpired(contract.expirationDate) ? (
+                        <Badge
+                          variant="destructive"
+                          className="bg-destructive text-destructive-foreground"
+                        >
+                          {formatDate(contract.expirationDate)}
+                        </Badge>
+                      ) : (
+                        <span className="text-sm font-medium">{formatDate(contract.expirationDate)}</span>
+                      )}
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-muted-foreground">Сумма:</span>
+                      <span className="font-semibold">
+                        {new Intl.NumberFormat('ru-RU', {
+                          style: 'decimal',
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2
+                        }).format(Number(contract.amount) || 0)} ₽
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-3 gap-2 pt-2">
+                      <div className="text-center">
+                        <p className="text-xs text-muted-foreground mb-1">СБИС</p>
+                        <Badge 
+                          variant="outline"
+                          className={`text-xs ${
+                            contract.sbis === 'Да' 
+                              ? 'bg-green-100 text-green-800 border-green-300' 
+                              : 'bg-red-100 text-red-800 border-red-300'
+                          }`}
+                        >
+                          {contract.sbis}
+                        </Badge>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-xs text-muted-foreground mb-1">ЕИС</p>
+                        <Badge 
+                          variant="outline"
+                          className={`text-xs ${
+                            contract.eis === 'Да' 
+                              ? 'bg-green-100 text-green-800 border-green-300' 
+                              : 'bg-red-100 text-red-800 border-red-300'
+                          }`}
+                        >
+                          {contract.eis}
+                        </Badge>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-xs text-muted-foreground mb-1">Акт</p>
+                        <Badge 
+                          variant="outline"
+                          className={`text-xs ${
+                            contract.workAct === 'Да' 
+                              ? 'bg-green-100 text-green-800 border-green-300' 
+                              : 'bg-red-100 text-red-800 border-red-300'
+                          }`}
+                        >
+                          {contract.workAct}
+                        </Badge>
+                      </div>
+                    </div>
+
+                    {(contract.contactPerson || contract.contactPhone) && (
+                      <div className="pt-2 border-t">
+                        <p className="text-xs text-muted-foreground mb-1">Контакты:</p>
+                        {contract.contactPerson && (
+                          <p className="text-sm">{contract.contactPerson}</p>
+                        )}
+                        {contract.contactPhone && (
+                          <p className="text-sm text-muted-foreground">{contract.contactPhone}</p>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </CardContent>
     </Card>
   );
