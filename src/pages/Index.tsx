@@ -365,17 +365,17 @@ const Index = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
-      <header className="sticky top-0 z-40 bg-card border-b shadow-sm">
-        <div className="container mx-auto flex items-center justify-between h-16 px-4">
+      <header className="border-b bg-card print:hidden">
+        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="lg:hidden">
+              <SheetTrigger asChild className="lg:hidden">
+                <Button variant="ghost" size="icon">
                   <Icon name="Menu" size={24} />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="left" className="p-0 w-64">
-                <SheetHeader className="p-6 border-b">
+              <SheetContent side="left" className="w-64 p-0">
+                <SheetHeader className="p-4 border-b">
                   <SheetTitle>Меню</SheetTitle>
                 </SheetHeader>
                 <Sidebar 
@@ -386,13 +386,14 @@ const Index = () => {
               </SheetContent>
             </Sheet>
 
-            <h1 className="text-xl font-bold">Договоры</h1>
+            <h1 className="text-2xl font-bold">Договоры</h1>
           </div>
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon">
+              <Button variant="ghost" className="flex items-center gap-2">
                 <Icon name="User" size={20} />
+                <span className="hidden md:inline-block">{userName}</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
