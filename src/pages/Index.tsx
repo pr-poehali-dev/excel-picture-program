@@ -215,7 +215,7 @@ const Index = () => {
       'Номер договора': contract.contractNumber,
       'Дата договора': contract.contractDate,
       'Срок действия': contract.expirationDate,
-      'Сумма (₽)': contract.amount,
+      'Сумма (₽)': parseFloat(contract.amount.replace(/\s/g, '')),
       'СБИС': contract.sbis,
       'ЕИС': contract.eis,
       'Акт работ': contract.workAct,
@@ -225,12 +225,83 @@ const Index = () => {
 
     const worksheet = XLSX.utils.json_to_sheet(exportData);
     const workbook = XLSX.utils.book_new();
+    
+    const range = XLSX.utils.decode_range(worksheet['!ref'] || 'A1');
+    const colCount = range.e.c + 1;
+    const rowCount = range.e.r + 1;
+
+    worksheet['!cols'] = [
+      { wch: 5 }, { wch: 30 }, { wch: 18 }, { wch: 15 }, 
+      { wch: 15 }, { wch: 15 }, { wch: 8 }, { wch: 8 }, 
+      { wch: 12 }, { wch: 25 }, { wch: 18 }
+    ];
+
+    for (let R = 0; R < rowCount; R++) {
+      for (let C = 0; C < colCount; C++) {
+        const cellAddress = XLSX.utils.encode_cell({ r: R, c: C });
+        if (!worksheet[cellAddress]) continue;
+
+        const cell = worksheet[cellAddress];
+        
+        if (R === 0) {
+          cell.s = {
+            fill: { fgColor: { rgb: "1E293B" } },
+            font: { bold: true, color: { rgb: "FFFFFF" }, sz: 12 },
+            alignment: { horizontal: "center", vertical: "center" },
+            border: {
+              top: { style: "thin", color: { rgb: "475569" } },
+              bottom: { style: "thin", color: { rgb: "475569" } },
+              left: { style: "thin", color: { rgb: "475569" } },
+              right: { style: "thin", color: { rgb: "475569" } }
+            }
+          };
+        } else {
+          const isExpiredRow = contracts[R - 1] && isExpired(contracts[R - 1].expirationDate);
+          
+          cell.s = {
+            fill: { fgColor: { rgb: isExpiredRow ? "FEE2E2" : "FFFFFF" } },
+            font: { sz: 11, color: { rgb: "000000" } },
+            alignment: { 
+              horizontal: C === 0 ? "center" : "left", 
+              vertical: "center",
+              wrapText: true
+            },
+            border: {
+              top: { style: "thin", color: { rgb: "E2E8F0" } },
+              bottom: { style: "thin", color: { rgb: "E2E8F0" } },
+              left: { style: "thin", color: { rgb: "E2E8F0" } },
+              right: { style: "thin", color: { rgb: "E2E8F0" } }
+            }
+          };
+
+          if (C === 5) {
+            cell.z = '#,##0.00 ₽';
+          }
+
+          if (C === 6 || C === 7 || C === 8) {
+            const value = String(cell.v);
+            if (value === 'Да') {
+              cell.s.fill = { fgColor: { rgb: "DCFCE7" } };
+              cell.s.font = { color: { rgb: "166534" }, bold: true };
+            } else if (value === 'Нет') {
+              cell.s.fill = { fgColor: { rgb: "FEE2E2" } };
+              cell.s.font = { color: { rgb: "991B1B" }, bold: true };
+            }
+          }
+        }
+      }
+    }
+
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Договоры');
     
     const date = new Date().toLocaleDateString('ru-RU').replace(/\./g, '-');
     XLSX.writeFile(workbook, `Договоры_${date}.xlsx`);
     
     toast.success('Файл Excel успешно выгружен');
+  };
+
+  const handlePrint = () => {
+    window.print();
   };
 
   const handleImportFromExcel = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -352,8 +423,19 @@ const Index = () => {
               <div className="flex items-center gap-2 lg:gap-3 flex-wrap">
                 <Button 
                   variant="outline" 
+                  onClick={handlePrint}
+                  className="flex items-center gap-2 flex-1 sm:flex-none print:hidden"
+                  disabled={contracts.length === 0}
+                >
+                  <Icon name="Printer" size={18} />
+                  <span className="hidden sm:inline">Печать</span>
+                  <span className="sm:hidden">Печать</span>
+                </Button>
+
+                <Button 
+                  variant="outline" 
                   onClick={handleExportToExcel}
-                  className="flex items-center gap-2 flex-1 sm:flex-none"
+                  className="flex items-center gap-2 flex-1 sm:flex-none print:hidden"
                   disabled={contracts.length === 0}
                 >
                   <Icon name="Download" size={18} />
@@ -363,7 +445,7 @@ const Index = () => {
 
                 <Button 
                   variant="outline" 
-                  className="flex items-center gap-2 flex-1 sm:flex-none"
+                  className="flex items-center gap-2 flex-1 sm:flex-none print:hidden"
                   onClick={() => document.getElementById('excel-import')?.click()}
                 >
                   <Icon name="Upload" size={18} />
@@ -412,9 +494,11 @@ const Index = () => {
               </div>
             </div>
 
-            <StatsCards stats={stats} />
+            <div className="print:hidden">
+              <StatsCards stats={stats} />
+            </div>
 
-            <div className="mb-4">
+            <div className="mb-4 print:hidden">
               <div className="relative w-full">
                 <Icon name="Search" size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                 <Input
@@ -426,7 +510,7 @@ const Index = () => {
               </div>
             </div>
 
-            <div className="flex items-center gap-2 lg:gap-3 mb-4 overflow-x-auto pb-2">
+            <div className="flex items-center gap-2 lg:gap-3 mb-4 overflow-x-auto pb-2 print:hidden">
               <Button
                 variant={statusFilter === 'all' ? 'default' : 'outline'}
                 onClick={() => setStatusFilter('all')}

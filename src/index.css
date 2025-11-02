@@ -101,3 +101,43 @@
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 }
+
+@media print {
+  body {
+    @apply bg-white;
+  }
+
+  .print\:hidden {
+    display: none !important;
+  }
+
+  aside,
+  button:not(.print\:visible),
+  input[type="text"],
+  [role="search"] {
+    display: none !important;
+  }
+
+  main {
+    padding: 1rem !important;
+  }
+
+  table {
+    page-break-inside: auto;
+    font-size: 10pt;
+  }
+
+  tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  @page {
+    margin: 1cm;
+    size: A4 landscape;
+  }
+}
