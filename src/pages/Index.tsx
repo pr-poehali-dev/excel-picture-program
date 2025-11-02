@@ -535,6 +535,15 @@ const Index = () => {
               onRestore={loadContracts}
             />
 
+            <div className="print-header hidden print:block mb-4">
+              <h1 className="text-lg font-bold mb-1">Список договоров - {
+                statusFilter === 'all' ? 'Все договоры' :
+                statusFilter === 'active' ? 'Активные договоры' :
+                'Истекшие договоры'
+              }</h1>
+              <p className="text-sm">Дата печати: {new Date().toLocaleDateString('ru-RU')}</p>
+            </div>
+
             <ContractsTable
               contracts={filteredContracts}
               isLoading={isLoading}
