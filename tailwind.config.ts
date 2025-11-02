@@ -10,6 +10,9 @@ export default {
 	],
 	prefix: "",
 	theme: {
+		screens: {
+			'print': {'raw': 'print'},
+		},
 		container: {
 			center: true,
 			padding: '2rem',
