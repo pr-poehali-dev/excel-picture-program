@@ -12,7 +12,7 @@ interface StatsCardsProps {
 
 const StatsCards = ({ stats }: StatsCardsProps) => {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 print:hidden">
       <Card className="animate-fade-in border-none shadow-sm hover:shadow-md transition-shadow">
         <CardContent className="p-4 lg:p-6">
           <div className="flex items-center justify-between">

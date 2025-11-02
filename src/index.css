@@ -103,8 +103,15 @@
 }
 
 @media print {
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
   body {
     @apply bg-white;
+    margin: 0;
+    padding: 0;
   }
 
   .print\:hidden {
@@ -112,55 +119,75 @@
   }
 
   aside,
-  button:not(.print\:visible),
-  input[type="text"],
-  [role="search"],
+  button,
+  input,
   header,
-  .bg-card.rounded-lg.border.p-4 {
+  .bg-card.rounded-lg.border.p-4,
+  [role="search"],
+  nav,
+  .space-y-6 > *:first-child {
     display: none !important;
   }
 
   .print-header {
     display: block !important;
-    margin-bottom: 8px;
-    padding-bottom: 4px;
+    margin-bottom: 6px;
+    padding-bottom: 3px;
     border-bottom: 1px solid #333;
   }
 
   .print-header h1 {
-    font-size: 11pt;
+    font-size: 10pt;
     font-weight: bold;
-    margin-bottom: 2px;
+    margin: 0 0 2px 0;
   }
 
   .print-header p {
-    font-size: 8pt;
+    font-size: 7pt;
     color: #666;
+    margin: 0;
   }
 
   main {
-    padding: 0.3cm !important;
+    padding: 0 !important;
     max-width: 100% !important;
+    margin: 0 !important;
+  }
+
+  .container {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .space-y-6 {
+    gap: 0 !important;
   }
 
   table {
     page-break-inside: auto;
-    font-size: 6.5pt;
+    font-size: 6pt;
     width: 100%;
     border-collapse: collapse;
+    margin: 0;
   }
 
   th,
   td {
-    padding: 1.5px 3px !important;
-    font-size: 6.5pt;
-    border: 0.5px solid #ddd !important;
-    line-height: 1.1;
+    padding: 1px 2px !important;
+    font-size: 6pt;
+    border: 0.5px solid #ccc !important;
+    line-height: 1;
+    vertical-align: middle;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   th {
-    background-color: #f5f5f5 !important;
+    background-color: #f0f0f0 !important;
     font-weight: 600;
+    padding: 2px !important;
   }
 
   tr {
@@ -176,8 +203,16 @@
     background-color: #fee !important;
   }
 
+  .animate-fade-in,
+  .card,
+  .rounded-lg {
+    animation: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+
   @page {
-    margin: 0.4cm;
+    margin: 0.35cm;
     size: A4 portrait;
   }
 }
