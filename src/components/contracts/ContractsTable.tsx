@@ -143,7 +143,7 @@ const ContractsTable = ({
                             : 'bg-red-500 text-white border-red-500'
                         }
                       >
-                        {contract.sbis}
+                        {contract.sbis || 'Нет'}
                       </Badge>
                     </TableCell>
                     <TableCell>
@@ -155,7 +155,7 @@ const ContractsTable = ({
                             : 'bg-red-500 text-white border-red-500'
                         }
                       >
-                        {contract.eis}
+                        {contract.eis || 'Нет'}
                       </Badge>
                     </TableCell>
                     <TableCell>
@@ -167,7 +167,7 @@ const ContractsTable = ({
                             : 'bg-red-500 text-white border-red-500'
                         }
                       >
-                        {contract.workAct}
+                        {contract.workAct || 'Нет'}
                       </Badge>
                     </TableCell>
                     <TableCell>
@@ -290,7 +290,7 @@ const ContractsTable = ({
                               : 'bg-red-500 text-white border-red-500'
                           }`}
                         >
-                          {contract.sbis}
+                          {contract.sbis || 'Нет'}
                         </Badge>
                       </div>
                       <div className="text-center">
@@ -303,7 +303,7 @@ const ContractsTable = ({
                               : 'bg-red-500 text-white border-red-500'
                           }`}
                         >
-                          {contract.eis}
+                          {contract.eis || 'Нет'}
                         </Badge>
                       </div>
                       <div className="text-center">
@@ -316,7 +316,7 @@ const ContractsTable = ({
                               : 'bg-red-500 text-white border-red-500'
                           }`}
                         >
-                          {contract.workAct}
+                          {contract.workAct || 'Нет'}
                         </Badge>
                       </div>
                     </div>
