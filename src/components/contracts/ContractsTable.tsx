@@ -135,40 +135,40 @@ const ContractsTable = ({
                       }).format(Number(contract.amount) || 0)} ₽
                     </TableCell>
                     <TableCell>
-                      {contract.sbis === 'Да' ? (
-                        <Badge 
-                          variant="outline"
-                          className='bg-green-100 text-green-800 border-green-300'
-                        >
-                          Да
-                        </Badge>
-                      ) : (
-                        <div className="w-8 h-0.5 bg-red-500 mx-auto"></div>
-                      )}
+                      <Badge 
+                        variant="outline"
+                        className={
+                          contract.sbis === 'Да' 
+                            ? 'bg-green-100 text-green-800 border-green-300' 
+                            : 'bg-red-100 text-red-800 border-red-300'
+                        }
+                      >
+                        {contract.sbis}
+                      </Badge>
                     </TableCell>
                     <TableCell>
-                      {contract.eis === 'Да' ? (
-                        <Badge 
-                          variant="outline"
-                          className='bg-green-100 text-green-800 border-green-300'
-                        >
-                          Да
-                        </Badge>
-                      ) : (
-                        <div className="w-8 h-0.5 bg-red-500 mx-auto"></div>
-                      )}
+                      <Badge 
+                        variant="outline"
+                        className={
+                          contract.eis === 'Да' 
+                            ? 'bg-green-100 text-green-800 border-green-300' 
+                            : 'bg-red-100 text-red-800 border-red-300'
+                        }
+                      >
+                        {contract.eis}
+                      </Badge>
                     </TableCell>
                     <TableCell>
-                      {contract.workAct === 'Да' ? (
-                        <Badge 
-                          variant="outline"
-                          className='bg-green-100 text-green-800 border-green-300'
-                        >
-                          Да
-                        </Badge>
-                      ) : (
-                        <div className="w-8 h-0.5 bg-red-500 mx-auto"></div>
-                      )}
+                      <Badge 
+                        variant="outline"
+                        className={
+                          contract.workAct === 'Да' 
+                            ? 'bg-green-100 text-green-800 border-green-300' 
+                            : 'bg-red-100 text-red-800 border-red-300'
+                        }
+                      >
+                        {contract.workAct}
+                      </Badge>
                     </TableCell>
                     <TableCell>
                       <div className="space-y-1">
@@ -282,42 +282,42 @@ const ContractsTable = ({
                     <div className="grid grid-cols-3 gap-2 pt-2">
                       <div className="text-center">
                         <p className="text-xs text-muted-foreground mb-1">СБИС</p>
-                        {contract.sbis === 'Да' ? (
-                          <Badge 
-                            variant="outline"
-                            className='text-xs bg-green-100 text-green-800 border-green-300'
-                          >
-                            Да
-                          </Badge>
-                        ) : (
-                          <div className="w-6 h-0.5 bg-red-500 mx-auto"></div>
-                        )}
+                        <Badge 
+                          variant="outline"
+                          className={`text-xs ${
+                            contract.sbis === 'Да' 
+                              ? 'bg-green-100 text-green-800 border-green-300' 
+                              : 'bg-red-100 text-red-800 border-red-300'
+                          }`}
+                        >
+                          {contract.sbis}
+                        </Badge>
                       </div>
                       <div className="text-center">
                         <p className="text-xs text-muted-foreground mb-1">ЕИС</p>
-                        {contract.eis === 'Да' ? (
-                          <Badge 
-                            variant="outline"
-                            className='text-xs bg-green-100 text-green-800 border-green-300'
-                          >
-                            Да
-                          </Badge>
-                        ) : (
-                          <div className="w-6 h-0.5 bg-red-500 mx-auto"></div>
-                        )}
+                        <Badge 
+                          variant="outline"
+                          className={`text-xs ${
+                            contract.eis === 'Да' 
+                              ? 'bg-green-100 text-green-800 border-green-300' 
+                              : 'bg-red-100 text-red-800 border-red-300'
+                          }`}
+                        >
+                          {contract.eis}
+                        </Badge>
                       </div>
                       <div className="text-center">
                         <p className="text-xs text-muted-foreground mb-1">Акт</p>
-                        {contract.workAct === 'Да' ? (
-                          <Badge 
-                            variant="outline"
-                            className='text-xs bg-green-100 text-green-800 border-green-300'
-                          >
-                            Да
-                          </Badge>
-                        ) : (
-                          <div className="w-6 h-0.5 bg-red-500 mx-auto"></div>
-                        )}
+                        <Badge 
+                          variant="outline"
+                          className={`text-xs ${
+                            contract.workAct === 'Да' 
+                              ? 'bg-green-100 text-green-800 border-green-300' 
+                              : 'bg-red-100 text-red-800 border-red-300'
+                          }`}
+                        >
+                          {contract.workAct}
+                        </Badge>
                       </div>
                     </div>
 
