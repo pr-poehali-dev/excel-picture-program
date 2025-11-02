@@ -25,6 +25,7 @@ import StatsCards from "@/components/contracts/StatsCards";
 import ContractsTable, { Contract } from "@/components/contracts/ContractsTable";
 import AddContractDialog from "@/components/contracts/AddContractDialog";
 import EditContractDialog from "@/components/contracts/EditContractDialog";
+import AuditLogDialog from "@/components/contracts/AuditLogDialog";
 
 const API_URL = "https://functions.poehali.dev/b8cf114d-cee0-421e-8222-3f5a782739fb";
 
@@ -57,7 +58,11 @@ const Index = () => {
   const loadContracts = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch(API_URL);
+      const response = await fetch(API_URL, {
+        headers: {
+          'X-User-Role': userRole
+        }
+      });
       const data = await response.json();
       console.log('Загруженные договоры:', data.contracts);
       setContracts(data.contracts || []);
@@ -77,6 +82,7 @@ const Index = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isAuditLogOpen, setIsAuditLogOpen] = useState(false);
 
   const isExpired = (expirationDate: string): boolean => {
     if (!expirationDate || expirationDate.trim() === '') return false;
@@ -126,7 +132,10 @@ const Index = () => {
     try {
       const response = await fetch(API_URL, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "X-User-Role": userRole
+        },
         body: JSON.stringify(newContract),
       });
 
@@ -150,7 +159,10 @@ const Index = () => {
     try {
       const response = await fetch(`${API_URL}?id=${editingContract.id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "X-User-Role": userRole
+        },
         body: JSON.stringify(editingContract),
       });
 
@@ -174,6 +186,9 @@ const Index = () => {
     try {
       const response = await fetch(`${API_URL}?id=${id}`, {
         method: "DELETE",
+        headers: {
+          "X-User-Role": userRole
+        }
       });
 
       if (response.ok) {
@@ -480,6 +495,16 @@ const Index = () => {
                     <Icon name="Download" size={18} className="mr-2" />
                     Экспорт
                   </Button>
+                  {userRole === "admin" && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setIsAuditLogOpen(true)}
+                    >
+                      <Icon name="History" size={18} className="mr-2" />
+                      Журнал
+                    </Button>
+                  )}
                   {userRole !== "accountant" && (
                     <Button onClick={() => setIsDialogOpen(true)} size="sm">
                       <Icon name="Plus" size={18} className="mr-2" />
@@ -504,6 +529,12 @@ const Index = () => {
               contract={editingContract}
               onContractChange={setEditingContract}
               onSubmit={handleEditContract}
+            />
+
+            <AuditLogDialog
+              isOpen={isAuditLogOpen}
+              onOpenChange={setIsAuditLogOpen}
+              onRestore={loadContracts}
             />
 
             <ContractsTable

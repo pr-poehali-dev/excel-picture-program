@@ -3,6 +3,12 @@ import os
 import psycopg2
 from typing import Dict, Any
 
+def log_action(cur, action: str, user_role: str, contract_id: int = None, contract_data: dict = None):
+    cur.execute('''
+        INSERT INTO audit_log (action, user_role, contract_id, contract_data)
+        VALUES (%s, %s, %s, %s)
+    ''', (action, user_role, contract_id, json.dumps(contract_data) if contract_data else None))
+
 def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     '''
     Business: API для управления договорами (CRUD операции)
@@ -11,6 +17,8 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     Returns: HTTP response dict с данными договоров
     '''
     method: str = event.get('httpMethod', 'GET')
+    headers = event.get('headers', {})
+    user_role = headers.get('x-user-role', 'unknown')
     
     if method == 'OPTIONS':
         return {
@@ -18,7 +26,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             'headers': {
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-                'Access-Control-Allow-Headers': 'Content-Type, X-User-Id',
+                'Access-Control-Allow-Headers': 'Content-Type, X-User-Id, X-User-Role',
                 'Access-Control-Max-Age': '86400'
             },
             'body': '',
@@ -95,6 +103,8 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             ))
             
             new_id = cur.fetchone()[0]
+            
+            log_action(cur, 'CREATE', user_role, new_id, body_data)
             conn.commit()
             
             return {
@@ -144,6 +154,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                 contract_id
             ))
             
+            log_action(cur, 'UPDATE', user_role, contract_id, body_data)
             conn.commit()
             
             return {
@@ -164,6 +175,25 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                     'body': json.dumps({'error': 'Contract ID required'}),
                     'isBase64Encoded': False
                 }
+            
+            cur.execute('SELECT * FROM contracts WHERE id = %s', (contract_id,))
+            contract_row = cur.fetchone()
+            
+            if contract_row:
+                contract_data = {
+                    'id': contract_row[0],
+                    'organizationName': contract_row[1],
+                    'contractNumber': contract_row[2],
+                    'contractDate': contract_row[3],
+                    'expirationDate': contract_row[4],
+                    'amount': contract_row[5],
+                    'sbis': contract_row[6],
+                    'eis': contract_row[7],
+                    'workAct': contract_row[8],
+                    'contactPerson': contract_row[9],
+                    'contactPhone': contract_row[10]
+                }
+                log_action(cur, 'DELETE', user_role, int(contract_id), contract_data)
             
             cur.execute('DELETE FROM contracts WHERE id = %s', (contract_id,))
             conn.commit()
