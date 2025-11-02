@@ -32,8 +32,6 @@ interface ContractsTableProps {
   userRole: string;
   onEdit: (contract: Contract) => void;
   onDelete: (id: number) => void;
-  isExpired: (date: string) => boolean;
-  isExpiringSoon: (date: string) => boolean;
   onAddClick?: () => void;
 }
 
@@ -43,7 +41,6 @@ const ContractsTable = ({
   userRole,
   onEdit,
   onDelete,
-  isExpired,
   onAddClick,
 }: ContractsTableProps) => {
   const formatDate = (dateString: string): string => {
