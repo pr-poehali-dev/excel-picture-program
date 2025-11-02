@@ -174,23 +174,25 @@
 
   th,
   td {
-    padding: 0.5px 1.5px !important;
-    font-size: 5.5pt;
-    border: 0.5px solid #ccc !important;
-    line-height: 0.95;
+    padding: 0px 1px !important;
+    font-size: 5pt;
+    border: 0.3px solid #ccc !important;
+    line-height: 0.85;
     vertical-align: middle;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    height: auto;
-    max-height: 12px;
+    height: 2.5cm;
+    max-height: 2.5cm;
   }
 
   th {
     background-color: #f0f0f0 !important;
     font-weight: 600;
-    padding: 1px 1.5px !important;
-    line-height: 1;
+    padding: 0.5px 1px !important;
+    line-height: 0.9;
+    height: auto;
+    max-height: none;
   }
 
   tr {
