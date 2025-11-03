@@ -84,7 +84,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             
             expiration_date = body_data.get('expirationDate')
             if not expiration_date or expiration_date.strip() == '':
-                expiration_date = '9999-12-31'
+                expiration_date = ''
             
             cur.execute('''
                 INSERT INTO contracts (
