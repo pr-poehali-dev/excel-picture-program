@@ -5,7 +5,7 @@ from typing import Dict, Any
 
 def log_action(cur, action: str, user_role: str, contract_id: int = None, contract_data: dict = None):
     cur.execute('''
-        INSERT INTO audit_log (action, user_role, contract_id, contract_data)
+        INSERT INTO audit_logs (action, user_role, contract_id, contract_data)
         VALUES (%s, %s, %s, %s)
     ''', (action, user_role, contract_id, json.dumps(contract_data) if contract_data else None))
 
