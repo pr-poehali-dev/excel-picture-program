@@ -82,6 +82,10 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         elif method == 'POST':
             body_data = json.loads(event.get('body', '{}'))
             
+            expiration_date = body_data.get('expirationDate')
+            if not expiration_date or expiration_date.strip() == '':
+                expiration_date = '9999-12-31'
+            
             cur.execute('''
                 INSERT INTO contracts (
                     organization_name, contract_number, contract_date,
@@ -93,7 +97,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                 body_data.get('organizationName'),
                 body_data.get('contractNumber'),
                 body_data.get('contractDate'),
-                body_data.get('expirationDate'),
+                expiration_date,
                 body_data.get('amount'),
                 body_data.get('sbis'),
                 body_data.get('eis'),
