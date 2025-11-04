@@ -336,6 +336,20 @@ const Index = () => {
         let successCount = 0;
         let errorCount = 0;
 
+        const parseExcelDate = (value: any): string => {
+          if (!value) return '';
+          
+          if (typeof value === 'number') {
+            const date = new Date((value - 25569) * 86400 * 1000);
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+            return `${day}.${month}.${year}`;
+          }
+          
+          return String(value).trim();
+        };
+
         for (const row of jsonData) {
           if (!row['Название организации'] || row['Название организации'].trim() === '') {
             console.log('Пропуск пустой строки:', row);
@@ -354,8 +368,8 @@ const Index = () => {
           const contract: Partial<Contract> = {
             organizationName: String(row['Название организации'] || '').trim(),
             contractNumber: String(row['Номер договора'] || '').trim(),
-            contractDate: String(row['Дата договора'] || '').trim(),
-            expirationDate: String(row['Срок действия'] || '').trim(),
+            contractDate: parseExcelDate(row['Дата договора']),
+            expirationDate: parseExcelDate(row['Срок действия']),
             amount: amountStr,
             sbis: String(row['СБИС'] || '').trim() || 'Нет',
             eis: String(row['ЕИС'] || '').trim() || 'Нет',
