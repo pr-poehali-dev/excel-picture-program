@@ -247,13 +247,16 @@ const Index = () => {
     const rowCount = range.e.r + 1;
 
     worksheet['!cols'] = [
-      { wch: 6 }, { wch: 35 }, { wch: 18 }, { wch: 14 }, 
+      { wch: 6 }, { wch: 38 }, { wch: 18 }, { wch: 14 }, 
       { wch: 14 }, { wch: 16 }, { wch: 15 }, { wch: 15 }, 
-      { wch: 15 }, { wch: 28 }, { wch: 20 }
+      { wch: 15 }, { wch: 30 }, { wch: 20 }
     ];
 
     if (!worksheet['!rows']) worksheet['!rows'] = [];
-    worksheet['!rows'][0] = { hpt: 30 };
+    worksheet['!rows'][0] = { hpt: 35 };
+    for (let i = 1; i < rowCount; i++) {
+      worksheet['!rows'][i] = { hpt: 22 };
+    }
 
     for (let R = 0; R < rowCount; R++) {
       for (let C = 0; C < colCount; C++) {
@@ -264,40 +267,42 @@ const Index = () => {
         
         if (R === 0) {
           cell.s = {
-            fill: { fgColor: { rgb: "0F172A" } },
-            font: { bold: true, color: { rgb: "FFFFFF" }, sz: 11, name: "Arial" },
+            fill: { fgColor: { rgb: "2563EB" } },
+            font: { bold: true, color: { rgb: "FFFFFF" }, sz: 12, name: "Segoe UI" },
             alignment: { horizontal: "center", vertical: "center", wrapText: true },
             border: {
-              top: { style: "medium", color: { rgb: "000000" } },
-              bottom: { style: "medium", color: { rgb: "000000" } },
-              left: { style: "medium", color: { rgb: "000000" } },
-              right: { style: "medium", color: { rgb: "000000" } }
+              top: { style: "thin", color: { rgb: "1E40AF" } },
+              bottom: { style: "thin", color: { rgb: "1E40AF" } },
+              left: { style: "thin", color: { rgb: "1E40AF" } },
+              right: { style: "thin", color: { rgb: "1E40AF" } }
             }
           };
         } else {
           const isEvenRow = R % 2 === 0;
           cell.s = {
-            fill: { fgColor: { rgb: isEvenRow ? "F8FAFC" : "FFFFFF" } },
-            font: { sz: 10, name: "Arial", color: { rgb: "1E293B" } },
+            fill: { fgColor: { rgb: isEvenRow ? "EFF6FF" : "FFFFFF" } },
+            font: { sz: 11, name: "Segoe UI", color: { rgb: "0F172A" } },
             alignment: { 
               horizontal: C === 0 ? "center" : (C === 5 ? "right" : "left"), 
               vertical: "center", 
               wrapText: false
             },
             border: {
-              top: { style: "thin", color: { rgb: "CBD5E1" } },
-              bottom: { style: "thin", color: { rgb: "CBD5E1" } },
-              left: { style: "thin", color: { rgb: "CBD5E1" } },
-              right: { style: "thin", color: { rgb: "CBD5E1" } }
+              top: { style: "hair", color: { rgb: "DBEAFE" } },
+              bottom: { style: "hair", color: { rgb: "DBEAFE" } },
+              left: { style: "hair", color: { rgb: "E0E7FF" } },
+              right: { style: "hair", color: { rgb: "E0E7FF" } }
             }
           };
 
           if (C === 0) {
             cell.t = 'n';
             cell.z = '0';
+            cell.s.font = { ...cell.s.font, bold: true, color: { rgb: "2563EB" } };
           } else if (C === 5) {
             cell.t = 'n';
-            cell.z = '#,##0.00 ₽';
+            cell.z = '#,##0 ₽';
+            cell.s.font = { ...cell.s.font, bold: true };
           } else if (C === 3 || C === 4) {
             cell.t = 's';
           } else if (C === 10) {
