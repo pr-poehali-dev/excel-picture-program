@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/sheet";
 import Icon from "@/components/ui/icon";
 import { toast } from "sonner";
-import * as XLSX from 'xlsx';
+import * as XLSX from 'xlsx-js-style';
 import Sidebar from "@/components/contracts/Sidebar";
 import StatsCards from "@/components/contracts/StatsCards";
 import ContractsTable, { Contract } from "@/components/contracts/ContractsTable";
