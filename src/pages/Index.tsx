@@ -383,6 +383,17 @@ const Index = () => {
             contactPhone: String(row['Телефон'] || '').trim(),
           };
 
+          // Проверка на дубликаты по номеру договора и названию организации
+          const isDuplicate = contracts.some(c => 
+            c.contractNumber === contract.contractNumber && 
+            c.organizationName === contract.organizationName
+          );
+
+          if (isDuplicate) {
+            console.log('Пропуск дубликата:', contract);
+            continue;
+          }
+
           console.log('Отправка договора:', contract);
 
           try {
