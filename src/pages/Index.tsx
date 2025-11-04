@@ -247,10 +247,13 @@ const Index = () => {
     const rowCount = range.e.r + 1;
 
     worksheet['!cols'] = [
-      { wch: 5 }, { wch: 30 }, { wch: 18 }, { wch: 15 }, 
-      { wch: 15 }, { wch: 15 }, { wch: 8 }, { wch: 8 }, 
-      { wch: 12 }, { wch: 25 }, { wch: 18 }
+      { wch: 6 }, { wch: 35 }, { wch: 18 }, { wch: 14 }, 
+      { wch: 14 }, { wch: 16 }, { wch: 15 }, { wch: 15 }, 
+      { wch: 15 }, { wch: 28 }, { wch: 20 }
     ];
+
+    if (!worksheet['!rows']) worksheet['!rows'] = [];
+    worksheet['!rows'][0] = { hpt: 30 };
 
     for (let R = 0; R < rowCount; R++) {
       for (let C = 0; C < colCount; C++) {
@@ -261,33 +264,46 @@ const Index = () => {
         
         if (R === 0) {
           cell.s = {
-            fill: { fgColor: { rgb: "1E293B" } },
-            font: { bold: true, color: { rgb: "FFFFFF" }, sz: 12 },
+            fill: { fgColor: { rgb: "0F172A" } },
+            font: { bold: true, color: { rgb: "FFFFFF" }, sz: 11, name: "Arial" },
             alignment: { horizontal: "center", vertical: "center", wrapText: true },
             border: {
-              top: { style: "thin", color: { rgb: "334155" } },
-              bottom: { style: "thin", color: { rgb: "334155" } },
-              left: { style: "thin", color: { rgb: "334155" } },
-              right: { style: "thin", color: { rgb: "334155" } }
+              top: { style: "medium", color: { rgb: "000000" } },
+              bottom: { style: "medium", color: { rgb: "000000" } },
+              left: { style: "medium", color: { rgb: "000000" } },
+              right: { style: "medium", color: { rgb: "000000" } }
             }
           };
         } else {
+          const isEvenRow = R % 2 === 0;
           cell.s = {
+            fill: { fgColor: { rgb: isEvenRow ? "F8FAFC" : "FFFFFF" } },
+            font: { sz: 10, name: "Arial", color: { rgb: "1E293B" } },
             alignment: { 
               horizontal: C === 0 ? "center" : (C === 5 ? "right" : "left"), 
               vertical: "center", 
-              wrapText: true 
+              wrapText: false
             },
             border: {
-              top: { style: "thin", color: { rgb: "E2E8F0" } },
-              bottom: { style: "thin", color: { rgb: "E2E8F0" } },
-              left: { style: "thin", color: { rgb: "E2E8F0" } },
-              right: { style: "thin", color: { rgb: "E2E8F0" } }
+              top: { style: "thin", color: { rgb: "CBD5E1" } },
+              bottom: { style: "thin", color: { rgb: "CBD5E1" } },
+              left: { style: "thin", color: { rgb: "CBD5E1" } },
+              right: { style: "thin", color: { rgb: "CBD5E1" } }
             }
           };
 
-          if (C === 5) {
-            cell.z = '#,##0.00';
+          if (C === 0) {
+            cell.t = 'n';
+            cell.z = '0';
+          } else if (C === 5) {
+            cell.t = 'n';
+            cell.z = '#,##0.00 ₽';
+          } else if (C === 3 || C === 4) {
+            cell.t = 's';
+          } else if (C === 10) {
+            cell.t = 's';
+          } else {
+            cell.t = 's';
           }
         }
       }
