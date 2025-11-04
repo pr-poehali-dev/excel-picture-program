@@ -331,36 +331,60 @@ const Index = () => {
         const worksheet = workbook.Sheets[workbook.SheetNames[0]];
         const jsonData = XLSX.utils.sheet_to_json(worksheet) as any[];
 
+        console.log('Импорт данных:', jsonData);
+
         let successCount = 0;
         let errorCount = 0;
 
         for (const row of jsonData) {
+          if (!row['Название организации'] || row['Название организации'].trim() === '') {
+            console.log('Пропуск пустой строки:', row);
+            continue;
+          }
+
+          const amountValue = row['Сумма (₽)'];
+          let amountStr = '0';
+          
+          if (typeof amountValue === 'number') {
+            amountStr = String(Math.round(amountValue));
+          } else if (typeof amountValue === 'string') {
+            amountStr = amountValue.replace(/[^\d]/g, '') || '0';
+          }
+
           const contract: Partial<Contract> = {
-            organizationName: row['Название организации'] || '',
-            contractNumber: row['Номер договора'] || '',
-            contractDate: row['Дата договора'] || '',
-            expirationDate: row['Срок действия'] || '',
-            amount: String(row['Сумма (₽)'] || '0'),
-            sbis: row['СБИС'] || 'Нет',
-            eis: row['ЕИС'] || 'Нет',
-            workAct: row['Акт работ'] || 'Нет',
-            contactPerson: row['Контактное лицо'] || '',
-            contactPhone: row['Телефон'] || '',
+            organizationName: String(row['Название организации'] || '').trim(),
+            contractNumber: String(row['Номер договора'] || '').trim(),
+            contractDate: String(row['Дата договора'] || '').trim(),
+            expirationDate: String(row['Срок действия'] || '').trim(),
+            amount: amountStr,
+            sbis: String(row['СБИС'] || '').trim() || 'Нет',
+            eis: String(row['ЕИС'] || '').trim() || 'Нет',
+            workAct: String(row['Акт работ'] || '').trim() || 'Нет',
+            contactPerson: String(row['Контактное лицо'] || '').trim(),
+            contactPhone: String(row['Телефон'] || '').trim(),
           };
+
+          console.log('Отправка договора:', contract);
 
           try {
             const response = await fetch(API_URL, {
               method: "POST",
-              headers: { "Content-Type": "application/json" },
+              headers: { 
+                "Content-Type": "application/json",
+                "X-User-Role": userRole
+              },
               body: JSON.stringify(contract),
             });
 
             if (response.ok) {
               successCount++;
             } else {
+              const errorText = await response.text();
+              console.error('Ошибка при добавлении:', errorText);
               errorCount++;
             }
           } catch (error) {
+            console.error('Ошибка запроса:', error);
             errorCount++;
           }
         }
