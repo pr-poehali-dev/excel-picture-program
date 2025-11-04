@@ -52,7 +52,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                        expiration_date, amount, sbis, eis, work_act, 
                        contact_person, contact_phone
                 FROM contracts
-                ORDER BY id DESC
+                ORDER BY id ASC
             ''')
             rows = cur.fetchall()
             
