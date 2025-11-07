@@ -77,7 +77,7 @@ const ContractsTable = ({
           <Table>
             <TableHeader>
               <TableRow className="bg-muted/50">
-                <TableHead className="font-semibold w-[16%] text-center">
+                <TableHead className="font-semibold w-[17%] text-center">
                   <button 
                     onClick={() => onSort?.('organization')} 
                     className="flex items-center gap-1 hover:text-foreground transition-colors w-full justify-center"
@@ -100,7 +100,7 @@ const ContractsTable = ({
                   </button>
                 </TableHead>
                 <TableHead className="font-semibold w-[8%] text-center">Срок действия</TableHead>
-                <TableHead className="font-semibold w-[11%] text-center">Цена (₽)</TableHead>
+                <TableHead className="font-semibold w-[10%] text-center">Цена (₽)</TableHead>
                 <TableHead className="font-semibold w-[7%] text-center">Сумма договора (₽)</TableHead>
                 <TableHead className="font-semibold w-[6%] text-center">СБИС</TableHead>
                 <TableHead className="font-semibold w-[6%] text-center">ЕИС</TableHead>
