@@ -88,7 +88,7 @@ const ContractsTable = ({
                     )}
                   </button>
                 </TableHead>
-                <TableHead className="font-semibold w-[11%] text-center">
+                <TableHead className="font-semibold w-[9%] text-center">
                   <button 
                     onClick={() => onSort?.('contractNumber')} 
                     className="flex items-center gap-1 hover:text-foreground transition-colors w-full justify-center"
@@ -100,13 +100,13 @@ const ContractsTable = ({
                   </button>
                 </TableHead>
                 <TableHead className="font-semibold w-[9%] text-center">Срок действия</TableHead>
-                <TableHead className="font-semibold w-[12%] text-center">Цена (₽)</TableHead>
+                <TableHead className="font-semibold w-[10%] text-center">Цена (₽)</TableHead>
                 <TableHead className="font-semibold w-[7%] text-center">Сумма договора (₽)</TableHead>
                 <TableHead className="font-semibold w-[6%] text-center">СБИС</TableHead>
                 <TableHead className="font-semibold w-[6%] text-center">ЕИС</TableHead>
                 <TableHead className="font-semibold w-[6%] text-center">Акт вып-ых работ</TableHead>
-                <TableHead className="font-semibold w-[12%] text-center">Контактное лицо</TableHead>
-                <TableHead className="font-semibold w-[10%] text-center">Примечание</TableHead>
+                <TableHead className="font-semibold w-[10%] text-center">Контактное лицо</TableHead>
+                <TableHead className="font-semibold w-[12%] text-center">Примечание</TableHead>
                 {userRole !== "accountant" && <TableHead className="font-semibold w-[5%] text-center">Действия</TableHead>}
               </TableRow>
             </TableHeader>
