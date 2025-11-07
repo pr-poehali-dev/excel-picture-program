@@ -99,8 +99,8 @@ const ContractsTable = ({
                     )}
                   </button>
                 </TableHead>
-                <TableHead className="font-semibold w-[9%] text-center">Срок действия</TableHead>
-                <TableHead className="font-semibold w-[10%] text-center">Цена (₽)</TableHead>
+                <TableHead className="font-semibold w-[8%] text-center">Срок действия</TableHead>
+                <TableHead className="font-semibold w-[11%] text-center">Цена (₽)</TableHead>
                 <TableHead className="font-semibold w-[7%] text-center">Сумма договора (₽)</TableHead>
                 <TableHead className="font-semibold w-[6%] text-center">СБИС</TableHead>
                 <TableHead className="font-semibold w-[6%] text-center">ЕИС</TableHead>
