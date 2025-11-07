@@ -138,7 +138,7 @@ const ContractsTable = ({
                       )}
                     </TableCell>
                     <TableCell>
-                      <div className="whitespace-pre-line text-xs break-words">
+                      <div className="whitespace-pre-line text-xs break-words text-center">
                         {contract.amount}
                       </div>
                     </TableCell>
