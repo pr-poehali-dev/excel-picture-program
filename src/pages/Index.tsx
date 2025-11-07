@@ -83,6 +83,8 @@ const Index = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isAuditLogOpen, setIsAuditLogOpen] = useState(false);
+  const [sortField, setSortField] = useState<'organization' | 'contractNumber' | null>(null);
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
 
   const isExpired = (expirationDate: string): boolean => {
     if (!expirationDate || expirationDate.trim() === '') return false;
@@ -235,6 +237,15 @@ const Index = () => {
     }
   };
 
+  const handleSort = (field: 'organization' | 'contractNumber') => {
+    if (sortField === field) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortField(field);
+      setSortDirection('asc');
+    }
+  };
+
   const filteredContracts = contracts.filter(contract => {
     const matchesStatus = 
       statusFilter === 'all' ? true :
@@ -247,6 +258,19 @@ const Index = () => {
       (contract.contractNumber || '').toLowerCase().includes(searchQuery.toLowerCase());
     
     return matchesStatus && matchesSearch;
+  }).sort((a, b) => {
+    if (!sortField) return 0;
+    
+    let comparison = 0;
+    if (sortField === 'organization') {
+      comparison = (a.organizationName || '').localeCompare(b.organizationName || '', 'ru');
+    } else if (sortField === 'contractNumber') {
+      const numA = parseInt((a.contractNumber || '').replace(/\D/g, '')) || 0;
+      const numB = parseInt((b.contractNumber || '').replace(/\D/g, '')) || 0;
+      comparison = numA - numB;
+    }
+    
+    return sortDirection === 'asc' ? comparison : -comparison;
   });
 
   const stats = {
@@ -668,6 +692,9 @@ const Index = () => {
               userRole={userRole}
               isExpired={isExpired}
               isExpiringSoon={isExpiringSoon}
+              onSort={handleSort}
+              sortField={sortField}
+              sortDirection={sortDirection}
             />
           </div>
         </main>

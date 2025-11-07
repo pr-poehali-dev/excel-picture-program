@@ -40,6 +40,9 @@ interface ContractsTableProps {
   isExpired: (date: string) => boolean;
   isExpiringSoon: (date: string) => boolean;
   onAddClick?: () => void;
+  onSort?: (field: 'organization' | 'contractNumber') => void;
+  sortField?: 'organization' | 'contractNumber' | null;
+  sortDirection?: 'asc' | 'desc';
 }
 
 const ContractsTable = ({
@@ -51,24 +54,19 @@ const ContractsTable = ({
   isExpired,
   isExpiringSoon,
   onAddClick,
+  onSort,
+  sortField,
+  sortDirection,
 }: ContractsTableProps) => {
   const formatDate = (dateString: string): string => {
     if (!dateString) return '';
+    if (dateString.includes('.')) return dateString;
     
-    let date: Date;
-    if (dateString.includes('.')) {
-      const [day, month, year] = dateString.split(".");
-      date = new Date(+year, +month - 1, +day);
-    } else if (dateString.includes('-')) {
-      date = new Date(dateString);
-    } else {
-      return dateString;
-    }
-    
-    const months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 
-                    'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
-    
-    return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}.${month}.${year}`;
   };
 
   return (
@@ -79,8 +77,28 @@ const ContractsTable = ({
             <TableHeader>
               <TableRow className="bg-muted/50">
                 <TableHead className="font-semibold w-[3%]">№</TableHead>
-                <TableHead className="font-semibold w-[15%]">Название организации</TableHead>
-                <TableHead className="font-semibold w-[10%]">Договор №, дата</TableHead>
+                <TableHead className="font-semibold w-[15%]">
+                  <button 
+                    onClick={() => onSort?.('organization')} 
+                    className="flex items-center gap-1 hover:text-foreground transition-colors w-full"
+                  >
+                    Название организации
+                    {sortField === 'organization' && (
+                      <Icon name={sortDirection === 'asc' ? 'ArrowUp' : 'ArrowDown'} size={14} />
+                    )}
+                  </button>
+                </TableHead>
+                <TableHead className="font-semibold w-[10%]">
+                  <button 
+                    onClick={() => onSort?.('contractNumber')} 
+                    className="flex items-center gap-1 hover:text-foreground transition-colors w-full"
+                  >
+                    Договор №, дата
+                    {sortField === 'contractNumber' && (
+                      <Icon name={sortDirection === 'asc' ? 'ArrowUp' : 'ArrowDown'} size={14} />
+                    )}
+                  </button>
+                </TableHead>
                 <TableHead className="font-semibold w-[8%]">Срок действия</TableHead>
                 <TableHead className="font-semibold w-[10%]">Цена (₽)</TableHead>
                 <TableHead className="font-semibold w-[8%]">Стоимость (₽)</TableHead>
@@ -121,20 +139,20 @@ const ContractsTable = ({
                     <TableCell>
                       <div className="space-y-0.5 text-center">
                         <div className="font-medium text-xs">№ {contract.contractNumber}</div>
-                        <div className="text-xs text-muted-foreground">{contract.contractDate}</div>
+                        <div className="text-xs text-muted-foreground">{formatDate(contract.contractDate)}</div>
                       </div>
                     </TableCell>
                     <TableCell className="text-center">
-                      <span className="hidden print:inline">{contract.expirationDate}</span>
+                      <span className="hidden print:inline">{formatDate(contract.expirationDate)}</span>
                       {isExpired(contract.expirationDate) ? (
                         <Badge
                           variant="destructive"
                           className="bg-destructive text-destructive-foreground print:hidden"
                         >
-                          {contract.expirationDate}
+                          {formatDate(contract.expirationDate)}
                         </Badge>
                       ) : (
-                        <span className="print:hidden">{contract.expirationDate}</span>
+                        <span className="print:hidden">{formatDate(contract.expirationDate)}</span>
                       )}
                     </TableCell>
                     <TableCell>
