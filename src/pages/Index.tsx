@@ -288,7 +288,7 @@ const Index = () => {
       'Дата договора': contract.contractDate || '',
       'Срок действия': contract.expirationDate || '',
       'Цена': contract.amount || '',
-      'Стоимость (₽)': contract.totalAmount ? parseFloat(contract.totalAmount) : 0,
+      'Сумма договора (₽)': contract.totalAmount ? parseFloat(contract.totalAmount) : 0,
       'СБИС': contract.sbis || '',
       'ЕИС': contract.eis || '',
       'Акт работ': contract.workAct || '',
@@ -428,7 +428,7 @@ const Index = () => {
             continue;
           }
 
-          const totalAmountValue = row['Стоимость (₽)'];
+          const totalAmountValue = row['Сумма договора (₽)'];
           let totalAmountStr = '';
           
           if (typeof totalAmountValue === 'number') {

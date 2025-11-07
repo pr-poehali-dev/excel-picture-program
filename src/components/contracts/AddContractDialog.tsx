@@ -86,7 +86,7 @@ const AddContractDialog = ({
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="totalAmount">Стоимость (₽)</Label>
+            <Label htmlFor="totalAmount">Сумма договора (₽)</Label>
             <Input
               id="totalAmount"
               type="number"

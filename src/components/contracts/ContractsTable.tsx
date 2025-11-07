@@ -100,7 +100,7 @@ const ContractsTable = ({
                 </TableHead>
                 <TableHead className="font-semibold w-[9%] text-center">Срок действия</TableHead>
                 <TableHead className="font-semibold w-[12%] text-center">Цена (₽)</TableHead>
-                <TableHead className="font-semibold w-[7%] text-center">Стоимость (₽)</TableHead>
+                <TableHead className="font-semibold w-[7%] text-center">Сумма договора (₽)</TableHead>
                 <TableHead className="font-semibold w-[6%] text-center">СБИС</TableHead>
                 <TableHead className="font-semibold w-[6%] text-center">ЕИС</TableHead>
                 <TableHead className="font-semibold w-[6%] text-center">Акт вып-ых работ</TableHead>
@@ -332,7 +332,7 @@ const ContractsTable = ({
                     
                     {contract.totalAmount && (
                       <div className="flex items-center justify-between">
-                        <span className="text-sm text-muted-foreground">Стоимость:</span>
+                        <span className="text-sm text-muted-foreground">Сумма договора:</span>
                         <span className="font-semibold">
                           {new Intl.NumberFormat('ru-RU', {
                             style: 'decimal',
