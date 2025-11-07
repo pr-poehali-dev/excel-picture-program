@@ -116,15 +116,15 @@ const ContractsTable = ({
                       isExpired(contract.expirationDate) ? 'bg-red-50' : ''
                     }`}
                   >
-                    <TableCell className="font-medium text-xs">{index + 1}</TableCell>
-                    <TableCell className="font-medium text-xs">{contract.organizationName}</TableCell>
+                    <TableCell className="font-medium text-xs text-center">{index + 1}</TableCell>
+                    <TableCell className="font-medium text-xs text-center">{contract.organizationName}</TableCell>
                     <TableCell>
-                      <div className="space-y-0.5">
+                      <div className="space-y-0.5 text-center">
                         <div className="font-medium text-xs">№ {contract.contractNumber}</div>
                         <div className="text-xs text-muted-foreground">{contract.contractDate}</div>
                       </div>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="text-center">
                       <span className="hidden print:inline">{contract.expirationDate}</span>
                       {isExpired(contract.expirationDate) ? (
                         <Badge
@@ -142,7 +142,7 @@ const ContractsTable = ({
                         {contract.amount}
                       </div>
                     </TableCell>
-                    <TableCell className="font-semibold text-xs">
+                    <TableCell className="font-semibold text-xs text-center">
                       {contract.totalAmount && (
                         <span>
                           {new Intl.NumberFormat('ru-RU', {
@@ -153,7 +153,7 @@ const ContractsTable = ({
                         </span>
                       )}
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="text-center">
                       <span className="hidden print:inline">{contract.sbis || 'Нет'}</span>
                       <Badge 
                         variant="outline"
@@ -166,7 +166,7 @@ const ContractsTable = ({
                         {contract.sbis || 'Нет'}
                       </Badge>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="text-center">
                       <span className="hidden print:inline">{contract.eis || 'Нет'}</span>
                       <Badge 
                         variant="outline"
@@ -179,7 +179,7 @@ const ContractsTable = ({
                         {contract.eis || 'Нет'}
                       </Badge>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="text-center">
                       <span className="hidden print:inline">{contract.workAct || 'Нет'}</span>
                       <Badge 
                         variant="outline"

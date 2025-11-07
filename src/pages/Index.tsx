@@ -123,11 +123,37 @@ const Index = () => {
     return daysUntilExpiration > 0 && daysUntilExpiration <= 30;
   };
 
+  const convertDateToDisplay = (dateStr: string): string => {
+    if (!dateStr) return '';
+    if (dateStr.includes('.')) return dateStr;
+    
+    const date = new Date(dateStr);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}.${month}.${year}`;
+  };
+
+  const convertDateToInput = (dateStr: string): string => {
+    if (!dateStr) return '';
+    if (dateStr.includes('-')) return dateStr;
+    
+    const [day, month, year] = dateStr.split('.');
+    if (!day || !month || !year) return '';
+    return `${year}-${month}-${day}`;
+  };
+
   const handleAddContract = async () => {
     if (!newContract.organizationName) {
       toast.error("Заполните обязательное поле: Название организации");
       return;
     }
+
+    const contractData = {
+      ...newContract,
+      contractDate: newContract.contractDate ? convertDateToDisplay(newContract.contractDate) : '',
+      expirationDate: newContract.expirationDate ? convertDateToDisplay(newContract.expirationDate) : '',
+    };
 
     try {
       const response = await fetch(API_URL, {
@@ -136,7 +162,7 @@ const Index = () => {
           "Content-Type": "application/json",
           "X-User-Role": userRole
         },
-        body: JSON.stringify(newContract),
+        body: JSON.stringify(contractData),
       });
 
       if (response.ok) {
@@ -156,6 +182,12 @@ const Index = () => {
   const handleEditContract = async () => {
     if (!editingContract) return;
 
+    const contractData = {
+      ...editingContract,
+      contractDate: editingContract.contractDate ? convertDateToDisplay(editingContract.contractDate) : '',
+      expirationDate: editingContract.expirationDate ? convertDateToDisplay(editingContract.expirationDate) : '',
+    };
+
     try {
       const response = await fetch(`${API_URL}?id=${editingContract.id}`, {
         method: "PUT",
@@ -163,7 +195,7 @@ const Index = () => {
           "Content-Type": "application/json",
           "X-User-Role": userRole
         },
-        body: JSON.stringify(editingContract),
+        body: JSON.stringify(contractData),
       });
 
       if (response.ok) {
@@ -625,7 +657,11 @@ const Index = () => {
               contracts={filteredContracts}
               isLoading={isLoading}
               onEdit={(contract) => {
-                setEditingContract(contract);
+                setEditingContract({
+                  ...contract,
+                  contractDate: convertDateToInput(contract.contractDate),
+                  expirationDate: convertDateToInput(contract.expirationDate)
+                });
                 setIsEditDialogOpen(true);
               }}
               onDelete={handleDeleteContract}
