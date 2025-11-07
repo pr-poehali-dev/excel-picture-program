@@ -436,31 +436,35 @@ const Index = () => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <div className="flex flex-1">
-        <aside className="hidden lg:block w-64 border-r bg-card print:hidden">
-          <Sidebar 
-            userRole={userRole} 
-            onNavigateUsers={handleNavigateUsers}
-            onOpenAuditLog={() => setIsAuditLogOpen(true)}
-          />
-        </aside>
+        {userRole === "admin" && (
+          <>
+            <aside className="hidden lg:block w-64 border-r bg-card print:hidden">
+              <Sidebar 
+                userRole={userRole} 
+                onNavigateUsers={handleNavigateUsers}
+                onOpenAuditLog={() => setIsAuditLogOpen(true)}
+              />
+            </aside>
 
-        <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-          <SheetTrigger asChild className="lg:hidden print:hidden fixed top-4 left-4 z-50">
-            <Button variant="ghost" size="icon">
-              <Icon name="Menu" size={24} />
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="left" className="w-64 p-0">
-            <SheetHeader className="p-4 border-b">
-              <SheetTitle>Меню</SheetTitle>
-            </SheetHeader>
-            <Sidebar 
-              userRole={userRole} 
-              onNavigateUsers={handleNavigateUsers}
-              onOpenAuditLog={() => setIsAuditLogOpen(true)}
-            />
-          </SheetContent>
-        </Sheet>
+            <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+              <SheetTrigger asChild className="lg:hidden print:hidden fixed top-4 left-4 z-50">
+                <Button variant="ghost" size="icon">
+                  <Icon name="Menu" size={24} />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="w-64 p-0">
+                <SheetHeader className="p-4 border-b">
+                  <SheetTitle>Меню</SheetTitle>
+                </SheetHeader>
+                <Sidebar 
+                  userRole={userRole} 
+                  onNavigateUsers={handleNavigateUsers}
+                  onOpenAuditLog={() => setIsAuditLogOpen(true)}
+                />
+              </SheetContent>
+            </Sheet>
+          </>
+        )}
 
         <main className="flex-1 overflow-x-hidden">
           <div className="container mx-auto p-4 lg:p-6 space-y-6">
