@@ -76,11 +76,10 @@ const ContractsTable = ({
           <Table>
             <TableHeader>
               <TableRow className="bg-muted/50">
-                <TableHead className="font-semibold w-[3%]">№</TableHead>
-                <TableHead className="font-semibold w-[15%]">
+                <TableHead className="font-semibold w-[16%] text-center">
                   <button 
                     onClick={() => onSort?.('organization')} 
-                    className="flex items-center gap-1 hover:text-foreground transition-colors w-full"
+                    className="flex items-center gap-1 hover:text-foreground transition-colors w-full justify-center"
                   >
                     Название организации
                     {sortField === 'organization' && (
@@ -88,10 +87,10 @@ const ContractsTable = ({
                     )}
                   </button>
                 </TableHead>
-                <TableHead className="font-semibold w-[10%]">
+                <TableHead className="font-semibold w-[11%] text-center">
                   <button 
                     onClick={() => onSort?.('contractNumber')} 
-                    className="flex items-center gap-1 hover:text-foreground transition-colors w-full"
+                    className="flex items-center gap-1 hover:text-foreground transition-colors w-full justify-center"
                   >
                     Договор №, дата
                     {sortField === 'contractNumber' && (
@@ -99,28 +98,28 @@ const ContractsTable = ({
                     )}
                   </button>
                 </TableHead>
-                <TableHead className="font-semibold w-[8%]">Срок действия</TableHead>
-                <TableHead className="font-semibold w-[10%]">Цена (₽)</TableHead>
-                <TableHead className="font-semibold w-[8%]">Стоимость (₽)</TableHead>
-                <TableHead className="font-semibold w-[6%]">СБИС</TableHead>
-                <TableHead className="font-semibold w-[6%]">ЕИС</TableHead>
-                <TableHead className="font-semibold w-[6%]">Акт выполненных работ</TableHead>
-                <TableHead className="font-semibold w-[14%]">Контактное лицо</TableHead>
-                <TableHead className="font-semibold w-[10%]">Примечание</TableHead>
-                {userRole !== "accountant" && <TableHead className="font-semibold">Действия</TableHead>}
+                <TableHead className="font-semibold w-[9%] text-center">Срок действия</TableHead>
+                <TableHead className="font-semibold w-[10%] text-center">Цена (₽)</TableHead>
+                <TableHead className="font-semibold w-[9%] text-center">Стоимость (₽)</TableHead>
+                <TableHead className="font-semibold w-[6%] text-center">СБИС</TableHead>
+                <TableHead className="font-semibold w-[6%] text-center">ЕИС</TableHead>
+                <TableHead className="font-semibold w-[7%] text-center">Акт выполненных работ</TableHead>
+                <TableHead className="font-semibold w-[13%] text-center">Контактное лицо</TableHead>
+                <TableHead className="font-semibold w-[8%] text-center">Примечание</TableHead>
+                {userRole !== "accountant" && <TableHead className="font-semibold w-[5%] text-center">Действия</TableHead>}
               </TableRow>
             </TableHeader>
             <TableBody>
               {isLoading ? (
                 <TableRow>
-                  <TableCell colSpan={10} className="text-center py-8">
+                  <TableCell colSpan={11} className="text-center py-8">
                     <Icon name="Loader2" size={24} className="animate-spin mx-auto" />
                     <p className="mt-2 text-muted-foreground">Загрузка договоров...</p>
                   </TableCell>
                 </TableRow>
               ) : contracts.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={10} className="text-center py-8">
+                  <TableCell colSpan={11} className="text-center py-8">
                     <Icon name="FileText" size={48} className="mx-auto text-muted-foreground/50" />
                     <p className="mt-2 text-muted-foreground">Договоры не найдены</p>
                     <p className="text-sm text-muted-foreground">Добавьте первый договор</p>
@@ -134,7 +133,6 @@ const ContractsTable = ({
                       isExpired(contract.expirationDate) ? 'bg-red-50' : ''
                     }`}
                   >
-                    <TableCell className="font-medium text-xs text-center">{index + 1}</TableCell>
                     <TableCell className="font-medium text-xs text-center">{contract.organizationName}</TableCell>
                     <TableCell>
                       <div className="space-y-0.5 text-center">
