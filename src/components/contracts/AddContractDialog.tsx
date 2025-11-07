@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -143,8 +144,9 @@ const AddContractDialog = ({
           </div>
           <div className="space-y-2 col-span-2">
             <Label htmlFor="notes">Примечание</Label>
-            <Input
+            <Textarea
               id="notes"
+              rows={3}
               value={newContract.notes || ""}
               onChange={(e) => onContractChange({ ...newContract, notes: e.target.value })}
             />
