@@ -74,16 +74,26 @@ const AddContractDialog = ({
               onChange={(e) => onContractChange({ ...newContract, expirationDate: e.target.value })}
             />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="amount">Цена (₽)</Label>
+          <div className="space-y-2 col-span-2">
+            <Label htmlFor="amount">Цена (через / можно добавить 4 значения)</Label>
             <Input
               id="amount"
+              type="text"
+              placeholder="Например: 1000 / 2000 / 3000 / 4000"
+              value={newContract.amount || ""}
+              onChange={(e) => onContractChange({ ...newContract, amount: e.target.value })}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="totalAmount">Стоимость (₽)</Label>
+            <Input
+              id="totalAmount"
               type="number"
               step="0.01"
               min="0"
               placeholder="0.00"
-              value={newContract.amount || ""}
-              onChange={(e) => onContractChange({ ...newContract, amount: e.target.value })}
+              value={newContract.totalAmount || ""}
+              onChange={(e) => onContractChange({ ...newContract, totalAmount: e.target.value })}
             />
           </div>
           <div className="space-y-2">
@@ -131,8 +141,16 @@ const AddContractDialog = ({
               </SelectContent>
             </Select>
           </div>
+          <div className="space-y-2 col-span-2">
+            <Label htmlFor="notes">Примечание</Label>
+            <Input
+              id="notes"
+              value={newContract.notes || ""}
+              onChange={(e) => onContractChange({ ...newContract, notes: e.target.value })}
+            />
+          </div>
           <div className="space-y-2">
-            <Label htmlFor="contactPerson">Контактное лицо</Label>
+            <Label htmlFor="contactPerson">Контактное лицо 1</Label>
             <Input
               id="contactPerson"
               value={newContract.contactPerson || ""}
@@ -140,11 +158,43 @@ const AddContractDialog = ({
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="contactPhone">Телефон</Label>
+            <Label htmlFor="contactPhone">Телефон 1</Label>
             <Input
               id="contactPhone"
               value={newContract.contactPhone || ""}
               onChange={(e) => onContractChange({ ...newContract, contactPhone: e.target.value })}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="contactPerson2">Контактное лицо 2 (опционально)</Label>
+            <Input
+              id="contactPerson2"
+              value={newContract.contactPerson2 || ""}
+              onChange={(e) => onContractChange({ ...newContract, contactPerson2: e.target.value })}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="contactPhone2">Телефон 2 (опционально)</Label>
+            <Input
+              id="contactPhone2"
+              value={newContract.contactPhone2 || ""}
+              onChange={(e) => onContractChange({ ...newContract, contactPhone2: e.target.value })}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="contactPerson3">Контактное лицо 3 (опционально)</Label>
+            <Input
+              id="contactPerson3"
+              value={newContract.contactPerson3 || ""}
+              onChange={(e) => onContractChange({ ...newContract, contactPerson3: e.target.value })}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="contactPhone3">Телефон 3 (опционально)</Label>
+            <Input
+              id="contactPhone3"
+              value={newContract.contactPhone3 || ""}
+              onChange={(e) => onContractChange({ ...newContract, contactPhone3: e.target.value })}
             />
           </div>
         </div>

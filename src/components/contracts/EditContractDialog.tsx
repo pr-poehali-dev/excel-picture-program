@@ -74,16 +74,26 @@ const EditContractDialog = ({
               onChange={(e) => onContractChange(contract ? { ...contract, expirationDate: e.target.value } : null)}
             />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="edit-amount">Сумма (₽)</Label>
+          <div className="space-y-2 col-span-2">
+            <Label htmlFor="edit-amount">Цена (через / можно добавить 4 значения)</Label>
             <Input
               id="edit-amount"
+              type="text"
+              placeholder="Например: 1000 / 2000 / 3000 / 4000"
+              value={contract?.amount || ""}
+              onChange={(e) => onContractChange(contract ? { ...contract, amount: e.target.value } : null)}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="edit-totalAmount">Стоимость (₽)</Label>
+            <Input
+              id="edit-totalAmount"
               type="number"
               step="0.01"
               min="0"
               placeholder="0.00"
-              value={contract?.amount || ""}
-              onChange={(e) => onContractChange(contract ? { ...contract, amount: e.target.value } : null)}
+              value={contract?.totalAmount || ""}
+              onChange={(e) => onContractChange(contract ? { ...contract, totalAmount: e.target.value } : null)}
             />
           </div>
           <div className="space-y-2">
@@ -131,8 +141,16 @@ const EditContractDialog = ({
               </SelectContent>
             </Select>
           </div>
+          <div className="space-y-2 col-span-2">
+            <Label htmlFor="edit-notes">Примечание</Label>
+            <Input
+              id="edit-notes"
+              value={contract?.notes || ""}
+              onChange={(e) => onContractChange(contract ? { ...contract, notes: e.target.value } : null)}
+            />
+          </div>
           <div className="space-y-2">
-            <Label htmlFor="edit-contactPerson">Контактное лицо</Label>
+            <Label htmlFor="edit-contactPerson">Контактное лицо 1</Label>
             <Input
               id="edit-contactPerson"
               value={contract?.contactPerson || ""}
@@ -140,11 +158,43 @@ const EditContractDialog = ({
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="edit-contactPhone">Телефон</Label>
+            <Label htmlFor="edit-contactPhone">Телефон 1</Label>
             <Input
               id="edit-contactPhone"
               value={contract?.contactPhone || ""}
               onChange={(e) => onContractChange(contract ? { ...contract, contactPhone: e.target.value } : null)}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="edit-contactPerson2">Контактное лицо 2 (опционально)</Label>
+            <Input
+              id="edit-contactPerson2"
+              value={contract?.contactPerson2 || ""}
+              onChange={(e) => onContractChange(contract ? { ...contract, contactPerson2: e.target.value } : null)}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="edit-contactPhone2">Телефон 2 (опционально)</Label>
+            <Input
+              id="edit-contactPhone2"
+              value={contract?.contactPhone2 || ""}
+              onChange={(e) => onContractChange(contract ? { ...contract, contactPhone2: e.target.value } : null)}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="edit-contactPerson3">Контактное лицо 3 (опционально)</Label>
+            <Input
+              id="edit-contactPerson3"
+              value={contract?.contactPerson3 || ""}
+              onChange={(e) => onContractChange(contract ? { ...contract, contactPerson3: e.target.value } : null)}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="edit-contactPhone3">Телефон 3 (опционально)</Label>
+            <Input
+              id="edit-contactPhone3"
+              value={contract?.contactPhone3 || ""}
+              onChange={(e) => onContractChange(contract ? { ...contract, contactPhone3: e.target.value } : null)}
             />
           </div>
         </div>

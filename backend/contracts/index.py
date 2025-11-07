@@ -49,8 +49,9 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         if method == 'GET':
             cur.execute('''
                 SELECT id, organization_name, contract_number, contract_date, 
-                       expiration_date, amount, sbis, eis, work_act, 
-                       contact_person, contact_phone
+                       expiration_date, amount, total_amount, notes, sbis, eis, work_act, 
+                       contact_person, contact_phone, contact_person2, contact_phone2,
+                       contact_person3, contact_phone3
                 FROM contracts
                 ORDER BY id ASC
             ''')
@@ -65,11 +66,17 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                     'contractDate': row[3],
                     'expirationDate': row[4],
                     'amount': row[5],
-                    'sbis': row[6],
-                    'eis': row[7],
-                    'workAct': row[8],
-                    'contactPerson': row[9],
-                    'contactPhone': row[10]
+                    'totalAmount': row[6],
+                    'notes': row[7],
+                    'sbis': row[8],
+                    'eis': row[9],
+                    'workAct': row[10],
+                    'contactPerson': row[11],
+                    'contactPhone': row[12],
+                    'contactPerson2': row[13],
+                    'contactPhone2': row[14],
+                    'contactPerson3': row[15],
+                    'contactPhone3': row[16]
                 })
             
             return {
@@ -89,9 +96,10 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             cur.execute('''
                 INSERT INTO contracts (
                     organization_name, contract_number, contract_date,
-                    expiration_date, amount, sbis, eis, work_act,
-                    contact_person, contact_phone
-                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    expiration_date, amount, total_amount, notes, sbis, eis, work_act,
+                    contact_person, contact_phone, contact_person2, contact_phone2,
+                    contact_person3, contact_phone3
+                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                 RETURNING id
             ''', (
                 body_data.get('organizationName'),
@@ -99,11 +107,17 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                 body_data.get('contractDate'),
                 expiration_date,
                 body_data.get('amount'),
+                body_data.get('totalAmount'),
+                body_data.get('notes'),
                 body_data.get('sbis'),
                 body_data.get('eis'),
                 body_data.get('workAct'),
                 body_data.get('contactPerson'),
-                body_data.get('contactPhone')
+                body_data.get('contactPhone'),
+                body_data.get('contactPerson2'),
+                body_data.get('contactPhone2'),
+                body_data.get('contactPerson3'),
+                body_data.get('contactPhone3')
             ))
             
             new_id = cur.fetchone()[0]
@@ -137,11 +151,17 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                     contract_date = %s,
                     expiration_date = %s,
                     amount = %s,
+                    total_amount = %s,
+                    notes = %s,
                     sbis = %s,
                     eis = %s,
                     work_act = %s,
                     contact_person = %s,
                     contact_phone = %s,
+                    contact_person2 = %s,
+                    contact_phone2 = %s,
+                    contact_person3 = %s,
+                    contact_phone3 = %s,
                     updated_at = CURRENT_TIMESTAMP
                 WHERE id = %s
             ''', (
@@ -150,11 +170,17 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                 body_data.get('contractDate'),
                 body_data.get('expirationDate'),
                 body_data.get('amount'),
+                body_data.get('totalAmount'),
+                body_data.get('notes'),
                 body_data.get('sbis'),
                 body_data.get('eis'),
                 body_data.get('workAct'),
                 body_data.get('contactPerson'),
                 body_data.get('contactPhone'),
+                body_data.get('contactPerson2'),
+                body_data.get('contactPhone2'),
+                body_data.get('contactPerson3'),
+                body_data.get('contactPhone3'),
                 contract_id
             ))
             

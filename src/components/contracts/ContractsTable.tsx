@@ -18,11 +18,17 @@ export interface Contract {
   contractDate: string;
   expirationDate: string;
   amount: string;
+  totalAmount?: string;
+  notes?: string;
   sbis: string;
   eis: string;
   workAct: string;
   contactPerson: string;
   contactPhone: string;
+  contactPerson2?: string;
+  contactPhone2?: string;
+  contactPerson3?: string;
+  contactPhone3?: string;
 }
 
 interface ContractsTableProps {
@@ -77,10 +83,12 @@ const ContractsTable = ({
                 <TableHead className="font-semibold">Договор №, дата</TableHead>
                 <TableHead className="font-semibold">Срок действия</TableHead>
                 <TableHead className="font-semibold">Цена (₽)</TableHead>
+                <TableHead className="font-semibold">Стоимость (₽)</TableHead>
                 <TableHead className="font-semibold">СБИС</TableHead>
                 <TableHead className="font-semibold">ЕИС</TableHead>
                 <TableHead className="font-semibold">Акт выполненных работ</TableHead>
                 <TableHead className="font-semibold">Контактное лицо</TableHead>
+                <TableHead className="font-semibold">Примечание</TableHead>
                 {userRole !== "accountant" && <TableHead className="font-semibold">Действия</TableHead>}
               </TableRow>
             </TableHeader>
@@ -129,15 +137,21 @@ const ContractsTable = ({
                         <span className="print:hidden">{contract.expirationDate}</span>
                       )}
                     </TableCell>
+                    <TableCell className="min-w-[180px]">
+                      <div className="whitespace-pre-line text-sm">
+                        {contract.amount}
+                      </div>
+                    </TableCell>
                     <TableCell className="font-semibold min-w-[140px]">
-                      <span className="print:hidden">
-                        {new Intl.NumberFormat('ru-RU', {
-                          style: 'decimal',
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2
-                        }).format(Number(contract.amount) || 0)} ₽
-                      </span>
-                      <span className="hidden print:inline">{contract.amount}</span>
+                      {contract.totalAmount && (
+                        <span>
+                          {new Intl.NumberFormat('ru-RU', {
+                            style: 'decimal',
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                          }).format(Number(contract.totalAmount) || 0)} ₽
+                        </span>
+                      )}
                     </TableCell>
                     <TableCell>
                       <span className="hidden print:inline">{contract.sbis || 'Нет'}</span>
@@ -179,10 +193,27 @@ const ContractsTable = ({
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      <div className="space-y-1">
-                        <div className="text-sm">{contract.contactPerson}</div>
-                        <div className="text-xs text-muted-foreground">{contract.contactPhone}</div>
+                      <div className="space-y-2">
+                        <div className="space-y-0.5">
+                          <div className="text-sm">{contract.contactPerson}</div>
+                          <div className="text-xs text-muted-foreground">{contract.contactPhone}</div>
+                        </div>
+                        {contract.contactPerson2 && (
+                          <div className="space-y-0.5">
+                            <div className="text-sm">{contract.contactPerson2}</div>
+                            <div className="text-xs text-muted-foreground">{contract.contactPhone2}</div>
+                          </div>
+                        )}
+                        {contract.contactPerson3 && (
+                          <div className="space-y-0.5">
+                            <div className="text-sm">{contract.contactPerson3}</div>
+                            <div className="text-xs text-muted-foreground">{contract.contactPhone3}</div>
+                          </div>
+                        )}
                       </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="font-bold text-sm">{contract.notes || ''}</div>
                     </TableCell>
                     {userRole !== "accountant" && (
                       <TableCell>
@@ -277,15 +308,29 @@ const ContractsTable = ({
                     </div>
 
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">Сумма:</span>
-                      <span className="font-semibold">
-                        {new Intl.NumberFormat('ru-RU', {
-                          style: 'decimal',
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2
-                        }).format(Number(contract.amount) || 0)} ₽
-                      </span>
+                      <span className="text-sm text-muted-foreground">Цена:</span>
+                      <span className="text-sm">{contract.amount}</span>
                     </div>
+                    
+                    {contract.totalAmount && (
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-muted-foreground">Стоимость:</span>
+                        <span className="font-semibold">
+                          {new Intl.NumberFormat('ru-RU', {
+                            style: 'decimal',
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                          }).format(Number(contract.totalAmount) || 0)} ₽
+                        </span>
+                      </div>
+                    )}
+                    
+                    {contract.notes && (
+                      <div className="pt-2 border-t">
+                        <span className="text-sm text-muted-foreground">Примечание:</span>
+                        <p className="font-bold text-sm mt-1">{contract.notes}</p>
+                      </div>
+                    )}
 
                     <div className="grid grid-cols-3 gap-2 pt-2">
                       <div className="text-center">
@@ -329,14 +374,32 @@ const ContractsTable = ({
                       </div>
                     </div>
 
-                    {(contract.contactPerson || contract.contactPhone) && (
+                    {(contract.contactPerson || contract.contactPhone || contract.contactPerson2 || contract.contactPerson3) && (
                       <div className="pt-2 border-t">
                         <p className="text-xs text-muted-foreground mb-1">Контакты:</p>
                         {contract.contactPerson && (
-                          <p className="text-sm">{contract.contactPerson}</p>
+                          <div className="mb-2">
+                            <p className="text-sm">{contract.contactPerson}</p>
+                            {contract.contactPhone && (
+                              <p className="text-sm text-muted-foreground">{contract.contactPhone}</p>
+                            )}
+                          </div>
                         )}
-                        {contract.contactPhone && (
-                          <p className="text-sm text-muted-foreground">{contract.contactPhone}</p>
+                        {contract.contactPerson2 && (
+                          <div className="mb-2">
+                            <p className="text-sm">{contract.contactPerson2}</p>
+                            {contract.contactPhone2 && (
+                              <p className="text-sm text-muted-foreground">{contract.contactPhone2}</p>
+                            )}
+                          </div>
+                        )}
+                        {contract.contactPerson3 && (
+                          <div>
+                            <p className="text-sm">{contract.contactPerson3}</p>
+                            {contract.contactPhone3 && (
+                              <p className="text-sm text-muted-foreground">{contract.contactPhone3}</p>
+                            )}
+                          </div>
                         )}
                       </div>
                     )}

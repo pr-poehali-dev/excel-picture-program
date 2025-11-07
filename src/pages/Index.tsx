@@ -221,7 +221,7 @@ const Index = () => {
     total: contracts.length,
     active: contracts.filter(c => !isExpired(c.expirationDate)).length,
     expired: contracts.filter(c => isExpired(c.expirationDate)).length,
-    totalAmount: contracts.reduce((sum, c) => sum + parseFloat((c.amount || '0').replace(/\s/g, "")), 0),
+    totalAmount: contracts.reduce((sum, c) => sum + parseFloat((c.totalAmount || '0').replace(/\s/g, "")), 0),
   };
 
   const handleExportToExcel = () => {
@@ -231,12 +231,18 @@ const Index = () => {
       'Номер договора': contract.contractNumber || '',
       'Дата договора': contract.contractDate || '',
       'Срок действия': contract.expirationDate || '',
-      'Сумма (₽)': contract.amount ? parseFloat(contract.amount.replace(/\s/g, '')) : 0,
+      'Цена': contract.amount || '',
+      'Стоимость (₽)': contract.totalAmount ? parseFloat(contract.totalAmount) : 0,
       'СБИС': contract.sbis || '',
       'ЕИС': contract.eis || '',
       'Акт работ': contract.workAct || '',
-      'Контактное лицо': contract.contactPerson || '',
-      'Телефон': contract.contactPhone || '',
+      'Контактное лицо 1': contract.contactPerson || '',
+      'Телефон 1': contract.contactPhone || '',
+      'Контактное лицо 2': contract.contactPerson2 || '',
+      'Телефон 2': contract.contactPhone2 || '',
+      'Контактное лицо 3': contract.contactPerson3 || '',
+      'Телефон 3': contract.contactPhone3 || '',
+      'Примечание': contract.notes || '',
     }));
 
     const worksheet = XLSX.utils.json_to_sheet(exportData);
@@ -248,8 +254,9 @@ const Index = () => {
 
     worksheet['!cols'] = [
       { wch: 6 }, { wch: 38 }, { wch: 18 }, { wch: 14 }, 
-      { wch: 14 }, { wch: 16 }, { wch: 15 }, { wch: 15 }, 
-      { wch: 15 }, { wch: 30 }, { wch: 20 }
+      { wch: 14 }, { wch: 24 }, { wch: 16 }, { wch: 15 }, { wch: 15 }, 
+      { wch: 15 }, { wch: 30 }, { wch: 20 }, { wch: 30 }, { wch: 20 },
+      { wch: 30 }, { wch: 20 }, { wch: 40 }
     ];
 
     if (!worksheet['!rows']) worksheet['!rows'] = [];
@@ -283,9 +290,9 @@ const Index = () => {
             fill: { fgColor: { rgb: isEvenRow ? "EFF6FF" : "FFFFFF" } },
             font: { sz: 11, name: "Segoe UI", color: { rgb: "0F172A" } },
             alignment: { 
-              horizontal: C === 0 ? "center" : (C === 5 ? "right" : "left"), 
+              horizontal: C === 0 ? "center" : (C === 6 ? "right" : "left"), 
               vertical: "center", 
-              wrapText: false
+              wrapText: C === 5
             },
             border: {
               top: { style: "hair", color: { rgb: "DBEAFE" } },
@@ -300,13 +307,17 @@ const Index = () => {
             cell.z = '0';
             cell.s.font = { ...cell.s.font, bold: true, color: { rgb: "2563EB" } };
           } else if (C === 5) {
+            cell.t = 's';
+            cell.s.alignment = { ...cell.s.alignment, wrapText: true };
+          } else if (C === 6) {
             cell.t = 'n';
             cell.z = '#,##0 ₽';
             cell.s.font = { ...cell.s.font, bold: true };
           } else if (C === 3 || C === 4) {
             cell.t = 's';
-          } else if (C === 10) {
+          } else if (C === 16) {
             cell.t = 's';
+            cell.s.font = { ...cell.s.font, bold: true };
           } else {
             cell.t = 's';
           }
@@ -361,13 +372,13 @@ const Index = () => {
             continue;
           }
 
-          const amountValue = row['Сумма (₽)'];
-          let amountStr = '0';
+          const totalAmountValue = row['Стоимость (₽)'];
+          let totalAmountStr = '';
           
-          if (typeof amountValue === 'number') {
-            amountStr = String(Math.round(amountValue));
-          } else if (typeof amountValue === 'string') {
-            amountStr = amountValue.replace(/[^\d]/g, '') || '0';
+          if (typeof totalAmountValue === 'number') {
+            totalAmountStr = String(Math.round(totalAmountValue));
+          } else if (typeof totalAmountValue === 'string' && totalAmountValue.trim()) {
+            totalAmountStr = totalAmountValue.replace(/[^\d]/g, '') || '';
           }
 
           const contract: Partial<Contract> = {
@@ -375,12 +386,18 @@ const Index = () => {
             contractNumber: String(row['Номер договора'] || '').trim(),
             contractDate: parseExcelDate(row['Дата договора']),
             expirationDate: parseExcelDate(row['Срок действия']),
-            amount: amountStr,
+            amount: String(row['Цена'] || '').trim(),
+            totalAmount: totalAmountStr,
+            notes: String(row['Примечание'] || '').trim(),
             sbis: String(row['СБИС'] || '').trim() || 'Нет',
             eis: String(row['ЕИС'] || '').trim() || 'Нет',
             workAct: String(row['Акт работ'] || '').trim() || 'Нет',
-            contactPerson: String(row['Контактное лицо'] || '').trim(),
-            contactPhone: String(row['Телефон'] || '').trim(),
+            contactPerson: String(row['Контактное лицо 1'] || row['Контактное лицо'] || '').trim(),
+            contactPhone: String(row['Телефон 1'] || row['Телефон'] || '').trim(),
+            contactPerson2: String(row['Контактное лицо 2'] || '').trim(),
+            contactPhone2: String(row['Телефон 2'] || '').trim(),
+            contactPerson3: String(row['Контактное лицо 3'] || '').trim(),
+            contactPhone3: String(row['Телефон 3'] || '').trim(),
           };
 
           // Проверка на дубликаты по номеру договора и названию организации
