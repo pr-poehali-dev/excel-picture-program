@@ -74,21 +74,21 @@ const ContractsTable = ({
   return (
     <Card className="animate-fade-in" style={{ animationDelay: "0.4s" }}>
       <CardContent className="p-0">
-        <div className="hidden lg:block overflow-x-auto">
+        <div className="hidden lg:block">
           <Table>
             <TableHeader>
               <TableRow className="bg-muted/50">
-                <TableHead className="font-semibold">№</TableHead>
-                <TableHead className="font-semibold">Название организации</TableHead>
-                <TableHead className="font-semibold">Договор №, дата</TableHead>
-                <TableHead className="font-semibold">Срок действия</TableHead>
-                <TableHead className="font-semibold">Цена (₽)</TableHead>
-                <TableHead className="font-semibold">Стоимость (₽)</TableHead>
-                <TableHead className="font-semibold">СБИС</TableHead>
-                <TableHead className="font-semibold">ЕИС</TableHead>
-                <TableHead className="font-semibold">Акт выполненных работ</TableHead>
-                <TableHead className="font-semibold">Контактное лицо</TableHead>
-                <TableHead className="font-semibold">Примечание</TableHead>
+                <TableHead className="font-semibold w-[3%]">№</TableHead>
+                <TableHead className="font-semibold w-[15%]">Название организации</TableHead>
+                <TableHead className="font-semibold w-[10%]">Договор №, дата</TableHead>
+                <TableHead className="font-semibold w-[8%]">Срок действия</TableHead>
+                <TableHead className="font-semibold w-[10%]">Цена (₽)</TableHead>
+                <TableHead className="font-semibold w-[8%]">Стоимость (₽)</TableHead>
+                <TableHead className="font-semibold w-[6%]">СБИС</TableHead>
+                <TableHead className="font-semibold w-[6%]">ЕИС</TableHead>
+                <TableHead className="font-semibold w-[6%]">Акт выполненных работ</TableHead>
+                <TableHead className="font-semibold w-[14%]">Контактное лицо</TableHead>
+                <TableHead className="font-semibold w-[10%]">Примечание</TableHead>
                 {userRole !== "accountant" && <TableHead className="font-semibold">Действия</TableHead>}
               </TableRow>
             </TableHeader>
@@ -116,15 +116,15 @@ const ContractsTable = ({
                       isExpired(contract.expirationDate) ? 'bg-red-50' : ''
                     }`}
                   >
-                    <TableCell className="font-medium">{index + 1}</TableCell>
-                    <TableCell className="font-medium">{contract.organizationName}</TableCell>
+                    <TableCell className="font-medium text-xs">{index + 1}</TableCell>
+                    <TableCell className="font-medium text-xs">{contract.organizationName}</TableCell>
                     <TableCell>
-                      <div className="space-y-1">
-                        <div className="font-medium">№ {contract.contractNumber}</div>
-                        <div className="text-sm text-muted-foreground">{contract.contractDate}</div>
+                      <div className="space-y-0.5">
+                        <div className="font-medium text-xs">№ {contract.contractNumber}</div>
+                        <div className="text-xs text-muted-foreground">{contract.contractDate}</div>
                       </div>
                     </TableCell>
-                    <TableCell className="min-w-[160px]">
+                    <TableCell>
                       <span className="hidden print:inline">{contract.expirationDate}</span>
                       {isExpired(contract.expirationDate) ? (
                         <Badge
@@ -137,18 +137,18 @@ const ContractsTable = ({
                         <span className="print:hidden">{contract.expirationDate}</span>
                       )}
                     </TableCell>
-                    <TableCell className="min-w-[180px]">
-                      <div className="whitespace-pre-line text-sm">
+                    <TableCell>
+                      <div className="whitespace-pre-line text-xs break-words">
                         {contract.amount}
                       </div>
                     </TableCell>
-                    <TableCell className="font-semibold min-w-[140px]">
+                    <TableCell className="font-semibold text-xs">
                       {contract.totalAmount && (
                         <span>
                           {new Intl.NumberFormat('ru-RU', {
                             style: 'decimal',
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 0
                           }).format(Number(contract.totalAmount) || 0)} ₽
                         </span>
                       )}
@@ -157,7 +157,7 @@ const ContractsTable = ({
                       <span className="hidden print:inline">{contract.sbis || 'Нет'}</span>
                       <Badge 
                         variant="outline"
-                        className={`print:hidden ${
+                        className={`print:hidden text-xs ${
                           contract.sbis === 'Да' 
                             ? 'bg-green-100 text-green-800 border-green-300' 
                             : 'bg-red-500 text-white border-red-500'
@@ -170,7 +170,7 @@ const ContractsTable = ({
                       <span className="hidden print:inline">{contract.eis || 'Нет'}</span>
                       <Badge 
                         variant="outline"
-                        className={`print:hidden ${
+                        className={`print:hidden text-xs ${
                           contract.eis === 'Да' 
                             ? 'bg-green-100 text-green-800 border-green-300' 
                             : 'bg-red-500 text-white border-red-500'
@@ -183,7 +183,7 @@ const ContractsTable = ({
                       <span className="hidden print:inline">{contract.workAct || 'Нет'}</span>
                       <Badge 
                         variant="outline"
-                        className={`print:hidden ${
+                        className={`print:hidden text-xs ${
                           contract.workAct === 'Да' 
                             ? 'bg-green-100 text-green-800 border-green-300' 
                             : 'bg-red-500 text-white border-red-500'
@@ -193,27 +193,27 @@ const ContractsTable = ({
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      <div className="space-y-2">
+                      <div className="space-y-1.5">
                         <div className="space-y-0.5">
-                          <div className="text-sm">{contract.contactPerson}</div>
+                          <div className="text-xs">{contract.contactPerson}</div>
                           <div className="text-xs text-muted-foreground">{contract.contactPhone}</div>
                         </div>
                         {contract.contactPerson2 && (
                           <div className="space-y-0.5">
-                            <div className="text-sm">{contract.contactPerson2}</div>
+                            <div className="text-xs">{contract.contactPerson2}</div>
                             <div className="text-xs text-muted-foreground">{contract.contactPhone2}</div>
                           </div>
                         )}
                         {contract.contactPerson3 && (
                           <div className="space-y-0.5">
-                            <div className="text-sm">{contract.contactPerson3}</div>
+                            <div className="text-xs">{contract.contactPerson3}</div>
                             <div className="text-xs text-muted-foreground">{contract.contactPhone3}</div>
                           </div>
                         )}
                       </div>
                     </TableCell>
                     <TableCell>
-                      <div className="font-bold text-sm">{contract.notes || ''}</div>
+                      <div className="font-bold text-xs break-words">{contract.notes || ''}</div>
                     </TableCell>
                     {userRole !== "accountant" && (
                       <TableCell>
