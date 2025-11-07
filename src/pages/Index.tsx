@@ -484,7 +484,7 @@ const Index = () => {
         )}
 
         <main className="flex-1 overflow-x-hidden">
-          <div className="container mx-auto p-4 lg:p-6 space-y-6">
+          <div className="w-full max-w-[1920px] mx-auto p-4 lg:p-6 space-y-6">
             <div className="flex justify-end print:hidden">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
