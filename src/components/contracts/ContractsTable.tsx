@@ -233,20 +233,22 @@ const ContractsTable = ({
                     </TableCell>
                     {userRole !== "accountant" && (
                       <TableCell>
-                        <div className="flex gap-2">
+                        <div className="flex flex-col gap-1 items-center">
                           <Button
                             variant="ghost"
-                            size="sm"
+                            size="icon"
+                            className="h-6 w-6"
                             onClick={() => onEdit(contract)}
                           >
-                            <Icon name="Pencil" size={16} />
+                            <Icon name="Pencil" size={12} />
                           </Button>
                           <Button
                             variant="ghost"
-                            size="sm"
+                            size="icon"
+                            className="h-6 w-6"
                             onClick={() => onDelete(contract.id)}
                           >
-                            <Icon name="Trash2" size={16} />
+                            <Icon name="Trash2" size={12} />
                           </Button>
                         </div>
                       </TableCell>
