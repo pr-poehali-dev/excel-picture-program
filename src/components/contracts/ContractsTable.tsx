@@ -107,7 +107,7 @@ const ContractsTable = ({
                 <TableHead className="font-semibold w-[6%] text-center">Акт вып-ых работ</TableHead>
                 <TableHead className="font-semibold w-[10%] text-center">Контактное лицо</TableHead>
                 <TableHead className="font-semibold w-[12%] text-center">Примечание</TableHead>
-                {userRole !== "accountant" && <TableHead className="font-semibold w-[5%] text-center">Действия</TableHead>}
+                {userRole !== "accountant" && <TableHead className="font-semibold w-[5%] text-center">Действие</TableHead>}
               </TableRow>
             </TableHeader>
             <TableBody>
