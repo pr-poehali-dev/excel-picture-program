@@ -85,6 +85,16 @@ const AddContractDialog = ({
               onChange={(e) => onContractChange({ ...newContract, amount: e.target.value })}
             />
           </div>
+          <div className="space-y-2 col-span-2">
+            <Label htmlFor="amountComment">Комментарий к цене</Label>
+            <Textarea
+              id="amountComment"
+              placeholder="Дополнительная информация о цене"
+              value={newContract.amountComment || ""}
+              onChange={(e) => onContractChange({ ...newContract, amountComment: e.target.value })}
+              className="min-h-[60px]"
+            />
+          </div>
           <div className="space-y-2">
             <Label htmlFor="totalAmount">Сумма договора (₽)</Label>
             <Input

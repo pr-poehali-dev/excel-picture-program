@@ -20,6 +20,7 @@
         "contractDate": "01.01.2024",
         "expirationDate": "01.01.2025",
         "amount": "1000000",
+        "amountComment": "Test price comment",
         "sbis": "Отправлен",
         "eis": "Зарегистрирован",
         "workAct": "Подписан",

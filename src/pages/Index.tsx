@@ -288,6 +288,7 @@ const Index = () => {
       'Дата договора': convertDateToDisplay(contract.contractDate || ''),
       'Срок действия': convertDateToDisplay(contract.expirationDate || ''),
       'Цена': contract.amount || '',
+      'Комментарий к цене': contract.amountComment || '',
       'Сумма договора (₽)': contract.totalAmount ? parseFloat(contract.totalAmount) : 0,
       'СБИС': contract.sbis || '',
       'ЕИС': contract.eis || '',
@@ -310,7 +311,7 @@ const Index = () => {
 
     worksheet['!cols'] = [
       { wch: 6 }, { wch: 38 }, { wch: 18 }, { wch: 14 }, 
-      { wch: 14 }, { wch: 24 }, { wch: 16 }, { wch: 15 }, { wch: 15 }, 
+      { wch: 14 }, { wch: 24 }, { wch: 30 }, { wch: 16 }, { wch: 15 }, { wch: 15 }, 
       { wch: 15 }, { wch: 30 }, { wch: 20 }, { wch: 30 }, { wch: 20 },
       { wch: 30 }, { wch: 20 }, { wch: 40 }
     ];

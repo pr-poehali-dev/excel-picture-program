@@ -18,6 +18,7 @@ export interface Contract {
   contractDate: string;
   expirationDate: string;
   amount: string;
+  amountComment?: string;
   totalAmount?: string;
   notes?: string;
   sbis: string;
@@ -154,8 +155,15 @@ const ContractsTable = ({
                       )}
                     </TableCell>
                     <TableCell>
-                      <div className="whitespace-pre-line text-xs break-words text-center">
-                        {contract.amount}
+                      <div className="space-y-0.5 text-center">
+                        <div className="whitespace-pre-line text-xs break-words">
+                          {contract.amount}
+                        </div>
+                        {contract.amountComment && (
+                          <div className="text-[10px] text-muted-foreground italic whitespace-pre-line break-words">
+                            {contract.amountComment}
+                          </div>
+                        )}
                       </div>
                     </TableCell>
                     <TableCell className="font-semibold text-xs text-center">
