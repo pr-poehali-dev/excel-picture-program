@@ -1,0 +1,31 @@
+{
+  "name": "Система управления договорами",
+  "short_name": "Договоры",
+  "description": "Приложение для управления договорами, контрагентами и документами",
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "orientation": "portrait",
+  "scope": "/",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "https://cdn.poehali.dev/projects/adbe318b-5fc1-403c-8523-6a30d5a25a5a/files/61b3ccca-5c14-4568-a6e4-1d161be07b8c.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any"
+    },
+    {
+      "src": "https://cdn.poehali.dev/projects/adbe318b-5fc1-403c-8523-6a30d5a25a5a/files/9d8d3a20-ed1e-451f-97aa-efa0b139967f.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any"
+    },
+    {
+      "src": "https://cdn.poehali.dev/projects/adbe318b-5fc1-403c-8523-6a30d5a25a5a/files/9d8d3a20-ed1e-451f-97aa-efa0b139967f.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "maskable"
+    }
+  ]
+}
