@@ -54,6 +54,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                        contact_person3, contact_phone3
                 FROM contracts
                 ORDER BY id ASC
+                LIMIT 3000
             ''')
             rows = cur.fetchall()
             
@@ -89,6 +90,16 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         
         elif method == 'POST':
             body_data = json.loads(event.get('body', '{}'))
+            
+            cur.execute('SELECT COUNT(*) FROM contracts')
+            contract_count = cur.fetchone()[0]
+            if contract_count >= 3000:
+                return {
+                    'statusCode': 400,
+                    'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
+                    'body': json.dumps({'error': 'Достигнут лимит договоров (3000)'}),
+                    'isBase64Encoded': False
+                }
             
             expiration_date = body_data.get('expirationDate')
             if not expiration_date or expiration_date.strip() == '':
