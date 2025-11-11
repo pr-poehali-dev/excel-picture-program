@@ -608,10 +608,10 @@ const Index = () => {
                     variant="outline"
                     size="sm"
                     onClick={() => loadContracts(true)}
-                    className="gap-2 whitespace-nowrap"
+                    className="gap-2 whitespace-nowrap bg-blue-50 hover:bg-blue-100 border-blue-200"
                   >
                     <Icon name="RefreshCw" size={18} />
-                    <span className="hidden sm:inline">Обновить</span>
+                    Обновить
                   </Button>
                 </div>
 
