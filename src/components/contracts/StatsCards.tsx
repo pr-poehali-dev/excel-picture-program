@@ -27,10 +27,14 @@ const StatsCards = ({ stats, onSync }: StatsCardsProps) => {
             </div>
           </div>
           <Button 
-            onClick={onSync}
-            variant="outline" 
+            onClick={(e) => {
+              e.stopPropagation();
+              console.log('Кнопка синхронизации нажата');
+              onSync?.();
+            }}
+            variant="default" 
             size="sm" 
-            className="w-full gap-2 bg-white hover:bg-blue-50 border-blue-200"
+            className="w-full gap-2"
           >
             <Icon name="RefreshCw" size={16} />
             Синхронизировать

@@ -103,6 +103,7 @@ const Index = () => {
   };
   
   const handleSyncContracts = () => {
+    console.log('handleSyncContracts вызвана');
     loadContracts(true, true);
   };
 
