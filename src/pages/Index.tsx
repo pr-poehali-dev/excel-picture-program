@@ -52,59 +52,26 @@ const Index = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const firstLoad = async () => {
-      await loadContracts(false);
-    };
-    firstLoad();
-    
-    const syncInterval = setInterval(() => {
-      loadContracts(false);
-    }, 30000);
-    
-    return () => clearInterval(syncInterval);
+    loadContracts();
   }, []);
 
-  const loadContracts = async (showToast = false, clearCache = false) => {
+  const loadContracts = async () => {
     try {
       setIsLoading(true);
-      
-      if (clearCache) {
-        if ('caches' in window) {
-          const cacheNames = await caches.keys();
-          await Promise.all(cacheNames.map(name => caches.delete(name)));
-        }
-        console.log('Кэш очищен');
-      }
-      
-      const timestamp = new Date().getTime();
-      const response = await fetch(`${API_URL}?t=${timestamp}`, {
+      const response = await fetch(API_URL, {
         headers: {
-          'X-User-Role': userRole,
-          'Cache-Control': 'no-cache, no-store, must-revalidate',
-          'Pragma': 'no-cache',
-          'Expires': '0'
-        },
-        cache: 'no-store'
+          'X-User-Role': userRole
+        }
       });
       const data = await response.json();
-      const contractCount = data.contracts?.length || 0;
-      console.log('=== СИНХРОНИЗАЦИЯ С СЕРВЕРОМ ===');
-      console.log('Получено договоров:', contractCount);
+      console.log('Загруженные договоры:', data.contracts);
       setContracts(data.contracts || []);
-      if (showToast) {
-        toast.success(`Синхронизировано: ${contractCount} договоров`);
-      }
     } catch (error) {
       toast.error("Ошибка загрузки договоров");
       console.error(error);
     } finally {
       setIsLoading(false);
     }
-  };
-  
-  const handleSyncContracts = () => {
-    console.log('handleSyncContracts вызвана');
-    loadContracts(true, true);
   };
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -312,8 +279,6 @@ const Index = () => {
     expired: contracts.filter(c => isExpired(c.expirationDate)).length,
     totalAmount: contracts.reduce((sum, c) => sum + parseFloat((c.totalAmount || '0').replace(/\s/g, "")), 0),
   };
-  
-  console.log('Статистика договоров:', stats.total, 'всего');
 
   const handleExportToExcel = () => {
     const exportData = contracts.map((contract, index) => ({
@@ -604,80 +569,80 @@ const Index = () => {
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
-            <StatsCards stats={stats} onSync={handleSyncContracts} />
+            <StatsCards stats={stats} />
 
             <div className="bg-card rounded-lg border p-4 mb-6">
-              <div className="flex flex-col gap-4">
-                <div className="flex-1 relative">
-                  <Icon name="Search" size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                  <Input
-                    placeholder="Поиск по организации или номеру договора..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10"
-                  />
+              <div className="flex flex-col lg:flex-row gap-4">
+                <div className="flex-1">
+                  <div className="relative">
+                    <Icon name="Search" size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                    <Input
+                      placeholder="Поиск по организации или номеру договора..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="pl-10"
+                    />
+                  </div>
                 </div>
 
-                <div className="flex flex-wrap gap-2">
-                  <div className="flex gap-2">
-                    <Button
-                      variant={statusFilter === 'all' ? 'default' : 'outline'}
-                      onClick={() => setStatusFilter('all')}
-                      size="sm"
-                    >
-                      Все
-                    </Button>
-                    <Button
-                      variant={statusFilter === 'active' ? 'default' : 'outline'}
-                      onClick={() => setStatusFilter('active')}
-                      size="sm"
-                    >
-                      Активные
-                    </Button>
-                    <Button
-                      variant={statusFilter === 'expired' ? 'default' : 'outline'}
-                      onClick={() => setStatusFilter('expired')}
-                      size="sm"
-                    >
-                      Истекшие
-                    </Button>
-                  </div>
+                <div className="flex gap-2">
+                  <Button
+                    variant={statusFilter === 'all' ? 'default' : 'outline'}
+                    onClick={() => setStatusFilter('all')}
+                    size="sm"
+                  >
+                    Все
+                  </Button>
+                  <Button
+                    variant={statusFilter === 'active' ? 'default' : 'outline'}
+                    onClick={() => setStatusFilter('active')}
+                    size="sm"
+                  >
+                    Активные
+                  </Button>
+                  <Button
+                    variant={statusFilter === 'expired' ? 'default' : 'outline'}
+                    onClick={() => setStatusFilter('expired')}
+                    size="sm"
+                  >
+                    Истекшие
+                  </Button>
+                </div>
 
-                  <div className="flex gap-2 ml-auto">
-                    {userRole !== "accountant" && (
-                      <>
-                        <input
-                          ref={fileInputRef}
-                          type="file"
-                          accept=".xlsx,.xls"
-                          onChange={handleImportFromExcel}
-                          className="hidden"
-                        />
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => fileInputRef.current?.click()}
-                        >
-                          <Icon name="Upload" size={18} className="mr-2" />
-                          <span className="hidden sm:inline">Импорт</span>
-                        </Button>
-                      </>
-                    )}
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={handleExportToExcel}
-                    >
-                      <Icon name="Download" size={18} className="mr-2" />
-                      <span className="hidden sm:inline">Экспорт</span>
-                    </Button>
-                    {userRole !== "accountant" && (
-                      <Button onClick={() => setIsDialogOpen(true)} size="sm">
-                        <Icon name="Plus" size={18} className="mr-2" />
-                        <span className="hidden sm:inline">Добавить</span>
+                <div className="flex gap-2">
+                  {userRole !== "accountant" && (
+                    <>
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept=".xlsx,.xls"
+                        onChange={handleImportFromExcel}
+                        className="hidden"
+                      />
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => fileInputRef.current?.click()}
+                      >
+                        <Icon name="Upload" size={18} className="mr-2" />
+                        Импорт
                       </Button>
-                    )}
-                  </div>
+                    </>
+                  )}
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleExportToExcel}
+                  >
+                    <Icon name="Download" size={18} className="mr-2" />
+                    Экспорт
+                  </Button>
+                  {userRole !== "accountant" && (
+                    <Button onClick={() => setIsDialogOpen(true)} size="sm">
+                      <Icon name="Plus" size={18} className="mr-2" />
+                      Добавить
+                    </Button>
+                  )}
                 </div>
               </div>
             </div>
