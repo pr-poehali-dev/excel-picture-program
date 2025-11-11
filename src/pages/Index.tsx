@@ -53,19 +53,32 @@ const Index = () => {
 
   useEffect(() => {
     loadContracts();
+    
+    const syncInterval = setInterval(() => {
+      loadContracts();
+    }, 30000);
+    
+    return () => clearInterval(syncInterval);
   }, []);
 
-  const loadContracts = async () => {
+  const loadContracts = async (showToast = false) => {
     try {
       setIsLoading(true);
-      const response = await fetch(API_URL, {
+      const timestamp = new Date().getTime();
+      const response = await fetch(`${API_URL}?t=${timestamp}`, {
         headers: {
-          'X-User-Role': userRole
+          'X-User-Role': userRole,
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache'
         }
       });
       const data = await response.json();
-      console.log('Загруженные договоры:', data.contracts);
+      const contractCount = data.contracts?.length || 0;
+      console.log('Синхронизация с сервером:', contractCount, 'договоров');
       setContracts(data.contracts || []);
+      if (showToast) {
+        toast.success(`Синхронизировано договоров: ${contractCount}`);
+      }
     } catch (error) {
       toast.error("Ошибка загрузки договоров");
       console.error(error);
@@ -610,6 +623,15 @@ const Index = () => {
                 </div>
 
                 <div className="flex gap-2">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => loadContracts(true)}
+                    title="Синхронизировать с сервером"
+                  >
+                    <Icon name="RefreshCw" size={18} className="mr-2" />
+                    Синхронизировать
+                  </Button>
                   {userRole !== "accountant" && (
                     <>
                       <input
