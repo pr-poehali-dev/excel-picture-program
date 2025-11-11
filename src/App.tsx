@@ -8,7 +8,6 @@ import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Users from "./pages/Users";
 import NotFound from "./pages/NotFound";
-import PWAInstallPrompt from "./components/PWAInstallPrompt";
 import OfflineIndicator from "./components/OfflineIndicator";
 
 const queryClient = new QueryClient();
@@ -23,7 +22,6 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <PWAInstallPrompt />
       <OfflineIndicator />
       <BrowserRouter>
         <Routes>
