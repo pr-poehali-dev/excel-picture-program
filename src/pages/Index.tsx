@@ -64,26 +64,35 @@ const Index = () => {
     return () => clearInterval(syncInterval);
   }, []);
 
-  const loadContracts = async (showToast = false) => {
+  const loadContracts = async (showToast = false, clearCache = false) => {
     try {
       setIsLoading(true);
+      
+      if (clearCache) {
+        if ('caches' in window) {
+          const cacheNames = await caches.keys();
+          await Promise.all(cacheNames.map(name => caches.delete(name)));
+        }
+        console.log('Кэш очищен');
+      }
+      
       const timestamp = new Date().getTime();
       const response = await fetch(`${API_URL}?t=${timestamp}`, {
         headers: {
           'X-User-Role': userRole,
           'Cache-Control': 'no-cache, no-store, must-revalidate',
-          'Pragma': 'no-cache'
-        }
+          'Pragma': 'no-cache',
+          'Expires': '0'
+        },
+        cache: 'no-store'
       });
       const data = await response.json();
       const contractCount = data.contracts?.length || 0;
       console.log('=== СИНХРОНИЗАЦИЯ С СЕРВЕРОМ ===');
       console.log('Получено договоров:', contractCount);
-      console.log('Данные от сервера:', data);
       setContracts(data.contracts || []);
-      console.log('Установлено в state:', data.contracts?.length || 0);
       if (showToast) {
-        toast.success(`Синхронизировано договоров: ${contractCount}`);
+        toast.success(`Синхронизировано: ${contractCount} договоров`);
       }
     } catch (error) {
       toast.error("Ошибка загрузки договоров");
@@ -91,6 +100,10 @@ const Index = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+  
+  const handleSyncContracts = () => {
+    loadContracts(true, true);
   };
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -590,29 +603,18 @@ const Index = () => {
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
-            <StatsCards stats={stats} />
+            <StatsCards stats={stats} onSync={handleSyncContracts} />
 
             <div className="bg-card rounded-lg border p-4 mb-6">
               <div className="flex flex-col gap-4">
-                <div className="flex flex-col sm:flex-row gap-2 items-stretch sm:items-center">
-                  <div className="flex-1 relative">
-                    <Icon name="Search" size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                    <Input
-                      placeholder="Поиск по организации или номеру договора..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="pl-10"
-                    />
-                  </div>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => loadContracts(true)}
-                    className="gap-2 whitespace-nowrap bg-blue-50 hover:bg-blue-100 border-blue-200"
-                  >
-                    <Icon name="RefreshCw" size={18} />
-                    Обновить
-                  </Button>
+                <div className="flex-1 relative">
+                  <Icon name="Search" size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                  <Input
+                    placeholder="Поиск по организации или номеру договора..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="pl-10"
+                  />
                 </div>
 
                 <div className="flex flex-wrap gap-2">
