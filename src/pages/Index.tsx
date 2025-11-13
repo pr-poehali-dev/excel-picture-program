@@ -58,23 +58,16 @@ const Index = () => {
   const loadContracts = async () => {
     try {
       setIsLoading(true);
-      
-      const timestamp = new Date().getTime();
-      const response = await fetch(`${API_URL}?t=${timestamp}`, {
+      const response = await fetch(API_URL, {
         headers: {
-          'X-User-Role': userRole,
-          'Cache-Control': 'no-cache, no-store, must-revalidate',
-          'Pragma': 'no-cache'
-        },
-        cache: 'no-store'
+          'X-User-Role': userRole
+        }
       });
       const data = await response.json();
-      console.log('Загружено договоров:', data.contracts?.length || 0);
-      console.log('Данные:', data);
       setContracts(data.contracts || []);
     } catch (error) {
       toast.error("Ошибка загрузки договоров");
-      console.error('Ошибка:', error);
+      console.error(error);
     } finally {
       setIsLoading(false);
     }
@@ -251,10 +244,6 @@ const Index = () => {
       setSortDirection('asc');
     }
   };
-
-  console.log('Всего договоров перед фильтрацией:', contracts.length);
-  console.log('Статус фильтра:', statusFilter);
-  console.log('Поисковый запрос:', searchQuery);
 
   const filteredContracts = contracts.filter(contract => {
     const matchesStatus = 
