@@ -69,11 +69,12 @@ const Index = () => {
         cache: 'no-store'
       });
       const data = await response.json();
-      console.log('Загруженные договоры:', data.contracts);
+      console.log('Загружено договоров:', data.contracts?.length || 0);
+      console.log('Данные:', data);
       setContracts(data.contracts || []);
     } catch (error) {
       toast.error("Ошибка загрузки договоров");
-      console.error(error);
+      console.error('Ошибка:', error);
     } finally {
       setIsLoading(false);
     }
@@ -250,6 +251,10 @@ const Index = () => {
       setSortDirection('asc');
     }
   };
+
+  console.log('Всего договоров перед фильтрацией:', contracts.length);
+  console.log('Статус фильтра:', statusFilter);
+  console.log('Поисковый запрос:', searchQuery);
 
   const filteredContracts = contracts.filter(contract => {
     const matchesStatus = 
