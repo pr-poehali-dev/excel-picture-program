@@ -52,44 +52,25 @@ const Index = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const firstLoad = async () => {
-      if ('caches' in window) {
-        const cacheNames = await caches.keys();
-        await Promise.all(cacheNames.map(name => caches.delete(name)));
-        console.log('Кэш очищен при загрузке страницы');
-      }
-      await loadContracts(true);
-    };
-    firstLoad();
+    loadContracts();
   }, []);
 
-  const loadContracts = async (clearCache = false) => {
+  const loadContracts = async () => {
     try {
       setIsLoading(true);
-      
-      if (clearCache && 'caches' in window) {
-        const cacheNames = await caches.keys();
-        await Promise.all(cacheNames.map(name => caches.delete(name)));
-        console.log('Кэш очищен');
-      }
       
       const timestamp = new Date().getTime();
       const response = await fetch(`${API_URL}?t=${timestamp}`, {
         headers: {
           'X-User-Role': userRole,
           'Cache-Control': 'no-cache, no-store, must-revalidate',
-          'Pragma': 'no-cache',
-          'Expires': '0'
+          'Pragma': 'no-cache'
         },
         cache: 'no-store'
       });
       const data = await response.json();
-      const contractCount = data.contracts?.length || 0;
-      console.log('Синхронизировано договоров:', contractCount);
+      console.log('Загруженные договоры:', data.contracts);
       setContracts(data.contracts || []);
-      if (clearCache) {
-        toast.success(`Синхронизировано: ${contractCount} договоров`);
-      }
     } catch (error) {
       toast.error("Ошибка загрузки договоров");
       console.error(error);
